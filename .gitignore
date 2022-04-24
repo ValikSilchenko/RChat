@@ -1,0 +1,7 @@
+.gradle
+.idea
+build
+*.MD
+gradlew
+gradlew.bat
+settings.gradle.kts
