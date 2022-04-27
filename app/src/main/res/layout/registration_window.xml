@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/background_color"
+    tools:context=".RegistrationWindow">
+
+    <TextView
+        android:id="@+id/TopText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/toptext_regisrtation_window"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="normal"
+        android:textColor="?attr/text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/RegistrationLogin_Input"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="30dp"
+        android:hint="@string/enter_login_registration_window"
+        android:backgroundTint="?attr/edit_text_color"
+        android:textColorHint="?attr/edit_text_color"
+        android:textColor="?attr/text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/TopText" />
+
+    <EditText
+        android:id="@+id/RegistrationEmail_Input"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:hint="@string/enter_email_registration_window"
+        android:backgroundTint="?attr/edit_text_color"
+        android:textColorHint="?attr/edit_text_color"
+        android:textColor="?attr/text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RegistrationLogin_Input" />
+
+    <EditText
+        android:id="@+id/RegistrationPassword_Input"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:hint="@string/enter_password_registration_window"
+        android:backgroundTint="?attr/edit_text_color"
+        android:textColorHint="?attr/edit_text_color"
+        android:textColor="?attr/text_color"
+        android:password="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RegistrationEmail_Input" />
+
+    <EditText
+        android:id="@+id/RegistrationRepeatPassword_Input"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:hint="@string/repeat_password_registration_window"
+        android:backgroundTint="?attr/edit_text_color"
+        android:textColorHint="?attr/edit_text_color"
+        android:textColor="?attr/text_color"
+        android:password="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RegistrationPassword_Input" />
+
+    <Button
+        android:id="@+id/RegistrationRegistration_Btn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="80dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/registration_btn_registration_window"
+        android:textColor="@color/white"
+        app:cornerRadius="10dp"
+        android:backgroundTint="?attr/button_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RegistrationRepeatPassword_Input" />
+
+    <Button
+        android:id="@+id/RegistrationAuthorize_Btn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="80dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/authorize_btn_registration_window"
+        android:textColor="@color/white"
+        app:cornerRadius="10dp"
+        android:backgroundTint="?attr/button_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RegistrationRegistration_Btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

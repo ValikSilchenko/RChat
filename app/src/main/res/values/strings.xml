@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">R Chat</string>
+    <string name="Message_Input_Hint">Введите сообщение...</string>
+    <string name="toptext_regisrtation_window">Впервые в R Chat?</string>
+    <string name="enter_email_registration_window">Введите e-mail</string>
+    <string name="enter_password_registration_window">Введите пароль</string>
+    <string name="registration_btn_registration_window">Завершить регистрацию</string>
+    <string name="enter_login_registration_window">Введите логин</string>
+    <string name="authorize_btn_registration_window">У меня уже есть аккаунт</string>
+    <string name="repeat_password_registration_window">Повторите пароль</string>
+    <string name="welcome_back_text_authorize_window">Авторизация</string>
+    <string name="enter_account_authorize_window">Войти в аккаунт</string>
+    <string name="dont_have_account_authorize_window">У меня нет аккаунта</string>
+    <string name="forgot_password_authorize_window">Забыли пароль?</string>
+    <string name="user_name_text">Имя пользователя</string>
+    <string name="top_text_settings_window">Настройки</string>
+    <string name="dark_theme_text_settings_window">Темная тема</string>
+    <string name="login_text_settings_window">Логин</string>
+</resources>
