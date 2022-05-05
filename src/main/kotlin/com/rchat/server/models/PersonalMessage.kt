@@ -8,6 +8,7 @@ import javax.persistence.*
 @Table(name = "personal_messages")
 open class PersonalMessage {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "msg_id", nullable = false)
     open var id: Int? = null
 

@@ -6,6 +6,7 @@ import javax.persistence.*
 @Table(name = "channels")
 open class Channel {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     open var id: Int? = null
 
