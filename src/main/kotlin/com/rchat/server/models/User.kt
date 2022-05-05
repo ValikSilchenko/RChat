@@ -13,12 +13,12 @@ open class User {
     @Column(name = "username", nullable = false, length = 20)
     open var username: String? = null
 
-    @Column(name = "email", nullable = false, length = 25)
+    @Column(name = "email", nullable = false, length = 25)  // TODO length of email
     open var email: String? = null
 
     @Column(name = "phone", nullable = false, length = 10)
     open var phone: String? = null
 
-    @Column(name = "password", nullable = false, length = 20)
+    @Column(name = "password", nullable = false, length = 20)  // TODO length of pswrd
     open var password: String? = null
 }
