@@ -1,6 +1,7 @@
+CREATE SEQUENCE public.users_id_seq;
 
 CREATE TABLE public.Users (
-                ID INTEGER NOT NULL,
+                ID INTEGER NOT NULL DEFAULT nextval('public.users_id_seq'),
                 Username VARCHAR(20) NOT NULL,
                 Email VARCHAR(25) NOT NULL,
                 Phone VARCHAR(10) NOT NULL,
@@ -9,8 +10,12 @@ CREATE TABLE public.Users (
 );
 
 
+ALTER SEQUENCE public.users_id_seq OWNED BY public.Users.ID;
+
+CREATE SEQUENCE public.personal_messages_msg_id_seq;
+
 CREATE TABLE public.Personal_Messages (
-                Msg_ID INTEGER NOT NULL,
+                Msg_ID INTEGER NOT NULL DEFAULT nextval('public.personal_messages_msg_id_seq'),
                 Sender_ID INTEGER NOT NULL,
                 Time TIME NOT NULL,
                 Date DATE NOT NULL,
@@ -19,6 +24,8 @@ CREATE TABLE public.Personal_Messages (
 );
 
 
+ALTER SEQUENCE public.personal_messages_msg_id_seq OWNED BY public.Personal_Messages.Msg_ID;
+
 CREATE TABLE public.Personal_Recipient (
                 User_ID INTEGER NOT NULL,
                 Msg_ID INTEGER NOT NULL,
@@ -26,13 +33,17 @@ CREATE TABLE public.Personal_Recipient (
 );
 
 
+CREATE SEQUENCE public.channels_id_seq;
+
 CREATE TABLE public.Channels (
-                ID INTEGER NOT NULL,
+                ID INTEGER NOT NULL DEFAULT nextval('public.channels_id_seq'),
                 Owner_ID INTEGER NOT NULL,
                 Channel_Name VARCHAR(20) NOT NULL,
                 CONSTRAINT channels_pk PRIMARY KEY (ID)
 );
 
+
+ALTER SEQUENCE public.channels_id_seq OWNED BY public.Channels.ID;
 
 CREATE SEQUENCE public.channel_messages_msg_id_seq;
 
