@@ -16,5 +16,13 @@ open class Member {
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    open var user: com.rchat.server.models.User? = null
+    open var user: User? = null
+
+    constructor() {}
+
+    constructor(id: MemberId, channel: Channel, user: User) {
+        this.id = id
+        this.channel = channel
+        this.user = user
+    }
 }

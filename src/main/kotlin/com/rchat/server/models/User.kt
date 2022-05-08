@@ -21,4 +21,14 @@ open class User {
 
     @Column(name = "password", nullable = false, length = 20)  // TODO length of pswrd
     open var password: String? = null
+
+    constructor() {}
+
+    constructor(id: Int, username: String, email: String, phone: String, password: String) {
+        this.id = id
+        this.username = username
+        this.email = email
+        this.phone = phone
+        this.password = password
+    }
 }

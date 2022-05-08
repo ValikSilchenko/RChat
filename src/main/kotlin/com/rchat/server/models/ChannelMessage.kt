@@ -14,11 +14,11 @@ open class ChannelMessage {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "channel_id", nullable = false)
-    open var channel: com.rchat.server.models.Channel? = null
+    open var channel: Channel? = null
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sender_id", nullable = false)
-    open var sender: com.rchat.server.models.User? = null
+    open var sender: User? = null
 
     @Column(name = "\"time\"", nullable = false)
     open var time: LocalTime? = null
@@ -29,4 +29,16 @@ open class ChannelMessage {
     @Lob
     @Column(name = "message_text", nullable = false)
     open var messageText: String? = null
+
+    constructor() {}
+
+    constructor(id: Int, channel: Channel, sender: User,
+                time: LocalTime, date: LocalDate, messageText: String) {
+        this.id = id
+        this.channel = channel
+        this.sender = sender
+        this.time = time
+        this.date = date
+        this.messageText = messageText
+    }
 }

@@ -14,7 +14,7 @@ open class PersonalMessage {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sender_id", nullable = false)
-    open var sender: com.rchat.server.models.User? = null
+    open var sender: User? = null
 
     @Column(name = "\"time\"", nullable = false)
     open var time: LocalTime? = null
@@ -25,4 +25,15 @@ open class PersonalMessage {
     @Lob
     @Column(name = "message_text", nullable = false)
     open var messageText: String? = null
+
+    constructor() {}
+
+    constructor(id: Int, sender: User, time: LocalTime,
+                date: LocalDate, messageText: String) {
+        this.id = id
+        this.sender = sender
+        this.time = time
+        this.date = date
+        this.messageText = messageText
+    }
 }

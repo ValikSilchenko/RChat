@@ -12,8 +12,16 @@ open class Channel {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "owner_id", nullable = false)
-    open var owner: com.rchat.server.models.User? = null
+    open var owner: User? = null
 
     @Column(name = "channel_name", nullable = false, length = 20)
     open var channelName: String? = null
+
+    constructor() {}
+
+    constructor(id: Int, owner: User, channelName: String) {
+        this.id = id
+        this.owner = owner
+        this.channelName = channelName
+    }
 }

@@ -1,5 +1,7 @@
 package com.rchat.server.models
 
+import java.time.LocalDate
+import java.time.LocalTime
 import javax.persistence.*
 
 @Entity
@@ -11,10 +13,18 @@ open class PersonalRecipient {
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    open var user: com.rchat.server.models.User? = null
+    open var user: User? = null
 
     @MapsId("msgId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "msg_id", nullable = false)
     open var msg: PersonalMessage? = null
+
+    constructor() {}
+
+    constructor(id: PersonalRecipientId, user: User, msg: PersonalMessage) {
+        this.id = id
+        this.user = user
+        this.msg = msg
+    }
 }
