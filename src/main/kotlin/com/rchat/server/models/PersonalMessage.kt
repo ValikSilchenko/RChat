@@ -30,7 +30,6 @@ open class PersonalMessage {
 
     constructor(id: Int, sender: User, time: LocalTime,
                 date: LocalDate, messageText: String) {
-        this.id = id
         this.sender = sender
         this.time = time
         this.date = date

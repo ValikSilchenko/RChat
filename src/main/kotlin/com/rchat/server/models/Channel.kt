@@ -20,7 +20,6 @@ open class Channel {
     constructor() {}
 
     constructor(id: Int, owner: User, channelName: String) {
-        this.id = id
         this.owner = owner
         this.channelName = channelName
     }

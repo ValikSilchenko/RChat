@@ -8,24 +8,37 @@ import com.rchat.server.repos.MemberRepository
 import com.rchat.server.repos.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
 class ClientController(@Autowired private var userRepo: UserRepository,
                        @Autowired private var channelRepo: ChannelRepository,
                        @Autowired private var memberRepo: MemberRepository) {
     @PostMapping("/adduser")
-    fun addUser(user: User): User {
-        return userRepo.save(user)
+    fun addUser(@RequestParam username: String, @RequestParam email: String,
+                @RequestParam phone: String, @RequestParam password: String): String {
+        val user = User(username, email, phone, password)
+        userRepo.save(user)
+        return "index"
     }
 
     @PostMapping("/addchannel")
-    fun addChannel(channel: Channel): Channel {
-        return channelRepo.save(channel)
+    fun addChannel(channel: Channel): String {
+        channelRepo.save(channel)
+        return "index"
     }
 
     @PostMapping("/addmember")
-    fun addMember(member: Member): Member {
-        return memberRepo.save(member)
+    fun addMember(member: Member): String {
+        memberRepo.save(member)
+        return "index"
+    }
+
+    @GetMapping("/register")
+    fun register(model: Model): String {
+        return "form"
     }
 }

@@ -11,10 +11,4 @@ class MainController {
         model.addAttribute("title", "World")
         return "index"
     }
-
-    @GetMapping("/about")
-    fun about(model: Model): String {
-//        model.addAttribute("")
-        return "about"
-    }
 }

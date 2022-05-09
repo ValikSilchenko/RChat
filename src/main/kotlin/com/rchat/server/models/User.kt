@@ -24,8 +24,7 @@ open class User {
 
     constructor() {}
 
-    constructor(id: Int, username: String, email: String, phone: String, password: String) {
-        this.id = id
+    constructor(username: String, email: String, phone: String, password: String) {
         this.username = username
         this.email = email
         this.phone = phone
