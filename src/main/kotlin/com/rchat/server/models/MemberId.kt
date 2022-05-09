@@ -2,12 +2,9 @@ package com.rchat.server.models
 
 import org.hibernate.Hibernate
 import java.io.Serializable
-import java.time.LocalDate
-import java.time.LocalTime
 import java.util.*
 import javax.persistence.Column
 import javax.persistence.Embeddable
-import javax.persistence.Entity
 
 @Embeddable
 open class MemberId : Serializable {
@@ -34,8 +31,4 @@ open class MemberId : Serializable {
         this.channelId = channelId
         this.userId = userId
     }
-
-//    companion object {
-//        private const val serialVersionUID = -1316055368516134200L
-//    }
 }
