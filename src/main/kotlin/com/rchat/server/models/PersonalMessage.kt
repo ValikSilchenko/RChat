@@ -28,7 +28,7 @@ open class PersonalMessage {
 
     constructor() {}
 
-    constructor(id: Int, sender: User, time: LocalTime,
+    constructor(sender: User, time: LocalTime,
                 date: LocalDate, messageText: String) {
         this.sender = sender
         this.time = time

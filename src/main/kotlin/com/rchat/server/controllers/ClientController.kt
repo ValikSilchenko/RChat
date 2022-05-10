@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 
@@ -17,10 +18,15 @@ import org.springframework.web.bind.annotation.RequestParam
 class ClientController(@Autowired private var userRepo: UserRepository,
                        @Autowired private var channelRepo: ChannelRepository,
                        @Autowired private var memberRepo: MemberRepository) {
+//    @PostMapping("/adduser")
+//    fun addUser(@RequestParam username: String, @RequestParam email: String,
+//                @RequestParam phone: String, @RequestParam password: String): String {
+//        val user = User(username, email, phone, password)
+//        userRepo.save(user)
+//        return "index"
+//    }
     @PostMapping("/adduser")
-    fun addUser(@RequestParam username: String, @RequestParam email: String,
-                @RequestParam phone: String, @RequestParam password: String): String {
-        val user = User(username, email, phone, password)
+    fun addUser(user: User): String {
         userRepo.save(user)
         return "index"
     }
