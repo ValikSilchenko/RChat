@@ -1,25 +1,30 @@
 package com.rchat.server.models
 
 import javax.persistence.*
+import javax.validation.constraints.Size
 
 @Entity
 @Table(name = "users")
-open class User {
+open class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     open var id: Int? = null
 
     @Column(name = "username", nullable = false, length = 20)
+    @Size(min = 2, max = 20)
     open var username: String? = null
 
-    @Column(name = "email", nullable = false, length = 25)  // TODO length of email
+    @Column(name = "email", nullable = false, length = 60)
+    @Size(min = 8, max = 60)
     open var email: String? = null
 
-    @Column(name = "phone", nullable = false, length = 10)
+    @Column(name = "phone", nullable = false, length = 10)  // TODO length
+    @Size(min = 10, max = 10)
     open var phone: String? = null
 
-    @Column(name = "password", nullable = false, length = 20)  // TODO length of pswrd
+    @Column(name = "password", nullable = false, length = 60)
+    @Size(min = 5, max = 40)
     open var password: String? = null
 
     constructor() {}

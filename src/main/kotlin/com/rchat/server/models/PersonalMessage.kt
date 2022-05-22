@@ -14,7 +14,7 @@ open class PersonalMessage {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sender_id", nullable = false)
-    open var sender: User? = null
+    open var sender: Users? = null
 
     @Column(name = "\"time\"", nullable = false)
     open var time: LocalTime? = null
@@ -28,7 +28,7 @@ open class PersonalMessage {
 
     constructor() {}
 
-    constructor(sender: User, time: LocalTime,
+    constructor(sender: Users, time: LocalTime,
                 date: LocalDate, messageText: String) {
         this.sender = sender
         this.time = time

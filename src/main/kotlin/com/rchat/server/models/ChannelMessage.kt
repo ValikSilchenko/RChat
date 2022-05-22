@@ -18,7 +18,7 @@ open class ChannelMessage {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sender_id", nullable = false)
-    open var sender: User? = null
+    open var sender: Users? = null
 
     @Column(name = "\"time\"", nullable = false)
     open var time: LocalTime? = null
@@ -32,7 +32,7 @@ open class ChannelMessage {
 
     constructor() {}
 
-    constructor(id: Int, channel: Channel, sender: User,
+    constructor(id: Int, channel: Channel, sender: Users,
                 time: LocalTime, date: LocalDate, messageText: String) {
         this.channel = channel
         this.sender = sender

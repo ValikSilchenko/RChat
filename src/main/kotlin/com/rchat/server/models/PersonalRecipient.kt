@@ -11,7 +11,7 @@ open class PersonalRecipient {
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    open var user: User? = null
+    open var users: Users? = null
 
     @MapsId("msgId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -20,9 +20,9 @@ open class PersonalRecipient {
 
     constructor() {}
 
-    constructor(id: PersonalRecipientId, user: User, msg: PersonalMessage) {
+    constructor(id: PersonalRecipientId, users: Users, msg: PersonalMessage) {
         this.id = id
-        this.user = user
+        this.users = users
         this.msg = msg
     }
 }

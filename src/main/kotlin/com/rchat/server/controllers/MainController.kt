@@ -11,4 +11,10 @@ class MainController {
         model.addAttribute("title", "World")
         return "index"
     }
+
+    @GetMapping("/register")
+    fun register(model: Model): String {
+//        model.addAttribute("user", User())
+        return "form"
+    }
 }
