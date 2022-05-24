@@ -1,16 +1,12 @@
 package com.rchat.server.controllers
 
-import com.rchat.server.models.Channel
-import com.rchat.server.models.Member
-import com.rchat.server.models.PersonalMessage
-import com.rchat.server.models.Users
+import com.rchat.server.models.*
 import com.rchat.server.repos.ChannelRepository
 import com.rchat.server.repos.MemberRepository
 import com.rchat.server.repos.PersonalMessageRepository
 import com.rchat.server.services.PgUserDetailsService
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -25,13 +21,33 @@ class ClientController(@Autowired private var userService: PgUserDetailsService,
                        @Autowired private var memberRepo: MemberRepository,
                        @Autowired private var personalMessageRepo: PersonalMessageRepository) {
     @PostMapping("channel")
-    fun addChannel(channel: Channel): Channel {
-        return channelRepo.save(channel)
+    fun addChannel(@Valid channel: Channel, bindingResult: BindingResult): String {
+        if (bindingResult.hasErrors())
+            return "binding error"
+        channelRepo.save(channel)
+        return "success"
+    }
+
+    @GetMapping("channel")
+    fun getChannelMessages(@Valid channel: Channel, bindingResult: BindingResult): List<ChannelMessage>? {
+        if (bindingResult.hasErrors())
+            return null
+        return channelRepo.getMessages(channel)
     }
 
     @PostMapping("member")
-    fun addMember(member: Member): Member {
-        return memberRepo.save(member)
+    fun addMember(@Valid member: Member, bindingResult: BindingResult): String {
+        if (bindingResult.hasErrors())
+            return "binding error"
+        memberRepo.save(member)
+        return "success"
+    }
+
+    @GetMapping("member")
+    fun getMembers(@Valid channel: Channel, bindingResult: BindingResult): List<Users>? {
+        if (bindingResult.hasErrors())
+            return null
+        return channelRepo.getMembers(channel)
     }
 
     @GetMapping("personal")
@@ -40,11 +56,11 @@ class ClientController(@Autowired private var userService: PgUserDetailsService,
     }
 
     @PostMapping("user")
-    fun addUser(@Valid user: Users, bindingResult: BindingResult, model: Model): String {
+    fun addUser(@Valid user: Users, bindingResult: BindingResult): String {
         if (bindingResult.hasErrors())
-            return "error"
+            return "binding error"
         if (!userService.saveUser(user)) {
-            return "error"
+            return "error: user already exists"
         }
         userService.autoLogin(user)
         return "success"  // TODO request body

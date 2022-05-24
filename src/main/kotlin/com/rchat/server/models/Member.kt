@@ -16,13 +16,13 @@ open class Member {
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    open var users: Users? = null
+    open var user: Users? = null
 
     constructor() {}
 
-    constructor(id: MemberId, channel: Channel, users: Users) {
+    constructor(id: MemberId, channel: Channel, user: Users) {
         this.id = id
         this.channel = channel
-        this.users = users
+        this.user = user
     }
 }
