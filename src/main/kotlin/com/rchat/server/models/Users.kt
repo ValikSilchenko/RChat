@@ -24,7 +24,7 @@ open class Users {
     open var phone: String? = null
 
     @Column(name = "password", nullable = false, length = 60)
-    @Size(min = 5, max = 40)
+    @Size(min = 5, max = 60)
     open var password: String? = null
 
     constructor() {}

@@ -4,7 +4,10 @@ import com.rchat.server.models.Users
 import com.rchat.server.repos.UserRepository
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -28,17 +31,16 @@ class PgUserDetailsService(@Autowired private var userRepo: UserRepository) : Us
 
     fun saveUser(user: Users): Boolean {
         val dbUser = userRepo.findByUsername(user.username)
-        println(dbUser)
         if (dbUser != null)
             return false
 
-//        user.password = bCryptPasswordEncoder.encode(user.password)
+        user.password = bCryptPasswordEncoder.encode(user.password)
         userRepo.save(user)
         return true
     }
 
-    fun checkPassword(user: Users): Boolean {
-        val userFormDB = userRepo.findByUsername(user.username) ?: throw UsernameNotFoundException("User not found")
-        return (userFormDB.password == user.password)
+    fun autoLogin(user: Users) {
+        val auth: Authentication = UsernamePasswordAuthenticationToken(user, null, null)
+        SecurityContextHolder.getContext().authentication = auth
     }
 }

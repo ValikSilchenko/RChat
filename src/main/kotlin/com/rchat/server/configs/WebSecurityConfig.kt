@@ -32,16 +32,17 @@ class WebSecurityConfig(@Autowired private var userDetailsService: PgUserDetails
                 .loginPage("/login")
                 .defaultSuccessUrl("/")  // TODO
                 .permitAll()
-            .and()
-            .logout()
-            .permitAll()
-            .logoutSuccessUrl("/")  // TODO
+//            .and()
+//            .logout()
+//            .permitAll()
+//            .logoutSuccessUrl("/")  // TODO
     }
 
     @Override
     @Throws(Exception::class)
     override fun configure(builder: AuthenticationManagerBuilder) {
         builder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder())
+        builder.inMemoryAuthentication().passwordEncoder(bCryptPasswordEncoder())
     }
 
     @Bean

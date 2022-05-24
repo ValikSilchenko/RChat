@@ -7,7 +7,11 @@
 </head>
 <body>
     <div th:insert="blocks/header :: header"></div>
-    <h1>Test</h1>
+    <form action="/login" method="post" class="form-signin">
+        <input type="text" name="username" placeholder="Enter username">
+        <input type="password" name="password" placeholder="Enter password">
+        <button type="submit">Log in</button>
+    </form>
     <div th:insert="blocks/footer :: footer"></div>
 </body>
 </html>

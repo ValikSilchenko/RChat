@@ -17,22 +17,24 @@
             <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
-                    <input type="text" name="email" class="mb-3 sm-10" placeholder="Enter an email"><br>
+                    <input type="email" name="email" class="mb-3 sm-10" placeholder="Enter an email"><br>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label">Phone</label>
                 <div class="col-sm-10">
-                    <input type="text" name="phone" class="mb-3 sm-10" placeholder="Enter phone"><br>
+                    <input type="tel" pattern="([0-9]{10})|([0-9]{3}-[0-9]{3}-[0-9]{4})|(8-[0-9]{3}-[0-9]{3}-[0-9]{4})"
+                           name="phone" class="mb-3 sm-10" placeholder="Enter phone"><br>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label">Password</label>
                 <div class="col-sm-10">
-                    <input type="text" name="password" class="form-control" id="inputPassword">
+                    <input type="password" name="password" class="form-control" id="inputPassword">
                 </div>
             </div>
             <button type="submit">Register</button>
+            <p th:if="${err != null}" th:text="${err}">Incorrect date</p>
         </form>
         <div th:insert="blocks/footer :: footer"></div>
     </body>
