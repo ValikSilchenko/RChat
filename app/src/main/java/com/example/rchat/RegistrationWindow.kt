@@ -1,14 +1,15 @@
 package com.example.rchat
 
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 class RegistrationWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,37 +22,34 @@ class RegistrationWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_window)
 
-        // val mSettings: SharedPreferences = getSharedPreferences("Savings", Context.MODE_PRIVATE)
         val loginText: EditText = findViewById(R.id.RegistrationLogin_Input)
         val emailText: EditText = findViewById(R.id.RegistrationEmail_Input)
+        val phoneNumberText: EditText = findViewById(R.id.RegistrationPhoneNumber_Input)
         val passwordText: EditText = findViewById(R.id.RegistrationPassword_Input)
         val repeatPasswordText: EditText = findViewById(R.id.RegistrationRepeatPassword_Input)
         val registrationBtn: Button = findViewById(R.id.RegistrationRegistration_Btn)
         val authorizeBtn: Button = findViewById(R.id.RegistrationAuthorize_Btn)
-        val shared: SharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE)
-        val editor = shared.edit()
 
-        // Переход на страницу авторизации
+        // Нажатие кнопки RegistrationAuthorize_Btn
         authorizeBtn.setOnClickListener {
             startIntent(AuthorizeWindow::class.java)
         }
 
-        // Регистрация в системе
+        // Нажатие кнопки RegistrationRegistration_Btn
         registrationBtn.setOnClickListener {
-            // ПЕРЕДЕЛАТЬ ПОД РЕГИСТРАЦИЮ В БД
-            if (loginText.text.toString() != "" && emailText.text.toString() != "" && passwordText.text.toString() != "" && repeatPasswordText.text.toString() != "") {
-                if (passwordText.text.toString() == repeatPasswordText.text.toString()) {
-                    // Отправить данные в БД
-                    editor.putString("User_Name", loginText.text.toString()).apply()
-                    startIntent(ChatList::class.java)
-                } else if (passwordText.text.toString() != repeatPasswordText.text.toString()) {
-                    showMessage("Ошибка", "Не совпадают пароли")
-                }
-            } else if (loginText.text.toString() == "" || emailText.text.toString() == "" || passwordText.text.toString() == "" || repeatPasswordText.text.toString() == "")
-            // Если поля пустые
+            if (emailText.text.isNotEmpty() && loginText.text.isNotEmpty()
+                && foundSymbol(emailText.text, '@')
+                && passwordText.text.isNotEmpty() && passwordText.text == repeatPasswordText.text
+            )
             {
-                showMessage("Ошибка", "Присутствуют пустые поля")
+                sendAndReceiveData(loginText.text.toString(), emailText.text.toString(), phoneNumberText.text.toString(), passwordText.text.toString())
+                startIntent(ChatList::class.java)
             }
+            else
+                showMessage(
+                    "Ошибка",
+                    "Внимательно проверьте корректность введенных данных, а также совпали ли пароли"
+                )
         }
     }
 
@@ -62,18 +60,20 @@ class RegistrationWindow : AppCompatActivity() {
             .setTitle("Предупреждение")
             .setMessage("Вы действительно хотите выйти?")
             .setCancelable(true)
-            .setPositiveButton("Да", DialogInterface.OnClickListener { _, _ -> finish() })
+            .setPositiveButton("Да") { _, _ -> finish() }
             .setNegativeButton(
-                "Нет",
-                DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
+                "Нет"
+            ) { dialog, _ -> dialog.cancel() }
         val exitWindow = exitMessage.create()
         exitWindow.show()
     }
 
+    // Открыть новое окно
     private fun startIntent(Window: Class<*>?) {
         startActivity(Intent(this, Window))
     }
 
+    // Показать всплывающее сообщение
     private fun showMessage(TitleText: CharSequence, MessageText: CharSequence) {
         val message: AlertDialog.Builder = AlertDialog.Builder(this)
         message
@@ -81,9 +81,39 @@ class RegistrationWindow : AppCompatActivity() {
             .setMessage(MessageText)
             .setCancelable(true)
             .setPositiveButton(
-                "Ок",
-                DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
+                "Ок"
+            ) { dialog, _ -> dialog.cancel() }
         val messageWindow = message.create()
         messageWindow.show()
+    }
+
+    // Проверка почты на валидность (ПЕРЕДЕЛАТЬ - ДЕБАГОВАЯ ВЕРСИЯ)
+    private fun foundSymbol(whereFind: CharSequence, whatToFind: Char): Boolean {
+        for (i in 1..whereFind.length - 2) {
+            if (whereFind[i] == whatToFind && whereFind[i + 2] == '.')
+                return true
+        }
+        return false
+    }
+
+    // Отправка данных в БД
+    private fun sendAndReceiveData(login: String, email: String, phoneNumber: String, password: String) {
+        val client = OkHttpClient()
+        val dataToSend = FormBody.Builder()
+            .add("username", login)
+            .add("email", email)
+            .add("phone", phoneNumber)
+            .add("password", password)
+            .build()
+        val requestToSend = Request.Builder()
+            .post(dataToSend)
+            .url("http://localhost:8080/user")
+            .build()
+        client.newCall(requestToSend).execute().use { response ->
+            if (!response.isSuccessful)
+                showMessage("Ошибка", "Пользователь уже существует")
+            else
+                startIntent(ChatList::class.java)
+        }
     }
 }

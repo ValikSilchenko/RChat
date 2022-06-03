@@ -6,5 +6,6 @@
         <attr name="button_color" format="color"/>
         <attr name="edit_text_color" format="color"/>
         <attr name="switch_color" format="color"/>
+        <attr name="image_color" format="color"/>
     </declare-styleable>
 </resources>
