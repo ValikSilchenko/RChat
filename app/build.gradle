@@ -29,6 +29,19 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    packagingOptions{
+        exclude 'META-INF/spring.tooling'
+        exclude 'META-INF/spring.handlers'
+        exclude 'META-INF/spring-configuration-metadata.json'
+        exclude 'META-INF/spring.factories'
+        exclude 'META-INF/web-fragment.xml'
+        exclude 'META-INF/additional-spring-configuration-metadata.json'
+        exclude 'META-INF/spring.schemas'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+    }
 }
 
 dependencies {
@@ -37,6 +50,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("org.springframework.boot:spring-boot-starter-websocket:2.6.7")
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

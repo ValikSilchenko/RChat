@@ -16,4 +16,6 @@
     <string name="top_text_settings_window">Настройки</string>
     <string name="dark_theme_text_settings_window">Темная тема</string>
     <string name="login_text_settings_window">Логин</string>
+    <string name="enter_phone_number_registration_window">Введите номер телефона</string>
+    <string name="enter_user_login">Введите логин пользователя...</string>
 </resources>

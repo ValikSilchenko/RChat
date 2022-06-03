@@ -22,15 +22,14 @@
         android:textColor="?attr/text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/RegistrationLogin_Input"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="30dp"
         android:hint="@string/enter_login_registration_window"
         android:backgroundTint="?attr/edit_text_color"
@@ -56,6 +55,21 @@
         app:layout_constraintTop_toBottomOf="@id/RegistrationLogin_Input" />
 
     <EditText
+        android:id="@+id/RegistrationPhoneNumber_Input"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:hint="@string/enter_phone_number_registration_window"
+        android:backgroundTint="?attr/edit_text_color"
+        android:textColorHint="?attr/edit_text_color"
+        android:textColor="?attr/text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RegistrationEmail_Input" />
+
+    <EditText
         android:id="@+id/RegistrationPassword_Input"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -69,7 +83,7 @@
         android:password="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RegistrationEmail_Input" />
+        app:layout_constraintTop_toBottomOf="@id/RegistrationPhoneNumber_Input" />
 
     <EditText
         android:id="@+id/RegistrationRepeatPassword_Input"
@@ -97,9 +111,9 @@
         android:clickable="true"
         android:focusable="true"
         android:text="@string/registration_btn_registration_window"
+        android:backgroundTint="?attr/button_color"
         android:textColor="@color/white"
         app:cornerRadius="10dp"
-        android:backgroundTint="?attr/button_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/RegistrationRepeatPassword_Input" />
@@ -115,10 +129,9 @@
         android:focusable="true"
         android:text="@string/authorize_btn_registration_window"
         android:textColor="@color/white"
-        app:cornerRadius="10dp"
         android:backgroundTint="?attr/button_color"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/RegistrationRegistration_Btn" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

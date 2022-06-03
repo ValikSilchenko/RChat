@@ -16,6 +16,7 @@
         <item name="button_color">#FFEE8300</item>
         <item name="edit_text_color">@android:color/darker_gray</item>
         <item name="switch_color">@android:color/darker_gray</item>
+        <item name="image_color">#000</item>
     </style>
 
 </resources>

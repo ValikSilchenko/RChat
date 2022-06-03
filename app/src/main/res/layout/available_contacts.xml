@@ -7,4 +7,46 @@
     tools:context=".AvailableContacts"
     android:background="?attr/background_color">
 
+    <Button
+        android:id="@+id/AvailableContactsBack_Btn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:drawableTop="@drawable/ic_back_btn_img"
+        android:focusable="true"
+        android:clickable="true"
+        android:backgroundTint="?attr/button_color"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cornerRadius="10dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="rtl"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/AvailableContactsBack_Btn">
+        <Button
+            android:id="@+id/AvailableContactsFindContact_Btn"
+            android:layout_width="70dp"
+            android:layout_height="48dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:drawableTop="@drawable/ic_search_img"
+            android:backgroundTint="?attr/button_color"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <EditText
+            android:id="@+id/AvailableContactsFindContact_EditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/enter_user_login"
+            android:textColorHint="?attr/edit_text_color"
+            android:backgroundTint="?attr/edit_text_color"
+            android:textColor="?attr/text_color"
+            android:layout_marginStart="10dp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

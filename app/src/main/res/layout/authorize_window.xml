@@ -25,13 +25,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/AuthorizeEmail_Input"
+        android:id="@+id/AuthorizeLogin_Input"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="30dp"
-        android:hint="@string/enter_email_registration_window"
+        android:hint="@string/enter_login_registration_window"
         android:textColorHint="?attr/edit_text_color"
         android:backgroundTint="?attr/edit_text_color"
         android:textColor="?attr/text_color"
@@ -53,7 +53,7 @@
         android:password="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/AuthorizeEmail_Input" />
+        app:layout_constraintTop_toBottomOf="@id/AuthorizeLogin_Input" />
 
     <Button
         android:id="@+id/AuthorizeAuthorize_Btn"
@@ -66,10 +66,10 @@
         android:focusable="true"
         android:text="@string/enter_account_authorize_window"
         android:textColor="@color/white"
+        android:backgroundTint="?attr/button_color"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:backgroundTint="?attr/button_color"
         app:layout_constraintTop_toBottomOf="@id/AuthorizePassword_Input" />
 
     <Button
