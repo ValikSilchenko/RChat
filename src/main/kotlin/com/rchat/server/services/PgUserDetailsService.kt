@@ -3,7 +3,6 @@ package com.rchat.server.services
 import com.rchat.server.models.Users
 import com.rchat.server.repos.UserRepository
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class PgUserDetailsService(@Autowired private var userRepo: UserRepository) : UserDetailsService {
+class PgUserDetailsService(private var userRepo: UserRepository) : UserDetailsService {
     private var bCryptPasswordEncoder: BCryptPasswordEncoder = BCryptPasswordEncoder()  // TODO
 
     @Override
@@ -37,6 +36,14 @@ class PgUserDetailsService(@Autowired private var userRepo: UserRepository) : Us
         user.password = bCryptPasswordEncoder.encode(user.password)
         userRepo.save(user)
         return true
+    }
+
+    fun login(username: String, password: String): String {
+        val dbUser = userRepo.findByUsername(username) ?: return "error:user not found"
+        if (dbUser.username == username &&
+            dbUser.password == bCryptPasswordEncoder.encode(password))
+            return "success"
+        return "error:incorrect data"
     }
 
     fun autoLogin(user: Users) {

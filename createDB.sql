@@ -1,22 +1,23 @@
-CREATE SEQUENCE public.users_id_seq;
+CREATE SEQUENCE IF NOT EXISTS public.users_id_seq;
 
-CREATE TABLE public.Users (
+CREATE TABLE IF NOT EXISTS public.Users (
                 ID INTEGER NOT NULL DEFAULT nextval('public.users_id_seq'),
                 Username VARCHAR(20) NOT NULL,
-                Email VARCHAR(25) NOT NULL,
+                Email VARCHAR(60) NOT NULL,
                 Phone VARCHAR(10) NOT NULL,
-                Password VARCHAR(20) NOT NULL,
+                Password VARCHAR(60) NOT NULL,
                 CONSTRAINT users_pk PRIMARY KEY (ID)
 );
 
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.Users.ID;
 
-CREATE SEQUENCE public.personal_messages_msg_id_seq;
+CREATE SEQUENCE IF NOT EXISTS public.personal_messages_msg_id_seq;
 
-CREATE TABLE public.Personal_Messages (
+CREATE TABLE IF NOT EXISTS public.Personal_Messages (
                 Msg_ID INTEGER NOT NULL DEFAULT nextval('public.personal_messages_msg_id_seq'),
                 Sender_ID INTEGER NOT NULL,
+                recipient_id INTEGER NOT NULL,
                 Time TIME NOT NULL,
                 Date DATE NOT NULL,
                 Message_Text VARCHAR NOT NULL,
@@ -26,16 +27,9 @@ CREATE TABLE public.Personal_Messages (
 
 ALTER SEQUENCE public.personal_messages_msg_id_seq OWNED BY public.Personal_Messages.Msg_ID;
 
-CREATE TABLE public.Personal_Recipient (
-                User_ID INTEGER NOT NULL,
-                Msg_ID INTEGER NOT NULL,
-                CONSTRAINT personal_recipient_pk PRIMARY KEY (User_ID, Msg_ID)
-);
+CREATE SEQUENCE IF NOT EXISTS public.channels_id_seq;
 
-
-CREATE SEQUENCE public.channels_id_seq;
-
-CREATE TABLE public.Channels (
+CREATE TABLE IF NOT EXISTS public.Channels (
                 ID INTEGER NOT NULL DEFAULT nextval('public.channels_id_seq'),
                 Owner_ID INTEGER NOT NULL,
                 Channel_Name VARCHAR(20) NOT NULL,
@@ -45,9 +39,9 @@ CREATE TABLE public.Channels (
 
 ALTER SEQUENCE public.channels_id_seq OWNED BY public.Channels.ID;
 
-CREATE SEQUENCE public.channel_messages_msg_id_seq;
+CREATE SEQUENCE IF NOT EXISTS public.channel_messages_msg_id_seq;
 
-CREATE TABLE public.Channel_Messages (
+CREATE TABLE IF NOT EXISTS public.Channel_Messages (
                 Msg_ID INTEGER NOT NULL DEFAULT nextval('public.channel_messages_msg_id_seq'),
                 Channel_ID INTEGER NOT NULL,
                 Sender_ID INTEGER NOT NULL,
@@ -60,7 +54,7 @@ CREATE TABLE public.Channel_Messages (
 
 ALTER SEQUENCE public.channel_messages_msg_id_seq OWNED BY public.Channel_Messages.Msg_ID;
 
-CREATE TABLE public.Members (
+CREATE TABLE IF NOT EXISTS public.Members (
                 Channel_ID INTEGER NOT NULL,
                 User_ID INTEGER NOT NULL,
                 CONSTRAINT members_pk PRIMARY KEY (Channel_ID, User_ID)
@@ -88,13 +82,6 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.Personal_Recipient ADD CONSTRAINT users_personal_recipient_fk
-FOREIGN KEY (User_ID)
-REFERENCES public.Users (ID)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
 ALTER TABLE public.Personal_Messages ADD CONSTRAINT users_personal_messages_fk
 FOREIGN KEY (Sender_ID)
 REFERENCES public.Users (ID)
@@ -102,9 +89,9 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.Personal_Recipient ADD CONSTRAINT personal_messages_personal_recipient_fk
-FOREIGN KEY (Msg_ID)
-REFERENCES public.Personal_Messages (Msg_ID)
+ALTER TABLE public.Personal_Messages ADD CONSTRAINT users_personal_messages_fk1
+FOREIGN KEY (recipient_id)
+REFERENCES public.Users (ID)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;

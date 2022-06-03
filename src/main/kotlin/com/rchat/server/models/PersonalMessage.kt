@@ -16,6 +16,10 @@ open class PersonalMessage {
     @JoinColumn(name = "sender_id", nullable = false)
     open var sender: Users? = null
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "recipient_id", nullable = false)
+    open var recipient: Users? = null
+
     @Column(name = "\"time\"", nullable = false)
     open var time: LocalTime? = null
 
@@ -28,9 +32,10 @@ open class PersonalMessage {
 
     constructor() {}
 
-    constructor(sender: Users, time: LocalTime,
+    constructor(sender: Users, recipient: Users, time: LocalTime,
                 date: LocalDate, messageText: String) {
         this.sender = sender
+        this.recipient = recipient
         this.time = time
         this.date = date
         this.messageText = messageText
