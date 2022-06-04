@@ -38,14 +38,17 @@ class RegistrationWindow : AppCompatActivity() {
         // Нажатие кнопки RegistrationRegistration_Btn
         registrationBtn.setOnClickListener {
             if (emailText.text.isNotEmpty() && loginText.text.isNotEmpty()
-                && foundSymbol(emailText.text, '@')
-                && passwordText.text.isNotEmpty() && passwordText.text == repeatPasswordText.text
-            )
-            {
-                sendAndReceiveData(loginText.text.toString(), emailText.text.toString(), phoneNumberText.text.toString(), passwordText.text.toString())
-                startIntent(ChatList::class.java)
-            }
-            else
+                && phoneNumberText.text.isNotEmpty() && passwordText.text.isNotEmpty()
+                && repeatPasswordText.text.isNotEmpty()
+                && passwordText.text.toString() == repeatPasswordText.text.toString()
+            ) {
+                sendAndReceiveData(
+                    loginText.text.toString(),
+                    emailText.text.toString(),
+                    phoneNumberText.text.toString(),
+                    passwordText.text.toString()
+                )
+            } else
                 showMessage(
                     "Ошибка",
                     "Внимательно проверьте корректность введенных данных, а также совпали ли пароли"
@@ -97,7 +100,12 @@ class RegistrationWindow : AppCompatActivity() {
     }
 
     // Отправка данных в БД
-    private fun sendAndReceiveData(login: String, email: String, phoneNumber: String, password: String) {
+    private fun sendAndReceiveData(
+        login: String,
+        email: String,
+        phoneNumber: String,
+        password: String
+    ) {
         val client = OkHttpClient()
         val dataToSend = FormBody.Builder()
             .add("username", login)
@@ -113,7 +121,7 @@ class RegistrationWindow : AppCompatActivity() {
             if (!response.isSuccessful)
                 showMessage("Ошибка", "Пользователь уже существует")
             else
-                startIntent(ChatList::class.java)
+                startIntent(Chats::class.java)
         }
     }
 }

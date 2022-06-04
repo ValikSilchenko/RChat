@@ -5,12 +5,14 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class ChatList : AppCompatActivity() {
+class Chats : AppCompatActivity() {
 
     private var previewChatLogins = mutableListOf<String>()
     private var previewChatReceivingTimes = mutableListOf<String>()
@@ -26,15 +28,18 @@ class ChatList : AppCompatActivity() {
         }
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.chat_list)
+        setContentView(R.layout.chats)
 
         val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
-        val settingsBtn: Button = findViewById(R.id.Settings_Btn)
-        val chatList: RecyclerView = findViewById(R.id.Chat_List)
+        val mainMenuBtn: Button = findViewById(R.id.MainMenu_Btn)
+        val chatArray: RecyclerView = findViewById(R.id.Chat_Array)
+        val chatItself: LinearLayout = findViewById(R.id.Chat_Itself)
+        val chatsList:LinearLayout = findViewById(R.id.Chats_List)
+        chatItself.isVisible = false
 
         postToList()
-        chatList.layoutManager = LinearLayoutManager(this)
-        chatList.adapter =
+        chatArray.layoutManager = LinearLayoutManager(this)
+        chatArray.adapter =
             PreviewChatRvAdapter(
                 previewChatLogins,
                 previewChatReceivingTimes,
@@ -45,11 +50,14 @@ class ChatList : AppCompatActivity() {
             )
 
         newChatBtn.setOnClickListener {
-            startIntent(AvailableContacts::class.java)
+            //startIntent(AvailableContacts::class.java)
+            chatsList.isVisible = false
+            chatItself.isVisible = true
         }
 
-        settingsBtn.setOnClickListener {
-            startIntent(Settings::class.java)
+        mainMenuBtn.setOnClickListener {
+            chatItself.isVisible = false
+            chatsList.isVisible = true
         }
     }
 

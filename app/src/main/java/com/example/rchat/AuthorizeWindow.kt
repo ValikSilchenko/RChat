@@ -82,8 +82,9 @@ class AuthorizeWindow : AppCompatActivity() {
         client.newCall(requestToSend).execute().use { response ->
             if (!response.isSuccessful)
                 showMessage("Ошибка", "Проверьте верность введенных данных")
-            else
-                startIntent(ChatList::class.java)
+            else {
+                startIntent(Chats::class.java)
+            }
         }
     }
 }
