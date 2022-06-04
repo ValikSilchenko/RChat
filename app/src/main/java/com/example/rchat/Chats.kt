@@ -56,7 +56,7 @@ class Chats : AppCompatActivity() {
         chatsListWindow.isVisible = true
 
         // ДЕБАГ
-        postToList()
+//        postToList()
         chatArray.layoutManager = LinearLayoutManager(this)
         chatArray.adapter =
             PreviewChatRvAdapter(
@@ -97,9 +97,7 @@ class Chats : AppCompatActivity() {
                         Requests().get(
                             mapOf(
                                 "username" to findUserLoginEditText.text.toString()
-                            ),
-                            "http://192.168.1.107:8080/find"
-                        )
+                            ),"http://192.168.1.107:8080/find")
                     )
 
                     for (element in foundUser) {
@@ -118,7 +116,7 @@ class Chats : AppCompatActivity() {
                 } catch (exception: Exception) {
                     showMessage(
                         "Ошибка",
-                        "Ошибка отправки данных"
+                        "Ошибка отправки данных. Код: ${exception.message}"
                     )
                 }
             }
@@ -166,15 +164,15 @@ class Chats : AppCompatActivity() {
     }
 
     // Заполнение RecyclerView (ДЕБАГ)
-    private fun postToList() {
-        for (i in 1..25) {
-            addToChatList(
-                "Login #${i}",
-                "19:57",
-                "Some message text"
-            )
-        }
-    }
+//    private fun postToList() {
+//        for (i in 1..25) {
+//            addToChatList(
+//                "Login #${i}",
+//                "19:57",
+//                "Some message text"
+//            )
+//        }
+//    }
 
     private fun showMessage(TitleText: CharSequence, MessageText: CharSequence) {
         val message: AlertDialog.Builder = AlertDialog.Builder(this)

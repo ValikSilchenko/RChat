@@ -16,7 +16,6 @@ import okhttp3.Request
 class AuthorizeWindow : AppCompatActivity() {
     private var login: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
-        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
 
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
