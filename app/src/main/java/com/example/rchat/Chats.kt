@@ -37,22 +37,21 @@ class Chats : AppCompatActivity() {
 
         val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
         val mainMenuBtn: Button = findViewById(R.id.MainMenu_Btn)
-        val findUserBackBtn: Button = findViewById(R.id.FindUserBack_Btn)
-        val findUserFindBtn: Button = findViewById(R.id.FindUserFind_Btn)
         val sendMessageBtn: Button = findViewById(R.id.Send_Btn)
         val chatArray: RecyclerView = findViewById(R.id.Chat_Array)
         val messagesArray: RecyclerView = findViewById(R.id.Messages_List)
-        val foundUsersArray: RecyclerView = findViewById(R.id.FoundUsers_Array)
         val chatItselfWindow: LinearLayout = findViewById(R.id.Chat_Window)
         val chatsListWindow: LinearLayout = findViewById(R.id.ChatsList_Window)
-        val findUserWindow: LinearLayout = findViewById(R.id.FindUser_Window)
-        val findUserLoginEditText: EditText = findViewById(R.id.FindUserLogin_EditText)
+        val findUserWindow: LinearLayout = findViewById(R.id.FindUserWindow)
         val messageInput: EditText = findViewById(R.id.Message_Input)
-
+        val findUserBackBtn: Button = findViewById(R.id.FindUserBack_Btn)
+        val findUserFindBtn: Button = findViewById(R.id.FindUserFind_Btn)
+        val findUserLoginEditText: EditText = findViewById(R.id.FindUserLogin_EditText)
+        val foundUsersArray: RecyclerView = findViewById(R.id.FoundUsers_Array)
         var foundUser: List<JSONObject>
 
-        chatItselfWindow.isVisible = false
         findUserWindow.isVisible = false
+        chatItselfWindow.isVisible = false
         chatsListWindow.isVisible = true
 
         // ДЕБАГ
@@ -68,6 +67,14 @@ class Chats : AppCompatActivity() {
                 findUserWindow
             )
 
+        findUserBackBtn.setOnClickListener {
+            foundUsersArray.layoutManager = LinearLayoutManager(this)
+            foundUsersArray.adapter = null
+            findUserWindow.isVisible = false
+            chatItselfWindow.isVisible = false
+            chatsListWindow.isVisible = true
+        }
+
         //Поиск чата (окно списка чатов)
         newChatBtn.setOnClickListener {
             chatItselfWindow.isVisible = false
@@ -77,14 +84,6 @@ class Chats : AppCompatActivity() {
 
         // Возврат в главное меню (окно самого чата)
         mainMenuBtn.setOnClickListener {
-            chatItselfWindow.isVisible = false
-            findUserWindow.isVisible = false
-            chatsListWindow.isVisible = true
-        }
-
-        // Возврат в главное меню (окно поиска пользователей)
-        findUserBackBtn.setOnClickListener {
-            foundUsersArray.isVisible = false
             chatItselfWindow.isVisible = false
             findUserWindow.isVisible = false
             chatsListWindow.isVisible = true
@@ -113,7 +112,6 @@ class Chats : AppCompatActivity() {
                             findUserWindow
                         )
                     }
-
                 } catch (exception: Exception) {
                     showMessage(
                         "Ошибка",
@@ -123,6 +121,7 @@ class Chats : AppCompatActivity() {
             }
         }
 
+        // Отправка сообщения
         sendMessageBtn.setOnClickListener {
             addToMessagesList("", "", "Yuriy", messageInput.text.toString())
             messagesArray.layoutManager = LinearLayoutManager(this)
