@@ -183,7 +183,7 @@
 
     <!--Окно поиска пользователей-->
     <LinearLayout
-        android:id="@+id/FindUser_Window"
+        android:id="@+id/FindUserWindow"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -191,7 +191,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            
             <Button
                 android:id="@+id/FindUserBack_Btn"
                 android:layout_width="50dp"
@@ -245,6 +244,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:listitem="@layout/preview_chat"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
