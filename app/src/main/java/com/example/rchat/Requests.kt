@@ -29,6 +29,7 @@ class Requests {
             return response.body!!.string()
         }
     }
+
     fun get(data: Map<String,String>, url: String): String {
         val httpBuilder = url.toHttpUrlOrNull() ?: throw IOException("Bad url")
         val queryData = httpBuilder.newBuilder()

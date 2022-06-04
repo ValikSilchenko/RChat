@@ -8,12 +8,10 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import okhttp3.FormBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
 
 
 class RegistrationWindow : AppCompatActivity() {
+    private var login: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
 
@@ -45,12 +43,24 @@ class RegistrationWindow : AppCompatActivity() {
                 && repeatPasswordText.text.isNotEmpty()
                 && passwordText.text.toString() == repeatPasswordText.text.toString()
             ) {
-                sendAndReceiveData(
-                    loginText.text.toString(),
-                    emailText.text.toString(),
-                    phoneNumberText.text.toString(),
-                    passwordText.text.toString()
-                )
+                login = loginText.text.toString()
+                try {
+                    Requests().post(
+                        mapOf(
+                            "username" to loginText.text.toString(),
+                            "email" to emailText.text.toString(),
+                            "phone" to phoneNumberText.text.toString(),
+                            "password" to passwordText.text.toString()
+                        ),
+                        "http://192.168.1.107:8080/user"
+                    )
+                } catch (exception: Exception) {
+                    showMessage(
+                        "Ошибка",
+                        "Ошибка отправки данных"
+                    )
+                }
+
             } else
                 showMessage(
                     "Ошибка",
@@ -76,7 +86,9 @@ class RegistrationWindow : AppCompatActivity() {
 
     // Открыть новое окно
     private fun startIntent(Window: Class<*>?) {
-        startActivity(Intent(this, Window))
+        val intent = Intent(this, Window)
+        intent.putExtra("User Login", login)
+        startActivity(intent)
     }
 
     // Показать всплывающее сообщение
@@ -100,31 +112,5 @@ class RegistrationWindow : AppCompatActivity() {
                 return true
         }
         return false
-    }
-
-    // Отправка данных в БД
-    private fun sendAndReceiveData(
-        login: String,
-        email: String,
-        phoneNumber: String,
-        password: String
-    ) {
-        val client = OkHttpClient()
-        val dataToSend = FormBody.Builder()
-            .add("username", login)
-            .add("email", email)
-            .add("phone", phoneNumber)
-            .add("password", password)
-            .build()
-        val requestToSend = Request.Builder()
-            .post(dataToSend)
-            .url("http://192.168.1.107:8080/user")
-            .build()
-        client.newCall(requestToSend).execute().use { response ->
-            if (!response.isSuccessful)
-                showMessage("Ошибка", "Пользователь уже существует")
-            else
-                startIntent(Chats::class.java)
-        }
     }
 }

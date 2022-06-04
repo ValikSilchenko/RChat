@@ -12,7 +12,6 @@ class PreviewChatRvAdapter(
     private var previewChatLogins: List<String>,
     private var previewChatReceivingTimes: List<String>,
     private var previewChatMessages: List<String>,
-    private var previewChatIDs: List<Int>,
     private var chatListWindow: LinearLayout,
     private var chatItselfWindow: LinearLayout,
     private var findUserWindow: LinearLayout
@@ -22,7 +21,6 @@ class PreviewChatRvAdapter(
         val prvLogin: TextView = itemView.findViewById(R.id.Preview_Chat_Sender_Login)
         val prvReceivingTime: TextView = itemView.findViewById(R.id.Preview_Chat_Receiving_Time)
         val prvMessage: TextView = itemView.findViewById(R.id.Preview_Chat_Message_Txt)
-        var prvChatID: Int = 0
 
         init {
             itemView.setOnClickListener {
@@ -46,7 +44,6 @@ class PreviewChatRvAdapter(
         holder.prvLogin.text = previewChatLogins[position]
         holder.prvReceivingTime.text = previewChatReceivingTimes[position]
         holder.prvMessage.text = previewChatMessages[position]
-        holder.prvChatID = previewChatIDs[position]
     }
 
     override fun getItemCount(): Int {
