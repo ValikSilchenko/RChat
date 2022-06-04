@@ -1,24 +1,29 @@
 package com.example.rchat
 
-import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 class Chats : AppCompatActivity() {
 
+    // Переменные для списка чатов
     private var previewChatLogins = mutableListOf<String>()
     private var previewChatReceivingTimes = mutableListOf<String>()
     private var previewChatMessages = mutableListOf<String>()
     private var previewChatIDs = mutableListOf<Int>()
-    private var userID = 0
+
+    // Переменные для чата-переписки
+    private var incomingLoginsList = mutableListOf<String>()
+    private var incomingMessagesTexts = mutableListOf<String>()
+    private var outgoingLoginsList = mutableListOf<String>()
+    private var outgoingMessagesTexts = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -32,10 +37,20 @@ class Chats : AppCompatActivity() {
 
         val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
         val mainMenuBtn: Button = findViewById(R.id.MainMenu_Btn)
+        val findUserBackBtn: Button = findViewById(R.id.FindUserBack_Btn)
+        val findUserFindBtn: Button = findViewById(R.id.FindUserFind_Btn)
+        val sendMessageBtn: Button = findViewById(R.id.Send_Btn)
         val chatArray: RecyclerView = findViewById(R.id.Chat_Array)
-        val chatItself: LinearLayout = findViewById(R.id.Chat_Itself)
-        val chatsList:LinearLayout = findViewById(R.id.Chats_List)
-        chatItself.isVisible = false
+        val messagesArray: RecyclerView = findViewById(R.id.Messages_List)
+        val chatItselfWindow: LinearLayout = findViewById(R.id.Chat_Window)
+        val chatsListWindow: LinearLayout = findViewById(R.id.ChatsList_Window)
+        val findUserWindow: LinearLayout = findViewById(R.id.FindUser_Window)
+        val findUserLoginEditText: EditText = findViewById(R.id.FindUserLogin_EditText)
+        val messageInput: EditText = findViewById(R.id.Message_Input)
+        val chatName: TextView = findViewById(R.id.UserName_ChatText)
+        chatItselfWindow.isVisible = false
+        findUserWindow.isVisible = false
+        chatsListWindow.isVisible = true
 
         postToList()
         chatArray.layoutManager = LinearLayoutManager(this)
@@ -45,19 +60,54 @@ class Chats : AppCompatActivity() {
                 previewChatReceivingTimes,
                 previewChatMessages,
                 previewChatIDs,
-                this,
-                ChatItself::class.java
+                chatsListWindow,
+                chatItselfWindow,
+                findUserWindow
             )
 
+        //Поиск чата (окно списка чатов)
         newChatBtn.setOnClickListener {
-            //startIntent(AvailableContacts::class.java)
-            chatsList.isVisible = false
-            chatItself.isVisible = true
+            chatItselfWindow.isVisible = false
+            chatsListWindow.isVisible = false
+            findUserWindow.isVisible = true
         }
 
+        // Возврат в главное меню (окно самого чата)
         mainMenuBtn.setOnClickListener {
-            chatItself.isVisible = false
-            chatsList.isVisible = true
+            chatItselfWindow.isVisible = false
+            findUserWindow.isVisible = false
+            chatsListWindow.isVisible = true
+        }
+
+        // Возврат в главное меню (окно поиска пользователей)
+        findUserBackBtn.setOnClickListener {
+            chatItselfWindow.isVisible = false
+            findUserWindow.isVisible = false
+            chatsListWindow.isVisible = true
+        }
+
+        // Нажатие кнопки поиска пользователя (окно поиска пользователей)
+        findUserFindBtn.setOnClickListener {
+            if (findUserLoginEditText.text.isNotEmpty()) {
+                val client = OkHttpClient()
+                val dataToSend = FormBody.Builder()
+                    .add("username", findUserLoginEditText.text.toString())
+                    .build()
+                val requestToSend = Request.Builder()
+                    .post(dataToSend)
+                    .url("http://192.168.1.107:8080/login")
+                    .build()
+                client.newCall(requestToSend).execute().use { response ->
+                    if (!response.isSuccessful)
+                        Toast.makeText(this, "Пользователь не найден", Toast.LENGTH_SHORT).show()
+                    // else вывести на экран
+                }
+            }
+        }
+
+        sendMessageBtn.setOnClickListener {
+            messagesArray.layoutManager = LinearLayoutManager(this)
+            messagesArray.adapter = MessageItemRvAdapter(incomingLoginsList, incomingMessagesTexts, outgoingLoginsList, outgoingMessagesTexts)
         }
     }
 
@@ -65,11 +115,7 @@ class Chats : AppCompatActivity() {
     override fun onBackPressed() {
     }
 
-    private fun startIntent(window: Class<*>?) {
-        startActivity(Intent(this, window))
-    }
-
-    private fun addToList(
+    private fun addToChatList(
         previewLogin: String,
         previewReceivingTime: String,
         previewMessage: String,
@@ -81,19 +127,22 @@ class Chats : AppCompatActivity() {
         previewChatIDs.add(chatID)
     }
 
-    // ДЕБАГ
+    private fun addToMessagesList(incomingLogin: String, incomingMessage: String, outgoingLogin: String, outgoingMessage: String) {
+        incomingLoginsList.add(incomingLogin)
+        incomingMessagesTexts.add(incomingMessage)
+        outgoingLoginsList.add(outgoingLogin)
+        outgoingMessagesTexts.add(outgoingMessage)
+    }
+
+    // Заполнение RecyclerView (ДЕБАГ)
     private fun postToList() {
         for (i in 1..25) {
-            addToList(
+            addToChatList(
                 "Login #${i}",
                 "19:57",
                 "Some message text",
                 (0..100).random()
             )
         }
-    }
-
-    public fun testFunc(context: Context){
-        Toast.makeText(context, "Message was successfully sent", Toast.LENGTH_SHORT).show()
     }
 }
