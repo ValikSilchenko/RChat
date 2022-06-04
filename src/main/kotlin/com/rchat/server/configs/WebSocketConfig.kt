@@ -24,17 +24,4 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
         registry.addEndpoint("/ws").withSockJS()
     }
-
-
-    @Bean
-    fun messageHandlerMethodFactory(): MessageHandlerMethodFactory {
-        val messageHandlerMethodFactory = DefaultMessageHandlerMethodFactory()
-        messageHandlerMethodFactory.setMessageConverter(converter())
-        return messageHandlerMethodFactory
-    }
-
-    @Bean
-    fun converter(): MappingJackson2MessageConverter {
-        return MappingJackson2MessageConverter()
-    }
 }

@@ -5,14 +5,17 @@ import com.rchat.server.repos.ChannelRepository
 import com.rchat.server.repos.MemberRepository
 import com.rchat.server.repos.PersonalMessageRepository
 import com.rchat.server.services.PgUserDetailsService
+import com.rchat.server.views.View
 
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import javax.validation.Valid
+import com.fasterxml.jackson.annotation.JsonView
 
 @RestController
 class ClientController(private var userService: PgUserDetailsService,
@@ -42,25 +45,33 @@ class ClientController(private var userService: PgUserDetailsService,
 //        return "success"
 //    }
 
-    @GetMapping("personal")
-    fun getPersonalMessages(sender: Int, recipient: Int): List<PersonalMessage> {  // TODO
-        return personalMessageRepo.getChatMessages(sender, recipient)
+    @GetMapping("/find")
+    fun getListOfMatchUsers(@RequestParam username: String): List<String?> {
+        return userService.getMatchUsers(username)
     }
 
-    @PostMapping("login")
-    fun login(@RequestParam username: String, @RequestParam password: String): String {
+    @JsonView(View.Message::class)
+    @GetMapping("/personal")
+    fun getPersonalMessages(@RequestParam user1: String, @RequestParam user2: String): List<PersonalMessage?> {
+        return personalMessageRepo.getChatMessages(
+            userService.getByName(user1),
+            userService.getByName(user2)
+        )
+    }
+
+    @PostMapping("/login")
+    fun login(@RequestParam username: String, @RequestParam password: String): ResponseEntity<Int> {
         return userService.login(username, password)
     }
 
     @PostMapping("/user")
-    fun addUser(@Valid user: Users, bindingResult: BindingResult): String {
+    fun addUser(@Valid user: Users, bindingResult: BindingResult): ResponseEntity<Int> {
         if (bindingResult.hasErrors())
-            return "error:incorrect data"
-        println("username: ${user.username}")
+            return ResponseEntity<Int>(HttpStatus.BAD_REQUEST)
         if (!userService.saveUser(user)) {
-            return "error:user already exists"
+            return ResponseEntity<Int>(HttpStatus.BAD_REQUEST)
         }
-        userService.autoLogin(user)
-        return "success"  // TODO request body
+//        userService.autoLogin(user)
+        return ResponseEntity<Int>(HttpStatus.OK)
     }
 }

@@ -1,5 +1,6 @@
 package com.rchat.server.models
 
+import org.hibernate.annotations.Type
 import java.time.LocalDate
 import java.time.LocalTime
 import javax.persistence.*
@@ -27,6 +28,7 @@ open class ChannelMessage {
     open var date: LocalDate? = null
 
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "message_text", nullable = false)
     open var messageText: String? = null
 

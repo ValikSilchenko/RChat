@@ -1,5 +1,7 @@
 package com.rchat.server.models
 
+import com.fasterxml.jackson.annotation.JsonView
+import com.rchat.server.views.View
 import javax.persistence.*
 import javax.validation.constraints.Size
 
@@ -11,6 +13,7 @@ open class Users {
     @Column(name = "id", nullable = false)
     open var id: Int? = null
 
+    @JsonView(View.Message::class)
     @Column(name = "username", nullable = false, length = 20)
     @Size(min = 2, max = 20)
     open var username: String? = null
@@ -19,7 +22,7 @@ open class Users {
     @Size(min = 8, max = 60)
     open var email: String? = null
 
-    @Column(name = "phone", nullable = false, length = 10)  // TODO length
+    @Column(name = "phone", nullable = false, length = 10)
     @Size(min = 10, max = 10)
     open var phone: String? = null
 

@@ -20,7 +20,7 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
     @MessageMapping("/user/{recipientId}")
     @SendTo("/chatTopic/{recipientId}")
     fun processPersonal(@DestinationVariable recipientId: String,  msg: String): String {
-        val data = parse(msg)  // data[0] - senderId, data[1] - message
+        val data = parseMessage(msg)  // data[0] - senderId, data[1] - message
         val message = PersonalMessage(userRepo.getById(data[0].toInt()),
             userRepo.getById(recipientId.toInt()),
             LocalTime.now(),
@@ -40,15 +40,14 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
 //        return channelMessageRepo.save(message)
 //    }
 
-    @MessageMapping("/test/{id1}/{id2}")
-    @SendTo("/chatTopic/{id1}{id2}")  // TODO
-    fun test(@DestinationVariable id1: String, @DestinationVariable id2: String,  msg: String): String {
-        println("Message: $msg; Sender: $id1")
+    @MessageMapping("/test/{recipientId}")
+    @SendTo("/chatTopic/{recipientId}")
+    fun test(@DestinationVariable recipientId: String,  msg: String): String {
+        println("Message: $msg; Sender: $recipientId")
         return msg
     }
 
-    fun parse(msg: String): List<String> {
-        return listOf(msg.substring(0, msg.indexOf(" ")),
-            msg.substring(msg.indexOf(" ") + 1))
+    fun parseMessage(msg: String): List<String> {
+        return listOf(msg.substringBefore(' '), msg.substringAfter(' '))
     }
 }
