@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 class RegistrationWindow : AppCompatActivity() {
     private var login: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
-        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
 
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
@@ -57,7 +56,7 @@ class RegistrationWindow : AppCompatActivity() {
                 } catch (exception: Exception) {
                     showMessage(
                         "Ошибка",
-                        "Ошибка отправки данных"
+                        "Ошибка отправки данных. Код: ${exception.message}"
                     )
                 }
 

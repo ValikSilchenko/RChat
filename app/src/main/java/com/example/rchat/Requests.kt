@@ -1,5 +1,6 @@
 package com.example.rchat
 
+import android.os.StrictMode
 import okhttp3.FormBody
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
@@ -12,6 +13,8 @@ class Requests {
     private val request = Request.Builder()
 
     fun post(data: Map<String,String>, url: String): String {
+        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
+
         val httpBuilder = url.toHttpUrlOrNull() ?: throw IOException("Bad url")
         val dataToSend = FormBody.Builder()
         data.forEach{(key, value) ->
@@ -31,6 +34,8 @@ class Requests {
     }
 
     fun get(data: Map<String,String>, url: String): String {
+        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
+
         val httpBuilder = url.toHttpUrlOrNull() ?: throw IOException("Bad url")
         val queryData = httpBuilder.newBuilder()
         data.forEach{(key, value) ->
