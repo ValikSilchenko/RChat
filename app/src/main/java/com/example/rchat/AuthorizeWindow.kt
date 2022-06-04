@@ -14,6 +14,7 @@ import okhttp3.Request
 
 
 class AuthorizeWindow : AppCompatActivity() {
+    private var login: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
 
@@ -37,12 +38,23 @@ class AuthorizeWindow : AppCompatActivity() {
 
         // Вход в аккаунт
         enterAccountBtn.setOnClickListener {
-            if (authorizeLoginText.text.isNotEmpty() && authorizePasswordText.text.isNotEmpty())
-                sendAndReceiveData(
-                    authorizeLoginText.text.toString(),
-                    authorizePasswordText.text.toString()
-                )
-            else
+            if (authorizeLoginText.text.isNotEmpty() && authorizePasswordText.text.isNotEmpty()) {
+                login = authorizeLoginText.text.toString()
+                try {
+                    Requests().post(
+                        mapOf(
+                            "username" to authorizeLoginText.text.toString(),
+                            "password" to authorizePasswordText.text.toString()
+                        ),
+                        "http://192.168.1.107:8080/login"
+                    )
+                } catch (exception: Exception) {
+                    showMessage(
+                        "Ошибка",
+                        "Ошибка отправки данных"
+                    )
+                }
+            } else
                 showMessage("Внимание", "Проверьте корректность введенных данных")
         }
     }
@@ -54,7 +66,9 @@ class AuthorizeWindow : AppCompatActivity() {
 
     // Открытие нового окна
     private fun startIntent(Window: Class<*>?) {
-        startActivity(Intent(this, Window))
+        val intent = Intent(this, Window)
+        intent.putExtra("User Login", login)
+        startActivity(intent)
     }
 
     // Показ всплывающего сообщения
@@ -90,4 +104,18 @@ class AuthorizeWindow : AppCompatActivity() {
             }
         }
     }
+
+//    private fun checkPhoneNumber(phoneNumber: String) {
+//        if (phoneNumber[0] == '8') {
+//            phoneNumber.replace(phoneNumber[0], '7')
+//            phoneNumber.padStart(12, '+')
+//            addSymbolsToPhoneNumber(phoneNumber)
+//        }
+//        else
+//            addSymbolsToPhoneNumber(phoneNumber)
+//    }
+//
+//    private fun addSymbolsToPhoneNumber(phoneNumber: String) {
+//
+//    }
 }

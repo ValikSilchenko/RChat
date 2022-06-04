@@ -2,14 +2,15 @@ package com.example.rchat
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import okhttp3.FormBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import org.json.JSONObject
 
 class Chats : AppCompatActivity() {
 
@@ -17,7 +18,6 @@ class Chats : AppCompatActivity() {
     private var previewChatLogins = mutableListOf<String>()
     private var previewChatReceivingTimes = mutableListOf<String>()
     private var previewChatMessages = mutableListOf<String>()
-    private var previewChatIDs = mutableListOf<Int>()
 
     // Переменные для чата-переписки
     private var incomingLoginsList = mutableListOf<String>()
@@ -42,16 +42,20 @@ class Chats : AppCompatActivity() {
         val sendMessageBtn: Button = findViewById(R.id.Send_Btn)
         val chatArray: RecyclerView = findViewById(R.id.Chat_Array)
         val messagesArray: RecyclerView = findViewById(R.id.Messages_List)
+        val foundUsersArray: RecyclerView = findViewById(R.id.FoundUsers_Array)
         val chatItselfWindow: LinearLayout = findViewById(R.id.Chat_Window)
         val chatsListWindow: LinearLayout = findViewById(R.id.ChatsList_Window)
         val findUserWindow: LinearLayout = findViewById(R.id.FindUser_Window)
         val findUserLoginEditText: EditText = findViewById(R.id.FindUserLogin_EditText)
         val messageInput: EditText = findViewById(R.id.Message_Input)
-        val chatName: TextView = findViewById(R.id.UserName_ChatText)
+
+        var foundUser: List<JSONObject>
+
         chatItselfWindow.isVisible = false
         findUserWindow.isVisible = false
         chatsListWindow.isVisible = true
 
+        // ДЕБАГ
         postToList()
         chatArray.layoutManager = LinearLayoutManager(this)
         chatArray.adapter =
@@ -59,7 +63,6 @@ class Chats : AppCompatActivity() {
                 previewChatLogins,
                 previewChatReceivingTimes,
                 previewChatMessages,
-                previewChatIDs,
                 chatsListWindow,
                 chatItselfWindow,
                 findUserWindow
@@ -89,25 +92,48 @@ class Chats : AppCompatActivity() {
         // Нажатие кнопки поиска пользователя (окно поиска пользователей)
         findUserFindBtn.setOnClickListener {
             if (findUserLoginEditText.text.isNotEmpty()) {
-                val client = OkHttpClient()
-                val dataToSend = FormBody.Builder()
-                    .add("username", findUserLoginEditText.text.toString())
-                    .build()
-                val requestToSend = Request.Builder()
-                    .post(dataToSend)
-                    .url("http://192.168.1.107:8080/login")
-                    .build()
-                client.newCall(requestToSend).execute().use { response ->
-                    if (!response.isSuccessful)
-                        Toast.makeText(this, "Пользователь не найден", Toast.LENGTH_SHORT).show()
-                    // else вывести на экран
+                try {
+                    foundUser = JasonSTATHAM().zapretParsinga(
+                        Requests().get(
+                            mapOf(
+                                "username" to findUserLoginEditText.text.toString()
+                            ),
+                            "http://192.168.1.107:8080/find"
+                        )
+                    )
+
+                    for (element in foundUser) {
+                        addToChatList(element["username"] as String, "", "")
+                        foundUsersArray.layoutManager = LinearLayoutManager(this)
+                        foundUsersArray.adapter = PreviewChatRvAdapter(
+                            previewChatLogins,
+                            previewChatReceivingTimes,
+                            previewChatMessages,
+                            chatsListWindow,
+                            chatItselfWindow,
+                            findUserWindow
+                        )
+                    }
+
+                } catch (exception: Exception) {
+                    showMessage(
+                        "Ошибка",
+                        "Ошибка отправки данных"
+                    )
                 }
             }
         }
 
         sendMessageBtn.setOnClickListener {
+            addToMessagesList("", "", "Yuriy", messageInput.text.toString())
             messagesArray.layoutManager = LinearLayoutManager(this)
-            messagesArray.adapter = MessageItemRvAdapter(incomingLoginsList, incomingMessagesTexts, outgoingLoginsList, outgoingMessagesTexts)
+            messagesArray.adapter = MessageItemRvAdapter(
+                incomingLoginsList,
+                incomingMessagesTexts,
+                outgoingLoginsList,
+                outgoingMessagesTexts
+            )
+            messageInput.text = null
         }
     }
 
@@ -115,19 +141,24 @@ class Chats : AppCompatActivity() {
     override fun onBackPressed() {
     }
 
+    // Заполнение списка чатов
     private fun addToChatList(
         previewLogin: String,
         previewReceivingTime: String,
-        previewMessage: String,
-        chatID: Int
+        previewMessage: String
     ) {
         previewChatLogins.add(previewLogin)
         previewChatReceivingTimes.add(previewReceivingTime)
         previewChatMessages.add(previewMessage)
-        previewChatIDs.add(chatID)
     }
 
-    private fun addToMessagesList(incomingLogin: String, incomingMessage: String, outgoingLogin: String, outgoingMessage: String) {
+    // Заполнение сообщений
+    private fun addToMessagesList(
+        incomingLogin: String,
+        incomingMessage: String,
+        outgoingLogin: String,
+        outgoingMessage: String
+    ) {
         incomingLoginsList.add(incomingLogin)
         incomingMessagesTexts.add(incomingMessage)
         outgoingLoginsList.add(outgoingLogin)
@@ -140,9 +171,22 @@ class Chats : AppCompatActivity() {
             addToChatList(
                 "Login #${i}",
                 "19:57",
-                "Some message text",
-                (0..100).random()
+                "Some message text"
             )
         }
     }
+
+    private fun showMessage(TitleText: CharSequence, MessageText: CharSequence) {
+        val message: AlertDialog.Builder = AlertDialog.Builder(this)
+        message
+            .setTitle(TitleText)
+            .setMessage(MessageText)
+            .setCancelable(true)
+            .setPositiveButton(
+                "Ок"
+            ) { dialog, _ -> dialog.cancel() }
+        val messageWindow = message.create()
+        messageWindow.show()
+    }
+
 }
