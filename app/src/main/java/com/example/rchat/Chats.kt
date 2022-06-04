@@ -84,6 +84,7 @@ class Chats : AppCompatActivity() {
 
         // Возврат в главное меню (окно поиска пользователей)
         findUserBackBtn.setOnClickListener {
+            foundUsersArray.isVisible = false
             chatItselfWindow.isVisible = false
             findUserWindow.isVisible = false
             chatsListWindow.isVisible = true
