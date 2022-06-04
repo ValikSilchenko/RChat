@@ -53,6 +53,7 @@ class RegistrationWindow : AppCompatActivity() {
                         ),
                         "http://192.168.1.107:8080/user"
                     )
+                    startIntent(Chats::class.java)
                 } catch (exception: Exception) {
                     showMessage(
                         "Ошибка",
