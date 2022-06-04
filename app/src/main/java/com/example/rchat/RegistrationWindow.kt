@@ -3,6 +3,7 @@ package com.example.rchat
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.StrictMode
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
@@ -11,8 +12,10 @@ import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
+
 class RegistrationWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
 
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
@@ -115,7 +118,7 @@ class RegistrationWindow : AppCompatActivity() {
             .build()
         val requestToSend = Request.Builder()
             .post(dataToSend)
-            .url("http://localhost:8080/user")
+            .url("http://192.168.1.107:8080/user")
             .build()
         client.newCall(requestToSend).execute().use { response ->
             if (!response.isSuccessful)
