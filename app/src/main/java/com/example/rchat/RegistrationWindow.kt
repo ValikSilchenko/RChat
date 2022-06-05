@@ -3,7 +3,6 @@ package com.example.rchat
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.StrictMode
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
@@ -32,7 +31,7 @@ class RegistrationWindow : AppCompatActivity() {
 
         // Нажатие кнопки RegistrationAuthorize_Btn
         authorizeBtn.setOnClickListener {
-            startIntent(AuthorizeWindow::class.java)
+            startIntent(AuthorizationWindow::class.java)
         }
 
         // Нажатие кнопки RegistrationRegistration_Btn
@@ -53,19 +52,14 @@ class RegistrationWindow : AppCompatActivity() {
                         ),
                         "http://192.168.1.107:8080/user"
                     )
-                    startIntent(Chats::class.java)
+                    startIntent(ChatsWindow::class.java)
                 } catch (exception: Exception) {
-                    showMessage(
-                        "Ошибка",
-                        "Ошибка отправки данных. Код: ${exception.message}"
-                    )
+                    Functions().showMessage("Ошибка",
+                        "Ошибка отправки данных. Код: ${exception.message}", this)
                 }
 
             } else
-                showMessage(
-                    "Ошибка",
-                    "Внимательно проверьте корректность введенных данных, а также совпали ли пароли"
-                )
+                Functions().showMessage("Ошибка", "Внимательно проверьте корректность введенных данных, а также совпали ли пароли", this)
         }
     }
 
@@ -89,28 +83,5 @@ class RegistrationWindow : AppCompatActivity() {
         val intent = Intent(this, Window)
         intent.putExtra("User Login", login)
         startActivity(intent)
-    }
-
-    // Показать всплывающее сообщение
-    private fun showMessage(TitleText: CharSequence, MessageText: CharSequence) {
-        val message: AlertDialog.Builder = AlertDialog.Builder(this)
-        message
-            .setTitle(TitleText)
-            .setMessage(MessageText)
-            .setCancelable(true)
-            .setPositiveButton(
-                "Ок"
-            ) { dialog, _ -> dialog.cancel() }
-        val messageWindow = message.create()
-        messageWindow.show()
-    }
-
-    // Проверка почты на валидность (ПЕРЕДЕЛАТЬ - ДЕБАГОВАЯ ВЕРСИЯ)
-    private fun foundSymbol(whereFind: CharSequence, whatToFind: Char): Boolean {
-        for (i in 1..whereFind.length - 2) {
-            if (whereFind[i] == whatToFind && whereFind[i + 2] == '.')
-                return true
-        }
-        return false
     }
 }

@@ -1,20 +1,19 @@
 package com.example.rchat
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
 class PreviewChatRvAdapter(
     private var previewChatLogins: List<String>,
     private var previewChatReceivingTimes: List<String>,
     private var previewChatMessages: List<String>,
-    private var chatListWindow: LinearLayout,
-    private var chatItselfWindow: LinearLayout,
-    private var findUserWindow: LinearLayout
+    private var context: Context,
+    private var clazz: Class<*>?
 ) : RecyclerView.Adapter<PreviewChatRvAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -24,14 +23,14 @@ class PreviewChatRvAdapter(
 
         init {
             itemView.setOnClickListener {
-                openChat()
+                startNewActivity()
             }
         }
 
-        private fun openChat() {
-            chatListWindow.isVisible = false
-            findUserWindow.isVisible = false
-            chatItselfWindow.isVisible = true
+        private fun startNewActivity() {
+            val intent = Intent(context, clazz)
+            intent.putExtra("Chat Name", prvLogin.text.toString())
+            context.startActivity(intent)
         }
     }
 
