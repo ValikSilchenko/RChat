@@ -32,8 +32,5 @@ class JasonSTATHAM {
 
         return json.split(",") as MutableList<String>
     }
-<<<<<<< HEAD
+
 }
-=======
- }
->>>>>>> 466f08665b879a6ef319e4971e7ea97cc144bca6
