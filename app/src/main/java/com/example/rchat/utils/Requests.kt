@@ -12,13 +12,13 @@ class Requests {
     private val client = OkHttpClient()
     private val request = Request.Builder()
 
-    fun post(data: Map<String,String>, url: String): String {
+    fun post(data: Map<String, String>, url: String): String {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
 
         val httpBuilder = url.toHttpUrlOrNull() ?: throw IOException("Bad url")
         val dataToSend = FormBody.Builder()
-        data.forEach{(key, value) ->
-            dataToSend.add(key,value)
+        data.forEach { (key, value) ->
+            dataToSend.add(key, value)
         }
 
         client.newCall(
@@ -33,12 +33,12 @@ class Requests {
         }
     }
 
-    fun get(data: Map<String,String>, url: String): String {
+    fun get(data: Map<String, String>, url: String): String {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
 
         val httpBuilder = url.toHttpUrlOrNull() ?: throw IOException("Bad url")
         val queryData = httpBuilder.newBuilder()
-        data.forEach{(key, value) ->
+        data.forEach { (key, value) ->
             queryData.addQueryParameter(key, value)
         }
 

@@ -68,7 +68,8 @@ class ChatItselfWindow : AppCompatActivity() {
                     el["messageText"].toString()
                 )
         }
-        messagesRecV.layoutManager = LinearLayoutManager(this)  // Возможно, строки 71 и 72 надо поместить в цикл for, что выше
+        messagesRecV.layoutManager =
+            LinearLayoutManager(this)  // Возможно, строки 71 и 72 надо поместить в цикл for, что выше
         messagesRecV.adapter = MessageItemRvAdapter(
             ChatSingleton.incomingLoginsList,
             ChatSingleton.incomingMessagesList,

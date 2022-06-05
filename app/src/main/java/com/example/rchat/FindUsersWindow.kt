@@ -51,7 +51,8 @@ class FindUsersWindow : AppCompatActivity() {
                             ""
                         )
                     }
-                    foundUsersRv.layoutManager = LinearLayoutManager(this) // Возможно, строки 54 и 55 надо поместить в цикл for, что выше
+                    foundUsersRv.layoutManager =
+                        LinearLayoutManager(this) // Возможно, строки 54 и 55 надо поместить в цикл for, что выше
                     foundUsersRv.adapter = PreviewChatRvAdapter(
                         previewChatLogins,
                         previewChatReceivingTimes,

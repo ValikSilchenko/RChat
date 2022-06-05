@@ -50,7 +50,9 @@ class ChatsWindow : AppCompatActivity() {
         )
         var username: String
         for (el in response) {
-            if ((el["sender"] as JSONObject)["username"].toString() == intent.getStringExtra("User Login").toString())
+            if ((el["sender"] as JSONObject)["username"].toString() == intent.getStringExtra("User Login")
+                    .toString()
+            )
                 username = (el["recipient"] as JSONObject)["username"].toString()
             else
                 username = (el["sender"] as JSONObject)["username"].toString()
@@ -64,7 +66,12 @@ class ChatsWindow : AppCompatActivity() {
             )
         }
         chatArray.layoutManager = LinearLayoutManager(this)
-        chatArray.adapter = PreviewChatRvAdapter(ChatSingleton.previewLoginsList, ChatSingleton.previewTimeList, ChatSingleton.previewMessagesList, this)
+        chatArray.adapter = PreviewChatRvAdapter(
+            ChatSingleton.previewLoginsList,
+            ChatSingleton.previewTimeList,
+            ChatSingleton.previewMessagesList,
+            this
+        )
 
 
         newChatBtn.setOnClickListener {
