@@ -48,7 +48,7 @@ class Chats : AppCompatActivity() {
         val findUserFindBtn: Button = findViewById(R.id.FindUserFind_Btn)
         val findUserLoginEditText: EditText = findViewById(R.id.FindUserLogin_EditText)
         val foundUsersArray: RecyclerView = findViewById(R.id.FoundUsers_Array)
-        var foundUser: List<String>
+        var foundUser: MutableList<String> = mutableListOf()
 
         findUserWindow.isVisible = false
         chatItselfWindow.isVisible = false
@@ -69,6 +69,7 @@ class Chats : AppCompatActivity() {
 
         findUserBackBtn.setOnClickListener {
             foundUsersArray.recycledViewPool.clear()
+            foundUser.clear()
             foundUsersArray.adapter?.notifyDataSetChanged()
             findUserWindow.isVisible = false
             chatItselfWindow.isVisible = false
@@ -98,21 +99,21 @@ class Chats : AppCompatActivity() {
                             mapOf(
                                 "username" to findUserLoginEditText.text.toString()
                             ),"http://192.168.1.107:8080/find")
-                    )
-                    if (foundUser.isNotEmpty()) {
-                        for (element in foundUser) {
-                            addToChatList(element, "", "")
-                            foundUsersArray.layoutManager = LinearLayoutManager(this)
-                            foundUsersArray.adapter = PreviewChatRvAdapter(
-                                previewChatLogins,
-                                previewChatReceivingTimes,
-                                previewChatMessages,
-                                chatsListWindow,
-                                chatItselfWindow,
-                                findUserWindow
-                            )
-                        }
-                    } else println("empty")
+                    ) as MutableList<String>
+
+                    for (element in foundUser) {
+                        addToChatList(element, "", "")
+                        foundUsersArray.layoutManager = LinearLayoutManager(this)
+                        foundUsersArray.adapter = PreviewChatRvAdapter(
+                            previewChatLogins,
+                            previewChatReceivingTimes,
+                            previewChatMessages,
+                            chatsListWindow,
+                            chatItselfWindow,
+                            findUserWindow
+                        )
+                    }
+                    findUserLoginEditText.text = null
                 } catch (exception: Exception) {
                     showMessage(
                         "Ошибка",
