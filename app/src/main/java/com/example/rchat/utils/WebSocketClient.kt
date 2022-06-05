@@ -1,4 +1,4 @@
-package com.example.rchat
+package com.example.rchat.utils
 
 import org.springframework.lang.Nullable
 import org.springframework.messaging.converter.StringMessageConverter
@@ -15,23 +15,10 @@ import org.springframework.web.socket.sockjs.client.WebSocketTransport
 import java.lang.reflect.Type
 
 
-class WebSocketClient(private val id: String, private val func: (input: String) -> Void) {
+class WebSocketClient {
     private var session: StompSession? = null
 
-    inner class MyStompSessionHandler : StompSessionHandlerAdapter() {
-        override fun afterConnected(session: StompSession, connectedHeaders: StompHeaders) {
-            session.subscribe("/chatTopic/$id", object : StompFrameHandler {
-                override fun getPayloadType(headers: StompHeaders): Type {
-                    return String::class.java
-                }
-                override fun handleFrame(headers: StompHeaders, @Nullable payload: Any?) {
-                    func(payload as String)
-                }
-            })
-        }
-    }
-
-    fun connect(url: String) {
+    fun connect(url: String, id: String) {
         val simpleWebSocketClient: WebSocketClient = StandardWebSocketClient()
 
         val transports: MutableList<Transport> = ArrayList(1)
@@ -41,7 +28,19 @@ class WebSocketClient(private val id: String, private val func: (input: String) 
 
         stompClient.messageConverter = StringMessageConverter()
 
-        session = stompClient.connect(url, MyStompSessionHandler()).get()
+        session = stompClient.connect(url, object : StompSessionHandlerAdapter() {
+            override fun afterConnected(session: StompSession, connectedHeaders: StompHeaders) {
+                session.subscribe("/chatTopic/$id", object : StompFrameHandler {
+                    override fun getPayloadType(headers: StompHeaders): Type {
+                        return String::class.java
+                    }
+
+                    override fun handleFrame(headers: StompHeaders, @Nullable payload: Any?) {
+                        ChatSingleton.processMessage(payload as String)
+                    }
+                })
+            }
+        }).get()
     }
 
     fun send(url: String, id: String, msg: String) {

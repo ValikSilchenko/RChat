@@ -4,17 +4,12 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rchat.utils.ChatSingleton
+import com.example.rchat.utils.Functions
 
 class ChatsWindow : AppCompatActivity() {
-
-    // Переменные для списка чатов
-    private var previewChatLogins = mutableListOf<String>()
-    private var previewChatReceivingTimes = mutableListOf<String>()
-    private var previewChatMessages = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -28,18 +23,21 @@ class ChatsWindow : AppCompatActivity() {
 
         val chatArray: RecyclerView = findViewById(R.id.Chat_Array)
         val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
-        val appName: TextView = findViewById(R.id.AppName)
 
-        appName.text = "Nigger"
-        ChatSingleton.saveData(appName.text.toString())
-
-        postToRv()
-        chatArray.layoutManager = LinearLayoutManager(this)
-        chatArray.adapter =
-            PreviewChatRvAdapter(previewChatLogins, previewChatReceivingTimes, previewChatMessages, this, ChatItself::class.java)
+        ChatSingleton.setChatsWindow(
+            chatArray,
+            intent.getStringExtra("User Login").toString(),
+            this
+        )
+        try {
+            ChatSingleton.openConnection(intent.getStringExtra("User Login").toString())
+        } catch (exception: Exception) {
+            Functions().showMessage("Ошибка", "Ошибка установки соединения", this)
+            //TODO("Обработка ошибки при отсутствии интернетов")
+        }
 
         newChatBtn.setOnClickListener {
-            startActivity(Intent(this, FindUsers::class.java))
+            startActivity(Intent(this, FindUsersWindow::class.java))
         }
     }
 
@@ -47,17 +45,7 @@ class ChatsWindow : AppCompatActivity() {
     override fun onBackPressed() {
     }
 
-    // DEBUG
-    private fun postToRv() {
-        for (i in 1..25) {
-            Functions().addToList(
-                previewChatLogins,
-                previewChatReceivingTimes,
-                previewChatMessages,
-                "Login #$i",
-                "10.21",
-                "Preview message of index $i"
-            )
-        }
+    private fun getStrings(username: String, message: String) {
+
     }
 }

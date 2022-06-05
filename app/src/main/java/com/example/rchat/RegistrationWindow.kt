@@ -7,6 +7,8 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rchat.utils.Functions
+import com.example.rchat.utils.Requests
 
 
 class RegistrationWindow : AppCompatActivity() {

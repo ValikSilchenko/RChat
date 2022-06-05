@@ -1,4 +1,4 @@
-package com.example.rchat
+package com.example.rchat.utils
 
 import android.os.StrictMode
 import okhttp3.FormBody

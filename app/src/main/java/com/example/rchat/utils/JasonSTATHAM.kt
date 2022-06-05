@@ -1,4 +1,4 @@
-package com.example.rchat
+package com.example.rchat.utils
 
 import org.json.JSONObject
 
@@ -32,4 +32,11 @@ class JasonSTATHAM {
 
         return json.split(",") as MutableList<String>
     }
- }
+
+    fun parseMessage(Str: String): List<String> {
+        val indexMsg = mutableListOf<String>()
+        indexMsg.add(Str.substringBefore(' '))
+        indexMsg.add(Str.substringAfter(' '))
+        return indexMsg
+    }
+}

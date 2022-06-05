@@ -1,4 +1,4 @@
-package com.example.rchat
+package com.example.rchat.utils
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
