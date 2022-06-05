@@ -47,18 +47,18 @@ class ChatItselfWindow : AppCompatActivity() {
             )
 
             for (el in response) {
-                if (el["recipient"].toString() == chatName.text.toString())
+                if (el["sender"].toString() == chatName.text.toString())
                     ChatFunctions().addToList(
                         ChatSingleton.incomingLoginsList,
                         ChatSingleton.incomingMessagesList,
                         ChatSingleton.outgoingLoginsList,
                         ChatSingleton.outgoingMessagesList,
-                        (el["recipient"] as JSONObject)["username"].toString(),
+                        (el["sender"] as JSONObject)["username"].toString(),
                         el["messageText"].toString(),
                         "",
                         ""
                     )
-                else if (el["recipient"].toString() != chatName.text.toString())
+                else if (el["sender"].toString() != chatName.text.toString())
                     ChatFunctions().addToList(
                         ChatSingleton.incomingLoginsList,
                         ChatSingleton.incomingMessagesList,
@@ -66,7 +66,7 @@ class ChatItselfWindow : AppCompatActivity() {
                         ChatSingleton.outgoingMessagesList,
                         "",
                         "",
-                        (el["recipient"] as JSONObject)["username"].toString(),
+                        (el["sender"] as JSONObject)["username"].toString(),
                         el["messageText"].toString()
                     )
             }
