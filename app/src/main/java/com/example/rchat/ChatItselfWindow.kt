@@ -4,8 +4,13 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
+import com.example.rchat.utils.JasonSTATHAM
+import com.example.rchat.utils.Requests
+import org.json.JSONObject
 
 class ChatItselfWindow : AppCompatActivity() {
 
@@ -19,6 +24,7 @@ class ChatItselfWindow : AppCompatActivity() {
         val chatName: TextView = findViewById(R.id.UserName_ChatText)
         val messagesRecV: RecyclerView = findViewById(R.id.Messages_List)
         val messageInput: TextView = findViewById(R.id.Message_Input)
+        var response: List<JSONObject>
 
         ChatSingleton.clearLists(messagesRecV)
         ChatSingleton.setChatItselfWindow(
@@ -27,6 +33,48 @@ class ChatItselfWindow : AppCompatActivity() {
             this
         )
         chatName.text = intent.getStringExtra("Chat Name")
+
+        // Вывод сообщений на экран
+        response = JasonSTATHAM().zapretParsinga(
+            Requests().get(
+                mapOf(
+                    "sender" to intent.getStringExtra("User Login").toString(),
+                    "recipient" to intent.getStringExtra("Chat Name").toString()
+                ),
+                "http://192.168.1.107:8080/personal"
+            )
+        )
+        for (el in response) {
+            if (el["recipient"].toString() == chatName.text.toString())
+                ChatFunctions().addToList(
+                    ChatSingleton.incomingLoginsList,
+                    ChatSingleton.incomingMessagesList,
+                    ChatSingleton.outgoingLoginsList,
+                    ChatSingleton.outgoingMessagesList,
+                    el["recipient"].toString(),
+                    el["messageText"].toString(),
+                    "",
+                    ""
+                )
+            else if (el["recipient"].toString() != chatName.text.toString())
+                ChatFunctions().addToList(
+                    ChatSingleton.incomingLoginsList,
+                    ChatSingleton.incomingMessagesList,
+                    ChatSingleton.outgoingLoginsList,
+                    ChatSingleton.outgoingMessagesList,
+                    "",
+                    "",
+                    el["recipient"].toString(),
+                    el["messageText"].toString()
+                )
+        }
+        messagesRecV.layoutManager = LinearLayoutManager(this)  // Возможно, строки 71 и 72 надо поместить в цикл for, что выше
+        messagesRecV.adapter = MessageItemRvAdapter(
+            ChatSingleton.incomingLoginsList,
+            ChatSingleton.incomingMessagesList,
+            ChatSingleton.outgoingLoginsList,
+            ChatSingleton.outgoingMessagesList
+        )
 
         backToMainMenuBtn.setOnClickListener {
             super.onBackPressed()

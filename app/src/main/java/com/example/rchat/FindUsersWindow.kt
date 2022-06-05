@@ -6,7 +6,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rchat.utils.Functions
+import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.JasonSTATHAM
 import com.example.rchat.utils.Requests
 
@@ -42,7 +42,7 @@ class FindUsersWindow : AppCompatActivity() {
                         )
                     )
                     for (element in foundUsers) {
-                        Functions().addToList(
+                        ChatFunctions().addToList(
                             previewChatLogins,
                             previewChatReceivingTimes,
                             previewChatMessages,
@@ -50,23 +50,23 @@ class FindUsersWindow : AppCompatActivity() {
                             "",
                             ""
                         )
-                        foundUsersRv.layoutManager = LinearLayoutManager(this)
-                        foundUsersRv.adapter = PreviewChatRvAdapter(
-                            previewChatLogins,
-                            previewChatReceivingTimes,
-                            previewChatMessages,
-                            this
-                        )
                     }
+                    foundUsersRv.layoutManager = LinearLayoutManager(this) // Возможно, строки 54 и 55 надо поместить в цикл for, что выше
+                    foundUsersRv.adapter = PreviewChatRvAdapter(
+                        previewChatLogins,
+                        previewChatReceivingTimes,
+                        previewChatMessages,
+                        this
+                    )
                     loginInput.text = null
                 } catch (exception: Exception) {
-                    Functions().showMessage(
+                    ChatFunctions().showMessage(
                         "Ошибка",
                         "Ошибка отправки данных. Код: ${exception.message}", this
                     )
                 }
             } else
-                Functions().showMessage(" Ошибка", "Ничего не было введено", this)
+                ChatFunctions().showMessage(" Ошибка", "Ничего не было введено", this)
         }
     }
 

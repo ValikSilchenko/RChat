@@ -5,9 +5,13 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
-import com.example.rchat.utils.Functions
+import com.example.rchat.utils.JasonSTATHAM
+import com.example.rchat.utils.Requests
+import org.json.JSONObject
 
 class ChatsWindow : AppCompatActivity() {
 
@@ -23,6 +27,7 @@ class ChatsWindow : AppCompatActivity() {
 
         val chatArray: RecyclerView = findViewById(R.id.Chat_Array)
         val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
+        var response: List<JSONObject>
 
         ChatSingleton.setChatsWindow(
             chatArray,
@@ -32,9 +37,35 @@ class ChatsWindow : AppCompatActivity() {
         try {
             ChatSingleton.openConnection(intent.getStringExtra("User Login").toString())
         } catch (exception: Exception) {
-            Functions().showMessage("Ошибка", "Ошибка установки соединения", this)
+            ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
             //TODO("Обработка ошибки при отсутствии интернетов")
         }
+
+        response = JasonSTATHAM().zapretParsinga(
+            Requests().get(
+                mapOf(
+                    "username" to intent.getStringExtra("User Login").toString()
+                ), "http://192.168.1.107:8080/chats"
+            )
+        )
+        var username: String
+        for (el in response) {
+            if ((el["sender"] as JSONObject)["username"].toString() == intent.getStringExtra("User Login").toString())
+                username = (el["recipient"] as JSONObject)["username"].toString()
+            else
+                username = (el["sender"] as JSONObject)["username"].toString()
+            ChatFunctions().addToList(
+                ChatSingleton.previewLoginsList,
+                ChatSingleton.previewTimeList,
+                ChatSingleton.previewMessagesList,
+                username,
+                el["time"].toString(),
+                el["messageText"].toString()
+            )
+        }
+        chatArray.layoutManager = LinearLayoutManager(this)
+        chatArray.adapter = PreviewChatRvAdapter(ChatSingleton.previewLoginsList, ChatSingleton.previewTimeList, ChatSingleton.previewMessagesList, this)
+
 
         newChatBtn.setOnClickListener {
             startActivity(Intent(this, FindUsersWindow::class.java))
@@ -43,9 +74,5 @@ class ChatsWindow : AppCompatActivity() {
 
     @Override
     override fun onBackPressed() {
-    }
-
-    private fun getStrings(username: String, message: String) {
-
     }
 }
