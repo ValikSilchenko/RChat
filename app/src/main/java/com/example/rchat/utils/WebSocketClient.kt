@@ -1,4 +1,4 @@
-package com.example.rchat
+package com.example.rchat.utils
 
 import org.springframework.lang.Nullable
 import org.springframework.messaging.converter.StringMessageConverter
@@ -18,7 +18,7 @@ import java.lang.reflect.Type
 class WebSocketClient {
     private var session: StompSession? = null
 
-    fun connect(url: String, id: String, func: (String) -> (Void)) {
+    fun connect(url: String, id: String) {
         val simpleWebSocketClient: WebSocketClient = StandardWebSocketClient()
 
         val transports: MutableList<Transport> = ArrayList(1)
@@ -28,14 +28,15 @@ class WebSocketClient {
 
         stompClient.messageConverter = StringMessageConverter()
 
-        session = stompClient.connect(url, object: StompSessionHandlerAdapter() {
+        session = stompClient.connect(url, object : StompSessionHandlerAdapter() {
             override fun afterConnected(session: StompSession, connectedHeaders: StompHeaders) {
                 session.subscribe("/chatTopic/$id", object : StompFrameHandler {
                     override fun getPayloadType(headers: StompHeaders): Type {
                         return String::class.java
                     }
+
                     override fun handleFrame(headers: StompHeaders, @Nullable payload: Any?) {
-                        func(payload as String)
+                        ChatSingleton.processMessage(payload as String)
                     }
                 })
             }

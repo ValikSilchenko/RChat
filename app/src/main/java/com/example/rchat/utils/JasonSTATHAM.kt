@@ -1,9 +1,9 @@
-package com.example.rchat
+package com.example.rchat.utils
 
 import org.json.JSONObject
 
 class JasonSTATHAM {
-    fun zapretParsinga(data: String): List<JSONObject> {  // list<json> parsing
+    fun zapretParsinga(data: String): List<JSONObject> {
         val indexMsg = mutableListOf<JSONObject>()
         var json = data.drop(1)
         json = json.dropLast(1)
@@ -33,4 +33,10 @@ class JasonSTATHAM {
         return json.split(",") as MutableList<String>
     }
 
+    fun parseMessage(Str: String): List<String> {
+        val indexMsg = mutableListOf<String>()
+        indexMsg.add(Str.substringBefore(' '))
+        indexMsg.add(Str.substringAfter(' '))
+        return indexMsg
+    }
 }

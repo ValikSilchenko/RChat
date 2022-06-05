@@ -12,8 +12,7 @@ class PreviewChatRvAdapter(
     private var previewChatLogins: List<String>,
     private var previewChatReceivingTimes: List<String>,
     private var previewChatMessages: List<String>,
-    private var context: Context,
-    private var clazz: Class<*>?
+    private var context: Context
 ) : RecyclerView.Adapter<PreviewChatRvAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -28,7 +27,7 @@ class PreviewChatRvAdapter(
         }
 
         private fun startNewActivity() {
-            val intent = Intent(context, clazz)
+            val intent = Intent(context, ChatItselfWindow::class.java)
             intent.putExtra("Chat Name", prvLogin.text.toString())
             context.startActivity(intent)
         }

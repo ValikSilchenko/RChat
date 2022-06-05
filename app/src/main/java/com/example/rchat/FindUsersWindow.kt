@@ -6,8 +6,11 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rchat.utils.Functions
+import com.example.rchat.utils.JasonSTATHAM
+import com.example.rchat.utils.Requests
 
-class FindUsers : AppCompatActivity() {
+class FindUsersWindow : AppCompatActivity() {
 
     // Переменные для списка чатов
     private var previewChatLogins = mutableListOf<String>()
@@ -52,8 +55,7 @@ class FindUsers : AppCompatActivity() {
                             previewChatLogins,
                             previewChatReceivingTimes,
                             previewChatMessages,
-                            this,
-                            ChatItself::class.java
+                            this
                         )
                     }
                     loginInput.text = null
