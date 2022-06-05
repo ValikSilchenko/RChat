@@ -19,7 +19,7 @@ import java.lang.reflect.Type
 class WebSocketClient {
     private var session: StompSession? = null
 
-    fun connect(url: String, id: String) {
+    fun connect(url: String, username: String) {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
         val simpleWebSocketClient: WebSocketClient = StandardWebSocketClient()
 
@@ -32,7 +32,7 @@ class WebSocketClient {
 
         session = stompClient.connect(url, object : StompSessionHandlerAdapter() {
             override fun afterConnected(session: StompSession, connectedHeaders: StompHeaders) {
-                session.subscribe("/chatTopic/$id", object : StompFrameHandler {
+                session.subscribe("/chatTopic/$username/", object : StompFrameHandler {
                     override fun getPayloadType(headers: StompHeaders): Type {
                         return String::class.java
                     }
@@ -45,7 +45,7 @@ class WebSocketClient {
         }).get()
     }
 
-    fun send(url: String, id: String, msg: String) {
-        session?.send("$url$id/", msg)  // /app/test/
+    fun send(url: String, username: String, msg: String) {
+        session?.send("$url$username/", msg)  // /app/test/
     }
 }

@@ -26,56 +26,65 @@ class ChatItselfWindow : AppCompatActivity() {
         val messageInput: TextView = findViewById(R.id.Message_Input)
         var response: List<JSONObject>
 
-        ChatSingleton.clearLists(messagesRecV)
         ChatSingleton.setChatItselfWindow(
             messagesRecV,
             intent.getStringExtra("Chat Name").toString(),
             this
         )
+        ChatSingleton.clearLists(messagesRecV)
         chatName.text = intent.getStringExtra("Chat Name")
 
         // Вывод сообщений на экран
-        response = JasonSTATHAM().zapretParsinga(
-            Requests().get(
-                mapOf(
-                    "sender" to intent.getStringExtra("User Login").toString(),
-                    "recipient" to intent.getStringExtra("Chat Name").toString()
-                ),
-                "http://192.168.1.107:8080/personal"
+        try {
+            response = JasonSTATHAM().zapretParsinga(
+                Requests().get(
+                    mapOf(
+                        "sender" to ChatSingleton.getLogin(),
+                        "recipient" to chatName.text.toString()
+                    ),
+                    "http://192.168.1.107:8080/personal"
+                )
             )
-        )
-        for (el in response) {
-            if (el["recipient"].toString() == chatName.text.toString())
-                ChatFunctions().addToList(
-                    ChatSingleton.incomingLoginsList,
-                    ChatSingleton.incomingMessagesList,
-                    ChatSingleton.outgoingLoginsList,
-                    ChatSingleton.outgoingMessagesList,
-                    el["recipient"].toString(),
-                    el["messageText"].toString(),
-                    "",
-                    ""
-                )
-            else if (el["recipient"].toString() != chatName.text.toString())
-                ChatFunctions().addToList(
-                    ChatSingleton.incomingLoginsList,
-                    ChatSingleton.incomingMessagesList,
-                    ChatSingleton.outgoingLoginsList,
-                    ChatSingleton.outgoingMessagesList,
-                    "",
-                    "",
-                    el["recipient"].toString(),
-                    el["messageText"].toString()
-                )
+
+            for (el in response) {
+                if (el["recipient"].toString() == chatName.text.toString())
+                    ChatFunctions().addToList(
+                        ChatSingleton.incomingLoginsList,
+                        ChatSingleton.incomingMessagesList,
+                        ChatSingleton.outgoingLoginsList,
+                        ChatSingleton.outgoingMessagesList,
+                        (el["recipient"] as JSONObject)["username"].toString(),
+                        el["messageText"].toString(),
+                        "",
+                        ""
+                    )
+                else if (el["recipient"].toString() != chatName.text.toString())
+                    ChatFunctions().addToList(
+                        ChatSingleton.incomingLoginsList,
+                        ChatSingleton.incomingMessagesList,
+                        ChatSingleton.outgoingLoginsList,
+                        ChatSingleton.outgoingMessagesList,
+                        "",
+                        "",
+                        (el["recipient"] as JSONObject)["username"].toString(),
+                        el["messageText"].toString()
+                    )
+            }
+            messagesRecV.layoutManager =
+                LinearLayoutManager(this)  // Возможно, строки 71 и 72 надо поместить в цикл for, что выше
+            messagesRecV.adapter = MessageItemRvAdapter(
+                ChatSingleton.incomingLoginsList,
+                ChatSingleton.incomingMessagesList,
+                ChatSingleton.outgoingLoginsList,
+                ChatSingleton.outgoingMessagesList
+            )
+        } catch (exception: Exception) {
+            ChatFunctions().showMessage(
+                "Ошибка",
+                "Ошибка отправки данных: ${exception.message}",
+                this
+            )
         }
-        messagesRecV.layoutManager =
-            LinearLayoutManager(this)  // Возможно, строки 71 и 72 надо поместить в цикл for, что выше
-        messagesRecV.adapter = MessageItemRvAdapter(
-            ChatSingleton.incomingLoginsList,
-            ChatSingleton.incomingMessagesList,
-            ChatSingleton.outgoingLoginsList,
-            ChatSingleton.outgoingMessagesList
-        )
 
         backToMainMenuBtn.setOnClickListener {
             super.onBackPressed()

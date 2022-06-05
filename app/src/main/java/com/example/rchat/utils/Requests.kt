@@ -33,7 +33,7 @@ class Requests {
         }
     }
 
-    fun get(data: Map<String, String>, url: String): String {
+    fun get(data: Map<String,String>, url: String): String {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
 
         val httpBuilder = url.toHttpUrlOrNull() ?: throw IOException("Bad url")

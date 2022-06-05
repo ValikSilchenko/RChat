@@ -36,6 +36,10 @@ object ChatSingleton {
         chatItselfContext = incomingContext
     }
 
+    fun getLogin(): String {
+        return Arnold
+    }
+
     fun clearLists(recView: RecyclerView) {
         incomingLoginsList.clear()
         incomingMessagesList.clear()
@@ -48,7 +52,7 @@ object ChatSingleton {
     }
 
     fun openConnection(username: String) {
-        webSocketClient.connect("http://localhost:8080/ws", username)
+        webSocketClient.connect("http://192.168.1.107:8080/ws", username)
     }
 
     fun processMessage(message: String) {
@@ -95,7 +99,7 @@ object ChatSingleton {
 
     fun sendMessage(recipientLogin: String, message: String) {
         //TODO("Обработка ошибки отправки сообщения")
-        webSocketClient.send("/user/", recipientLogin, message)
+        webSocketClient.send("/app/user/", recipientLogin, "$Arnold $message")
         ChatFunctions().addToList(
             incomingLoginsList,
             incomingMessagesList,
