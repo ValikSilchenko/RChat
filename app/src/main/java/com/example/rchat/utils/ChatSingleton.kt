@@ -9,27 +9,20 @@ import com.example.rchat.PreviewChatRvAdapter
 
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
-    private var outgoingMessagesList = mutableListOf<String>()
-    private var incomingMessagesList = mutableListOf<String>()
-    private var previewMessagesList = mutableListOf<String>()
-    private var previewLoginsList = mutableListOf<String>()
-    private var previewTimeList = mutableListOf<String>()
+    var outgoingMessagesList = mutableListOf<String>()
+    var incomingMessagesList = mutableListOf<String>()
+    var previewMessagesList = mutableListOf<String>()
+    var previewLoginsList = mutableListOf<String>()
+    var previewTimeList = mutableListOf<String>()
     var incomingLoginsList = mutableListOf<String>()
     var outgoingLoginsList = mutableListOf<String>()
-
     private var webSocketClient = WebSocketClient()
-
-    private lateinit var chatsWindowRecView: RecyclerView
     private var chatItselfWindowRecView: RecyclerView? = null
-
+    private lateinit var chatsWindowRecView: RecyclerView
     private lateinit var chatItselfContext: Context
     private lateinit var chatsWindowContext: Context
-
-    // Логин собеседника
-    private var Billy = "Herrington"
-
-    // Логин атворизованного пользователя
-    private var Arnold = "Shwarzenegger"
+    private var Billy = "Herrington" // Логин собеседника
+    private var Arnold = "Shwarzenegger" // Логин атворизованного пользователя
 
     fun setChatsWindow(recView: RecyclerView, username: String, incomingContext: Context) {
         chatsWindowRecView = recView
@@ -43,7 +36,6 @@ object ChatSingleton {
         chatItselfContext = incomingContext
     }
 
-    // Очистка массивов
     fun clearLists(recView: RecyclerView) {
         incomingLoginsList.clear()
         incomingMessagesList.clear()
@@ -64,7 +56,7 @@ object ChatSingleton {
         if (parsedMessage[0] in previewLoginsList)
             previewMessagesList[previewLoginsList.indexOf(parsedMessage[0])] = parsedMessage[1]
         else
-            Functions().addToList(
+            ChatFunctions().addToList(
                 previewLoginsList,
                 previewTimeList,
                 previewMessagesList,
@@ -81,7 +73,7 @@ object ChatSingleton {
         )
 
         if (chatItselfWindowRecView != null && parsedMessage[0] == Billy) {
-            Functions().addToList(
+            ChatFunctions().addToList(
                 incomingLoginsList,
                 incomingMessagesList,
                 outgoingLoginsList,
@@ -104,7 +96,7 @@ object ChatSingleton {
     fun sendMessage(recipientLogin: String, message: String) {
         //TODO("Обработка ошибки отправки сообщения")
         webSocketClient.send("/user/", recipientLogin, message)
-        Functions().addToList(
+        ChatFunctions().addToList(
             incomingLoginsList,
             incomingMessagesList,
             outgoingLoginsList,

@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.rchat.utils.Functions
+import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.Requests
 
 
@@ -56,12 +56,12 @@ class RegistrationWindow : AppCompatActivity() {
                     )
                     startIntent(ChatsWindow::class.java)
                 } catch (exception: Exception) {
-                    Functions().showMessage("Ошибка",
+                    ChatFunctions().showMessage("Ошибка",
                         "Ошибка отправки данных. Код: ${exception.message}", this)
                 }
 
             } else
-                Functions().showMessage("Ошибка", "Внимательно проверьте корректность введенных данных, а также совпали ли пароли", this)
+                ChatFunctions().showMessage("Ошибка", "Внимательно проверьте корректность введенных данных, а также совпали ли пароли", this)
         }
     }
 

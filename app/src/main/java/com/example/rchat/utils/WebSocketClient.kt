@@ -1,5 +1,6 @@
 package com.example.rchat.utils
 
+import android.os.StrictMode
 import org.springframework.lang.Nullable
 import org.springframework.messaging.converter.StringMessageConverter
 import org.springframework.messaging.simp.stomp.StompFrameHandler
@@ -19,6 +20,7 @@ class WebSocketClient {
     private var session: StompSession? = null
 
     fun connect(url: String, id: String) {
+        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
         val simpleWebSocketClient: WebSocketClient = StandardWebSocketClient()
 
         val transports: MutableList<Transport> = ArrayList(1)

@@ -3,7 +3,7 @@ package com.example.rchat.utils
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 
-class Functions {
+class ChatFunctions {
     fun showMessage(titleText: CharSequence, messageText: CharSequence, context: Context) {
         val message: AlertDialog.Builder = AlertDialog.Builder(context)
         message
