@@ -49,7 +49,11 @@ class AuthorizationWindow : AppCompatActivity() {
                     ChatFunctions().showMessage("Ошибка", "Ошибка отправки данных", this)
                 }
             } else
-                ChatFunctions().showMessage("Внимание", "Проверьте корректность введенных данных", this)
+                ChatFunctions().showMessage(
+                    "Внимание",
+                    "Проверьте корректность введенных данных",
+                    this
+                )
         }
     }
 

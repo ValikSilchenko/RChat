@@ -56,12 +56,18 @@ class RegistrationWindow : AppCompatActivity() {
                     )
                     startIntent(ChatsWindow::class.java)
                 } catch (exception: Exception) {
-                    ChatFunctions().showMessage("Ошибка",
-                        "Ошибка отправки данных. Код: ${exception.message}", this)
+                    ChatFunctions().showMessage(
+                        "Ошибка",
+                        "Ошибка отправки данных. Код: ${exception.message}", this
+                    )
                 }
 
             } else
-                ChatFunctions().showMessage("Ошибка", "Внимательно проверьте корректность введенных данных, а также совпали ли пароли", this)
+                ChatFunctions().showMessage(
+                    "Ошибка",
+                    "Внимательно проверьте корректность введенных данных, а также совпали ли пароли",
+                    this
+                )
         }
     }
 

@@ -29,13 +29,14 @@ class ChatsWindow : AppCompatActivity() {
         val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
         var response: List<JSONObject>
 
+        val user = intent.getStringExtra("User Login").toString()
         ChatSingleton.setChatsWindow(
             chatArray,
-            intent.getStringExtra("User Login").toString(),
+            user,
             this
         )
         try {
-            ChatSingleton.openConnection(intent.getStringExtra("User Login").toString())
+            ChatSingleton.openConnection(user)
         } catch (exception: Exception) {
             ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
             //TODO("Обработка ошибки при отсутствии интернетов")
@@ -50,7 +51,9 @@ class ChatsWindow : AppCompatActivity() {
         )
         var username: String
         for (el in response) {
-            if ((el["sender"] as JSONObject)["username"].toString() == intent.getStringExtra("User Login").toString())
+            if ((el["sender"] as JSONObject)["username"].toString() == intent.getStringExtra("User Login")
+                    .toString()
+            )
                 username = (el["recipient"] as JSONObject)["username"].toString()
             else
                 username = (el["sender"] as JSONObject)["username"].toString()
@@ -64,7 +67,12 @@ class ChatsWindow : AppCompatActivity() {
             )
         }
         chatArray.layoutManager = LinearLayoutManager(this)
-        chatArray.adapter = PreviewChatRvAdapter(ChatSingleton.previewLoginsList, ChatSingleton.previewTimeList, ChatSingleton.previewMessagesList, this)
+        chatArray.adapter = PreviewChatRvAdapter(
+            ChatSingleton.previewLoginsList,
+            ChatSingleton.previewTimeList,
+            ChatSingleton.previewMessagesList,
+            this
+        )
 
 
         newChatBtn.setOnClickListener {
