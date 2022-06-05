@@ -9,13 +9,12 @@ class JasonSTATHAM {
         json = json.dropLast(1)
         var counter = 0
         var startInd = 0
-        json.forEachIndexed{index, char->
+        json.forEachIndexed { index, char ->
             if (char == '{') counter += 1
             if (char == '}') counter -= 1
             if (index == json.length - 1) {
                 indexMsg.add(JSONObject(json.substring(startInd)))
-            }
-            else if ((char == ',') && (counter == 0)) {
+            } else if ((char == ',') && (counter == 0)) {
                 indexMsg.add(JSONObject(json.substring(startInd, index)))
                 startInd = index + 1
             }
@@ -33,4 +32,8 @@ class JasonSTATHAM {
 
         return json.split(",") as MutableList<String>
     }
+<<<<<<< HEAD
 }
+=======
+ }
+>>>>>>> 466f08665b879a6ef319e4971e7ea97cc144bca6
