@@ -1,6 +1,7 @@
 package com.rchat.server.models
 
 import javax.persistence.*
+import javax.validation.constraints.Size
 
 @Entity
 @Table(name = "channels")
@@ -14,7 +15,8 @@ open class Channel {
     @JoinColumn(name = "owner_id", nullable = false)
     open var owner: Users? = null
 
-    @Column(name = "channel_name", nullable = false, length = 20)
+    @Column(name = "channel_name", nullable = false, length = 30)
+    @Size(min = 3, max = 30)
     open var channelName: String? = null
 
     constructor() {}

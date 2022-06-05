@@ -22,13 +22,13 @@ class ClientController(private var userService: PgUserDetailsService,
                        private var channelRepo: ChannelRepository,
                        private var memberRepo: MemberRepository,
                        private var personalMessageRepo: PersonalMessageRepository) {
-//    @PostMapping("channel")
-//    fun addChannel(@Valid channel: Channel, bindingResult: BindingResult): String {
-//        if (bindingResult.hasErrors())
-//            return "binding error"
-//        channelRepo.save(channel)
-//        return "success"
-//    }
+    @PostMapping("/channel")
+    fun addChannel(@Valid channel: Channel, bindingResult: BindingResult): ResponseEntity<Int> {
+        if (bindingResult.hasErrors())
+            return ResponseEntity<Int>(HttpStatus.BAD_REQUEST)
+        channelRepo.save(channel)
+        return ResponseEntity<Int>(HttpStatus.OK)
+    }
 
 //    @GetMapping("channel")
 //    fun getChannelMessages(@Valid channel: Channel, bindingResult: BindingResult): List<ChannelMessage>? {
@@ -45,6 +45,12 @@ class ClientController(private var userService: PgUserDetailsService,
 //        return "success"
 //    }
 
+    @JsonView(View.Message::class)
+    @GetMapping("/chats")
+    fun getListOfChats(@RequestParam username: String): List<PersonalMessage?> {
+        return personalMessageRepo.getChats(userService.getByName(username))
+    }
+
     @GetMapping("/find")
     fun getListOfMatchUsers(@RequestParam username: String): List<String?> {
         return userService.getMatchUsers(username)
@@ -52,10 +58,10 @@ class ClientController(private var userService: PgUserDetailsService,
 
     @JsonView(View.Message::class)
     @GetMapping("/personal")
-    fun getPersonalMessages(@RequestParam user1: String, @RequestParam user2: String): List<PersonalMessage?> {
+    fun getPersonalMessages(@RequestParam sender: String, @RequestParam recipient: String): List<PersonalMessage?> {
         return personalMessageRepo.getChatMessages(
-            userService.getByName(user1),
-            userService.getByName(user2)
+            userService.getByName(sender),
+            userService.getByName(recipient)
         )
     }
 

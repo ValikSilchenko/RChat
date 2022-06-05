@@ -4,7 +4,7 @@ import com.rchat.server.models.ChannelMessage
 import com.rchat.server.models.PersonalMessage
 import com.rchat.server.repos.ChannelMessageRepository
 import com.rchat.server.repos.PersonalMessageRepository
-import com.rchat.server.repos.UserRepository
+import com.rchat.server.services.PgUserDetailsService
 
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
@@ -16,18 +16,18 @@ import java.time.LocalTime
 @Controller
 class ChatController(private var personalMessageRepo: PersonalMessageRepository,
                      private var channelMessageRepo: ChannelMessageRepository,
-                     private var userRepo: UserRepository) {
-    @MessageMapping("/user/{recipientId}")
-    @SendTo("/chatTopic/{recipientId}")
-    fun processPersonal(@DestinationVariable recipientId: String,  msg: String): String {
+                     private var userService: PgUserDetailsService) {
+    @MessageMapping("/user/{recipient}/")
+    @SendTo("/chatTopic/{recipient}/")
+    fun processPersonal(@DestinationVariable recipient: String,  msg: String): String {
         val data = parseMessage(msg)  // data[0] - senderId, data[1] - message
-        val message = PersonalMessage(userRepo.getById(data[0].toInt()),
-            userRepo.getById(recipientId.toInt()),
+        val message = PersonalMessage(userService.getByName(data[0]),
+            userService.getByName(recipient),
             LocalTime.now(),
             LocalDate.now(),
-            msg)
+            data[1])
         personalMessageRepo.save(message)
-        return data[1]
+        return "${data[0]} ${data[1]}"
     }
 
 //    @MessageMapping("/channel")
@@ -40,8 +40,8 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
 //        return channelMessageRepo.save(message)
 //    }
 
-    @MessageMapping("/test/{recipientId}")
-    @SendTo("/chatTopic/{recipientId}")
+    @MessageMapping("/test/{recipientId}/")
+    @SendTo("/chatTopic/")
     fun test(@DestinationVariable recipientId: String,  msg: String): String {
         println("Message: $msg; Sender: $recipientId")
         return msg

@@ -32,7 +32,7 @@ CREATE SEQUENCE IF NOT EXISTS public.channels_id_seq;
 CREATE TABLE IF NOT EXISTS public.Channels (
                 ID INTEGER NOT NULL DEFAULT nextval('public.channels_id_seq'),
                 Owner_ID INTEGER NOT NULL,
-                Channel_Name VARCHAR(20) NOT NULL,
+                Channel_Name VARCHAR(30) NOT NULL,
                 CONSTRAINT channels_pk PRIMARY KEY (ID)
 );
 

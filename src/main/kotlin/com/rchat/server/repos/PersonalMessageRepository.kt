@@ -6,7 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
 interface PersonalMessageRepository: JpaRepository<PersonalMessage, Int> {
-    @Query("select msg from PersonalMessage msg where msg.sender in (:id1, :id2)" +
-            " and msg.recipient in (:id1, :id2) order by msg.date, msg.time")
-    fun getChatMessages(id1: Users, id2: Users): List<PersonalMessage?>
+    @Query("select msg from PersonalMessage msg where msg.sender in (:user1, :user2)" +
+            " and msg.recipient in (:user1, :user2) order by msg.time, msg.date")
+    fun getChatMessages(user1: Users, user2: Users): List<PersonalMessage?>
+
+    @Query("select msg from PersonalMessage msg" +
+            " where (msg.sender = :forUser or msg.recipient = :forUser) and msg.date = (" +
+            "select max(msg1.date) from PersonalMessage msg1 where msg1.sender in (msg.sender, msg.recipient)" +
+            "and msg1.recipient in (msg.sender, msg.recipient)) and msg.time = (" +
+            "select max(msg1.time) from PersonalMessage msg1 where msg1.sender in (msg.sender, msg.recipient)" +
+            "and msg1.recipient in (msg.sender, msg.recipient) and msg1.date = msg.date)")
+    fun getChats(forUser: Users): List<PersonalMessage?>
 }
