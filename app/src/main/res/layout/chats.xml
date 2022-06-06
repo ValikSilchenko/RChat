@@ -17,7 +17,7 @@
         android:layout_marginEnd="10dp"
         android:layoutDirection="rtl"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/Chat_Array"
+        app:layout_constraintBottom_toTopOf="@id/ChatListView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -42,8 +42,8 @@
             android:textSize="30sp" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/Chat_Array"
+    <ListView
+        android:id="@+id/ChatListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
@@ -51,7 +51,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TopContainer"
-        tools:listitem="@layout/preview_chat" />
+        tools:listitem="@layout/preview_chat"
+        android:clickable="true"
+        android:focusable="true"/>
 
     <Button
         android:id="@+id/NewChat_Btn"

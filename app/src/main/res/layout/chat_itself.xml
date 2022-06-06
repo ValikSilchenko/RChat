@@ -44,7 +44,7 @@
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ListView
         android:id="@+id/Messages_List"
         android:layout_width="match_parent"
         android:layout_height="0dp"

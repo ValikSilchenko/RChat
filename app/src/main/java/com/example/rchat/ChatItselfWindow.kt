@@ -2,9 +2,9 @@ package com.example.rchat
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
@@ -21,16 +21,16 @@ class ChatItselfWindow : AppCompatActivity() {
         val backToMainMenuBtn: Button = findViewById(R.id.MainMenu_Btn)
         val sendMessageBtn: Button = findViewById(R.id.SendMessage_Btn)
         val chatName: TextView = findViewById(R.id.UserName_ChatText)
-        val messagesRecV: RecyclerView = findViewById(R.id.Messages_List)
+        val messagesListView: ListView = findViewById(R.id.Messages_List)
         val messageInput: TextView = findViewById(R.id.Message_Input)
         var response: List<JSONObject>
 
         ChatSingleton.setChatItselfWindow(
-            messagesRecV,
+            messagesListView,
             intent.getStringExtra("Chat Name").toString(),
             this
         )
-        ChatSingleton.clearLists(messagesRecV)
+        ChatSingleton.clearLists()
         chatName.text = intent.getStringExtra("Chat Name")
 
         // Вывод сообщений на экран
@@ -69,18 +69,18 @@ class ChatItselfWindow : AppCompatActivity() {
                     intent.getStringExtra("Chat Name").toString(),
                     messageInput.text.toString()
                 )
-                focusLastItem(messagesRecV)
+                //focusLastItem(messagesListView)
                 messageInput.text = null
             }
         }
     }
 
-    private fun focusLastItem(recView: RecyclerView) {
-        if (ChatSingleton.incomingLoginsList.isNotEmpty())
-            recView.smoothScrollToPosition(ChatSingleton.incomingLoginsList.size - 1)
-        else if (ChatSingleton.outgoingLoginsList.isNotEmpty())
-            recView.smoothScrollToPosition(ChatSingleton.outgoingLoginsList.size - 1)
-    }
+//    private fun focusLastItem(recView: ListView) {
+//        if (ChatSingleton.incomingLoginsList.isNotEmpty())
+//            recView.smoothScrollToPosition(ChatSingleton.incomingLoginsList.size - 1)
+//        else if (ChatSingleton.outgoingLoginsList.isNotEmpty())
+//            recView.smoothScrollToPosition(ChatSingleton.outgoingLoginsList.size - 1)
+//    }
 
     @Override
     override fun onBackPressed() {
