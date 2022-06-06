@@ -3,12 +3,10 @@ package com.example.rchat.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.widget.ListView
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.MessageItemDataClass
 import com.example.rchat.MessageItemLVAdapter
 import com.example.rchat.PreviewChatDataClass
 import com.example.rchat.PreviewChatLVAdapter
-import org.json.JSONObject
 
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
@@ -22,6 +20,9 @@ object ChatSingleton {
     private var chatItselfLV: ListView? = null
     var chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
     val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
+
+    val chatArrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
+    val messagesArrayAdapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
 
     fun setChatsWindow(listView: ListView, username: String, incomingContext: Activity) {
         chatWindowLV = listView
@@ -41,12 +42,7 @@ object ChatSingleton {
 
     fun clearMessageList() {
         messagesArrayList.clear()
-        chatItselfLV?.adapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
-    }
-
-    fun clearChatList() {
-        chatsArrayList.clear()
-        chatWindowLV.adapter = MessageItemLVAdapter(chatsWindowContext, messagesArrayList)
+        chatItselfLV?.adapter = messagesArrayAdapter
     }
 
     fun openConnection(username: String) {
@@ -87,25 +83,22 @@ object ChatSingleton {
             val data = PreviewChatDataClass(recipientLogin, time, message)
             chatsArrayList.add(data)
         }
-        val arrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
-        arrayAdapter.notifyDataSetChanged()
-        chatWindowLV.adapter = arrayAdapter
+        chatArrayAdapter.notifyDataSetChanged()
+        chatWindowLV.adapter = chatArrayAdapter
     }
 
     fun updateMessageList(senderLogin: String, message: String) {
         if (senderLogin == Arnold) {
             val data1 = MessageItemDataClass("", "", senderLogin, message)
             messagesArrayList.add(data1)
-            val arrayAdapter1 = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
-            arrayAdapter1.notifyDataSetChanged()
-            chatItselfLV?.adapter = arrayAdapter1
+            messagesArrayAdapter.notifyDataSetChanged()
+            chatItselfLV?.adapter = messagesArrayAdapter
         }
         else {
             val data2 = MessageItemDataClass(senderLogin, message, "", "")
             messagesArrayList.add(data2)
-            val arrayAdapter2 = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
-            arrayAdapter2.notifyDataSetChanged()
-            chatItselfLV?.adapter = arrayAdapter2
+            messagesArrayAdapter.notifyDataSetChanged()
+            chatItselfLV?.adapter = messagesArrayAdapter
         }
 //        chatItselfLV?.setSelection((chatItselfLV?.adapter?.count ?: 1) - 1)
     }
