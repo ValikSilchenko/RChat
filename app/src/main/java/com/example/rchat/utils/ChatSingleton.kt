@@ -80,68 +80,6 @@ object ChatSingleton {
         updateChatList(recipientLogin, "", message)
     }
 
-//    fun updateChatList(recipientLogin: String, time: String, message: String) {
-//        if (recipientLogin in previewLoginsList) { // TODO обновление времени
-//            previewMessagesList[previewLoginsList.indexOf(recipientLogin)] = message
-//            chatsWindowRecView.layoutManager = LinearLayoutManager(chatsWindowContext)
-//            chatsWindowRecView.adapter = PreviewChatRvAdapter(
-//                previewLoginsList,
-//                previewTimeList,
-//                previewMessagesList,
-//                chatsWindowContext
-//            )
-//        }
-//        else {
-//            ChatFunctions().addToList(
-//                previewLoginsList,
-//                previewTimeList,
-//                previewMessagesList,
-//                recipientLogin,
-//                time,
-//                message
-//            )
-//            chatsWindowRecView.layoutManager = LinearLayoutManager(chatsWindowContext)
-//            chatsWindowRecView.adapter = PreviewChatRvAdapter(
-//                previewLoginsList,
-//                previewTimeList,
-//                previewMessagesList,
-//                chatsWindowContext
-//            )
-//        }
-//    }
-
-//    fun updateMessageList(senderLogin: String, message: String) {
-//        if (senderLogin == Arnold)
-//            ChatFunctions().addToList(
-//                incomingLoginsList,
-//                incomingMessagesList,
-//                outgoingLoginsList,
-//                outgoingMessagesList,
-//                "",
-//                "",
-//                senderLogin,
-//                message
-//            )
-//        else
-//            ChatFunctions().addToList(
-//                incomingLoginsList,
-//                incomingMessagesList,
-//                outgoingLoginsList,
-//                outgoingMessagesList,
-//                senderLogin,
-//                message,
-//                "",
-//                ""
-//            )
-//        chatItselfWindowRecView?.layoutManager = LinearLayoutManager(chatItselfContext)
-//        chatItselfWindowRecView?.adapter = MessageItemRvAdapter(
-//            incomingLoginsList,
-//            incomingMessagesList,
-//            outgoingLoginsList,
-//            outgoingMessagesList
-//        )
-//    }
-
     fun sendChatsRequest() {
         if (previewLoginsList.isNotEmpty())
             previewLoginsList.clear()
@@ -190,19 +128,26 @@ object ChatSingleton {
             val data = PreviewChatDataClass(recipientLogin, time, message)
             chatsArrayList.add(data)
         }
-        chatWindowLV.adapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
+        val arrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
+        arrayAdapter.notifyDataSetChanged()
+        chatWindowLV.adapter = arrayAdapter
     }
 
     fun updateMessageList(senderLogin: String, message: String) {
         if (senderLogin == Arnold) {
             val data1 = MessageItemDataClass("", "", senderLogin, message)
             messagesArrayList.add(data1)
-            chatItselfLV.adapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
+            val arrayAdapter1 = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
+            arrayAdapter1.notifyDataSetChanged()
+            chatItselfLV.adapter = arrayAdapter1
         }
         else {
             val data2 = MessageItemDataClass(senderLogin, message, "", "")
             messagesArrayList.add(data2)
-            chatItselfLV.adapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
+            val arrayAdapter2 = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
+            arrayAdapter2.notifyDataSetChanged()
+            chatItselfLV.adapter = arrayAdapter2
         }
+        chatItselfLV.setSelection(chatItselfLV.adapter.count - 1)
     }
 }

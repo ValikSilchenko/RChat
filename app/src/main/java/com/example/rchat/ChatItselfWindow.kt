@@ -58,6 +58,7 @@ class ChatItselfWindow : AppCompatActivity() {
                 this
             )
         }
+        messagesListView.setSelection(messagesListView.adapter.count - 1)
 
         backToMainMenuBtn.setOnClickListener {
             super.onBackPressed()
