@@ -1,11 +1,13 @@
 package com.example.rchat
 
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 
 class PreviewChatLVAdapter(private val context: Activity, private val arrayList: ArrayList<PreviewChatDataClass>):
     ArrayAdapter<PreviewChatDataClass>(context, R.layout.preview_chat, arrayList) {
@@ -21,6 +23,14 @@ class PreviewChatLVAdapter(private val context: Activity, private val arrayList:
         previewLogin.text = arrayList[position].previewLogin
         previewTime.text = arrayList[position].previewTime
         previewMessage.text = arrayList[position].previewMessage
+
+        view.setOnClickListener {
+            val name = previewLogin.text.toString()
+            Toast.makeText(context, "You clicked on item $name", Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, ChatItselfWindow::class.java)
+            intent.putExtra("Chat Name", name)
+            context.startActivity(intent)
+        }
 
         return view
     }

@@ -2,7 +2,6 @@ package com.example.rchat.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.widget.ListAdapter
 import android.widget.ListView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.MessageItemDataClass
@@ -205,9 +204,5 @@ object ChatSingleton {
             messagesArrayList.add(data2)
             chatItselfLV.adapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
         }
-    }
-
-    fun getChatAdapter(): ListAdapter? {
-        return chatWindowLV.adapter
     }
 }
