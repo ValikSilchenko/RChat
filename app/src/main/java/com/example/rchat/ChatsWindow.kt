@@ -25,7 +25,6 @@ class ChatsWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chats)
 
-        //val chatArray: RecyclerView = findViewById(R.id.Chat_Array)
         val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
         var response: List<JSONObject>
         val userLogin: TextView = findViewById(R.id.AppName)
