@@ -3,9 +3,7 @@ package com.example.rchat
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
@@ -33,6 +31,7 @@ class ChatsWindow : AppCompatActivity() {
         userLogin.text = intent.getStringExtra("User Login").toString()
 
         val user = intent.getStringExtra("User Login").toString()
+
         ChatSingleton.setChatsWindow(chatArray, user, this)
         try {
             ChatSingleton.openConnection(user)
@@ -68,11 +67,10 @@ class ChatsWindow : AppCompatActivity() {
             startActivity(Intent(this, FindUsersWindow::class.java))
         }
 
-        chatArray.setOnItemClickListener { parent, view, position, id ->
-            val name = ChatSingleton.chatsArrayList[position].previewLogin
-            val intent = Intent(this, ChatItselfWindow::class.java)
-            intent.putExtra("Chat Name", name)
-            startActivity(intent)
+        chatArray.isClickable = true
+        chatArray.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+            val selectedItemText = adapterView.getItemAtPosition(i)
+            Toast.makeText(this, "Clicked on item $selectedItemText", Toast.LENGTH_SHORT).show()
         }
     }
 
