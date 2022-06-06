@@ -4,9 +4,9 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
@@ -25,18 +25,15 @@ class ChatsWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chats)
 
-        val chatArray: RecyclerView = findViewById(R.id.Chat_Array)
+        //val chatArray: RecyclerView = findViewById(R.id.Chat_Array)
         val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
         var response: List<JSONObject>
         val userLogin: TextView = findViewById(R.id.AppName)
+        val chatArray: ListView = findViewById(R.id.ChatListView)
         userLogin.text = intent.getStringExtra("User Login").toString()
 
         val user = intent.getStringExtra("User Login").toString()
-        ChatSingleton.setChatsWindow(
-            chatArray,
-            user,
-            this
-        )
+        ChatSingleton.setChatsWindow(chatArray, user, this)
         try {
             ChatSingleton.openConnection(user)
         } catch (exception: Exception) {
@@ -44,7 +41,6 @@ class ChatsWindow : AppCompatActivity() {
             //TODO("Обработка ошибки при отсутствии интернетов")
         }
 
-        //ChatSingleton.sendChatsRequest()
         response = JasonSTATHAM().zapretParsinga(
             Requests().get(
                 mapOf(
@@ -70,6 +66,13 @@ class ChatsWindow : AppCompatActivity() {
 
         newChatBtn.setOnClickListener {
             startActivity(Intent(this, FindUsersWindow::class.java))
+        }
+
+        chatArray.setOnItemClickListener { parent, view, position, id ->
+            val name = ChatSingleton.chatsArrayList[position].previewLogin
+            val intent = Intent(this, ChatItselfWindow::class.java)
+            intent.putExtra("Chat Name", name)
+            startActivity(intent)
         }
     }
 
