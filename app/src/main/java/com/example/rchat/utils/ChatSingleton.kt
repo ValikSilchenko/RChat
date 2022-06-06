@@ -40,6 +40,14 @@ object ChatSingleton {
         return Arnold
     }
 
+    fun getChatsWindowContext(): Context {
+        return chatsWindowContext
+    }
+
+    fun getChatsWindowRecyclerView(): RecyclerView {
+        return chatsWindowRecView
+    }
+
     fun clearLists(recView: RecyclerView) {
         incomingLoginsList.clear()
         incomingMessagesList.clear()
@@ -57,16 +65,32 @@ object ChatSingleton {
 
     fun processMessage(message: String) {
         val parsedMessage = JasonSTATHAM().parseMessage(message)
-        if (parsedMessage[0] in previewLoginsList)
-            previewMessagesList[previewLoginsList.indexOf(parsedMessage[0])] = parsedMessage[1]
+        updateChatList(Arnold, "", parsedMessage[1])
+
+        if (chatItselfWindowRecView != null && parsedMessage[0] == Billy) {
+            updateMessageList(parsedMessage[0], parsedMessage[1])
+            updateChatList(Billy, "", parsedMessage[1])
+        }
+    }
+
+    fun sendMessage(recipientLogin: String, message: String) {
+        //TODO("Обработка ошибки отправки сообщения")
+        webSocketClient.send("/app/user/", recipientLogin, "$Arnold $message")
+        updateMessageList(Arnold, message)
+        updateChatList(recipientLogin, "", message)
+    }
+
+    fun updateChatList(recipientLogin: String, time: String, message: String) {
+        if (recipientLogin in previewLoginsList)  // TODO обновление времени
+            previewMessagesList[previewLoginsList.indexOf(recipientLogin)] = message
         else
             ChatFunctions().addToList(
                 previewLoginsList,
                 previewTimeList,
                 previewMessagesList,
-                parsedMessage[0],
-                "",
-                parsedMessage[1]
+                recipientLogin,
+                time,
+                message
             )
         chatsWindowRecView.layoutManager = LinearLayoutManager(chatsWindowContext)
         chatsWindowRecView.adapter = PreviewChatRvAdapter(
@@ -75,41 +99,31 @@ object ChatSingleton {
             previewMessagesList,
             chatsWindowContext
         )
+    }
 
-        if (chatItselfWindowRecView != null && parsedMessage[0] == Billy) {
+    fun updateMessageList(senderLogin: String, message: String) {
+        if (senderLogin == Arnold)
             ChatFunctions().addToList(
                 incomingLoginsList,
                 incomingMessagesList,
                 outgoingLoginsList,
                 outgoingMessagesList,
-                Billy,
-                parsedMessage[1],
                 "",
-                ""
+                "",
+                senderLogin,
+                message
             )
-            chatItselfWindowRecView?.layoutManager = LinearLayoutManager(chatItselfContext)
-            chatItselfWindowRecView?.adapter = MessageItemRvAdapter(
+        else
+            ChatFunctions().addToList(
                 incomingLoginsList,
                 incomingMessagesList,
                 outgoingLoginsList,
-                outgoingMessagesList
+                outgoingMessagesList,
+                senderLogin,
+                message,
+                "",
+                ""
             )
-        }
-    }
-
-    fun sendMessage(recipientLogin: String, message: String) {
-        //TODO("Обработка ошибки отправки сообщения")
-        webSocketClient.send("/app/user/", recipientLogin, "$Arnold $message")
-        ChatFunctions().addToList(
-            incomingLoginsList,
-            incomingMessagesList,
-            outgoingLoginsList,
-            outgoingMessagesList,
-            "",
-            "",
-            Arnold,
-            message
-        )
         chatItselfWindowRecView?.layoutManager = LinearLayoutManager(chatItselfContext)
         chatItselfWindowRecView?.adapter = MessageItemRvAdapter(
             incomingLoginsList,

@@ -46,38 +46,12 @@ class ChatItselfWindow : AppCompatActivity() {
                 )
             )
 
-            for (el in response) {
-                if (el["sender"].toString() == chatName.text.toString())
-                    ChatFunctions().addToList(
-                        ChatSingleton.incomingLoginsList,
-                        ChatSingleton.incomingMessagesList,
-                        ChatSingleton.outgoingLoginsList,
-                        ChatSingleton.outgoingMessagesList,
-                        (el["sender"] as JSONObject)["username"].toString(),
-                        el["messageText"].toString(),
-                        "",
-                        ""
-                    )
-                else if (el["sender"].toString() != chatName.text.toString())
-                    ChatFunctions().addToList(
-                        ChatSingleton.incomingLoginsList,
-                        ChatSingleton.incomingMessagesList,
-                        ChatSingleton.outgoingLoginsList,
-                        ChatSingleton.outgoingMessagesList,
-                        "",
-                        "",
-                        (el["sender"] as JSONObject)["username"].toString(),
-                        el["messageText"].toString()
-                    )
-            }
-            messagesRecV.layoutManager =
-                LinearLayoutManager(this)  // Возможно, строки 71 и 72 надо поместить в цикл for, что выше
-            messagesRecV.adapter = MessageItemRvAdapter(
-                ChatSingleton.incomingLoginsList,
-                ChatSingleton.incomingMessagesList,
-                ChatSingleton.outgoingLoginsList,
-                ChatSingleton.outgoingMessagesList
-            )
+            for (el in response)
+                ChatSingleton.updateMessageList(
+                    (el["sender"] as JSONObject)["username"].toString(),
+                    el["messageText"].toString()
+                )
+
         } catch (exception: Exception) {
             ChatFunctions().showMessage(
                 "Ошибка",

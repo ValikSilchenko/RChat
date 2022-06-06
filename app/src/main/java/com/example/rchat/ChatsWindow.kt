@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +29,8 @@ class ChatsWindow : AppCompatActivity() {
         val chatArray: RecyclerView = findViewById(R.id.Chat_Array)
         val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
         var response: List<JSONObject>
+        val userLogin: TextView = findViewById(R.id.AppName)
+        userLogin.text = intent.getStringExtra("User Login").toString()
 
         val user = intent.getStringExtra("User Login").toString()
         ChatSingleton.setChatsWindow(
@@ -51,29 +54,19 @@ class ChatsWindow : AppCompatActivity() {
         )
         var username: String
         for (el in response) {
-            if ((el["sender"] as JSONObject)["username"].toString() == intent.getStringExtra("User Login")
-                    .toString()
-            )
-                username = (el["recipient"] as JSONObject)["username"].toString()
-            else
-                username = (el["sender"] as JSONObject)["username"].toString()
-            ChatFunctions().addToList(
-                ChatSingleton.previewLoginsList,
-                ChatSingleton.previewTimeList,
-                ChatSingleton.previewMessagesList,
+            username =
+                if ((el["sender"] as JSONObject)["username"].toString() == intent.getStringExtra("User Login")
+                        .toString()
+                )
+                    (el["recipient"] as JSONObject)["username"].toString()
+                else
+                    (el["sender"] as JSONObject)["username"].toString()
+            ChatSingleton.updateChatList(
                 username,
                 el["time"].toString(),
                 el["messageText"].toString()
             )
         }
-        chatArray.layoutManager = LinearLayoutManager(this)
-        chatArray.adapter = PreviewChatRvAdapter(
-            ChatSingleton.previewLoginsList,
-            ChatSingleton.previewTimeList,
-            ChatSingleton.previewMessagesList,
-            this
-        )
-
 
         newChatBtn.setOnClickListener {
             startActivity(Intent(this, FindUsersWindow::class.java))
