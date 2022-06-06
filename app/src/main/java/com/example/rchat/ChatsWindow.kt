@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 
 class ChatsWindow : AppCompatActivity() {
@@ -30,12 +29,6 @@ class ChatsWindow : AppCompatActivity() {
         val user = intent.getStringExtra("User Login").toString()
 
         ChatSingleton.setChatsWindow(chatArray, user, this)
-        try {
-            ChatSingleton.openConnection(user)
-        } catch (exception: Exception) {
-            ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
-            //TODO("Обработка ошибки при отсутствии интернетов")
-        }
 
         ChatSingleton.sendChatRequest()
 //        var response: List<JSONObject> = JasonSTATHAM().zapretParsinga(

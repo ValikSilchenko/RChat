@@ -1,5 +1,6 @@
 package com.example.rchat
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
@@ -32,6 +33,7 @@ class ChatItselfWindow : AppCompatActivity() {
 
         // Вывод сообщений на экран
         ChatSingleton.sendMessagesRequest()
+        // Вывод сообщений на экран
 //        try {
 //            response = JasonSTATHAM().zapretParsinga(
 //                Requests().get(
@@ -57,7 +59,7 @@ class ChatItselfWindow : AppCompatActivity() {
 //            )
 //        }
         backToMainMenuBtn.setOnClickListener {
-            super.onBackPressed()
+            startActivity(Intent(this, ChatsWindow::class.java))
         }
 
         sendMessageBtn.setOnClickListener {
@@ -82,6 +84,6 @@ class ChatItselfWindow : AppCompatActivity() {
     @Override
     override fun onBackPressed() {
         //ChatSingleton.sendChatsRequest()
-        super.onBackPressed()
+        startActivity(Intent(this, ChatsWindow::class.java))
     }
 }

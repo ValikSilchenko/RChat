@@ -1,5 +1,6 @@
 package com.example.rchat
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -28,7 +29,7 @@ class FindUsersWindow : AppCompatActivity() {
         var foundUsers: List<String>
 
         backToChatsWindow.setOnClickListener {
-            super.onBackPressed()
+            startActivity(Intent(this, ChatsWindow::class.java))
         }
 
         findBtn.setOnClickListener {
@@ -73,6 +74,6 @@ class FindUsersWindow : AppCompatActivity() {
 
     @Override
     override fun onBackPressed() {
-        super.onBackPressed()
+        startActivity(Intent(this, ChatsWindow::class.java))
     }
 }
