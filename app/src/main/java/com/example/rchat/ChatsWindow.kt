@@ -7,11 +7,7 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
-import com.example.rchat.utils.JasonSTATHAM
-import com.example.rchat.utils.Requests
-import org.json.JSONObject
 
 class ChatsWindow : AppCompatActivity() {
 
@@ -33,35 +29,30 @@ class ChatsWindow : AppCompatActivity() {
         val user = intent.getStringExtra("User Login").toString()
 
         ChatSingleton.setChatsWindow(chatArray, user, this)
-        try {
-            ChatSingleton.openConnection(user)
-        } catch (exception: Exception) {
-            ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
-            //TODO("Обработка ошибки при отсутствии интернетов")
-        }
 
-        var response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
-            Requests().get(
-                mapOf(
-                    "username" to intent.getStringExtra("User Login").toString()
-                ), "http://192.168.1.107:8080/chats"
-            )
-        )
-        var username: String
-        for (el in response) {
-            username =
-                if ((el["sender"] as JSONObject)["username"].toString() == intent.getStringExtra("User Login")
-                        .toString()
-                )
-                    (el["recipient"] as JSONObject)["username"].toString()
-                else
-                    (el["sender"] as JSONObject)["username"].toString()
-            ChatSingleton.updateChatList(
-                username,
-                el["time"].toString(),
-                el["messageText"].toString()
-            )
-        }
+        ChatSingleton.sendChatRequest()
+//        var response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
+//            Requests().get(
+//                mapOf(
+//                    "username" to intent.getStringExtra("User Login").toString()
+//                ), "http://192.168.1.107:8080/chats"
+//            )
+//        )
+//        var username: String
+//        for (el in response) {
+//            username =
+//                if ((el["sender"] as JSONObject)["username"].toString() == intent.getStringExtra("User Login")
+//                        .toString()
+//                )
+//                    (el["recipient"] as JSONObject)["username"].toString()
+//                else
+//                    (el["sender"] as JSONObject)["username"].toString()
+//            ChatSingleton.updateChatList(
+//                username,
+//                el["time"].toString(),
+//                el["messageText"].toString()
+//            )
+//        }
 
         newChatBtn.setOnClickListener {
             startActivity(Intent(this, FindUsersWindow::class.java))

@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
+import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.Requests
 
 
@@ -44,7 +45,13 @@ class AuthorizationWindow : AppCompatActivity() {
                         ),
                         "http://192.168.1.107:8080/login"
                     )
-                    startIntent(ChatsWindow::class.java)
+                    try {
+                        ChatSingleton.openConnection(authorizeLoginText.text.toString())
+                        startIntent(ChatsWindow::class.java)
+                    } catch (exception: Exception) {
+                        ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
+                        //TODO("Обработка ошибки при отсутствии интернетов")
+                    }
                 } catch (exception: Exception) {
                     ChatFunctions().showMessage("Ошибка", "Ошибка отправки данных", this)
                 }
