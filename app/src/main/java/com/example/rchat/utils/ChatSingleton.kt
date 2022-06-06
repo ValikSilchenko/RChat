@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.MessageItemRvAdapter
 import com.example.rchat.PreviewChatRvAdapter
+import org.json.JSONObject
 
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
@@ -16,6 +17,7 @@ object ChatSingleton {
     var previewTimeList = mutableListOf<String>()
     var incomingLoginsList = mutableListOf<String>()
     var outgoingLoginsList = mutableListOf<String>()
+    private lateinit var response: List<JSONObject>
     private var webSocketClient = WebSocketClient()
     private var chatItselfWindowRecView: RecyclerView? = null
     private lateinit var chatsWindowRecView: RecyclerView
@@ -65,10 +67,12 @@ object ChatSingleton {
 
     fun processMessage(message: String) {
         val parsedMessage = JasonSTATHAM().parseMessage(message)
+        //sendChatsRequest()
         updateChatList(Arnold, "", parsedMessage[1])
 
         if (chatItselfWindowRecView != null && parsedMessage[0] == Billy) {
             updateMessageList(parsedMessage[0], parsedMessage[1])
+            //sendChatsRequest()
             updateChatList(Billy, "", parsedMessage[1])
         }
     }
@@ -131,5 +135,35 @@ object ChatSingleton {
             outgoingLoginsList,
             outgoingMessagesList
         )
+    }
+
+    fun sendChatsRequest() {
+        if (previewLoginsList.isNotEmpty())
+            previewLoginsList.clear()
+        if (previewTimeList.isNotEmpty())
+            previewTimeList.clear()
+        if (previewMessagesList.isNotEmpty())
+            previewMessagesList.clear()
+        response = JasonSTATHAM().zapretParsinga(
+            Requests().get(
+                mapOf(
+                    "username" to Arnold
+                ), "http://192.168.1.107:8080/chats"
+            )
+        )
+        var username: String
+        for (el in response) {
+            username =
+                if ((el["sender"] as JSONObject)["username"].toString() == Arnold
+                )
+                    (el["recipient"] as JSONObject)["username"].toString()
+                else
+                    (el["sender"] as JSONObject)["username"].toString()
+            updateChatList(
+                username,
+                el["time"].toString(),
+                el["messageText"].toString()
+            )
+        }
     }
 }
