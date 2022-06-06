@@ -30,7 +30,7 @@ class ChatItselfWindow : AppCompatActivity() {
             intent.getStringExtra("Chat Name").toString(),
             this
         )
-        ChatSingleton.clearLists()
+        ChatSingleton.clearMessageList()
         chatName.text = intent.getStringExtra("Chat Name")
 
         // Вывод сообщений на экран
@@ -58,7 +58,6 @@ class ChatItselfWindow : AppCompatActivity() {
                 this
             )
         }
-
         backToMainMenuBtn.setOnClickListener {
             super.onBackPressed()
         }

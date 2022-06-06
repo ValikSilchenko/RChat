@@ -26,7 +26,6 @@ class PreviewChatLVAdapter(private val context: Activity, private val arrayList:
 
         view.setOnClickListener {
             val name = previewLogin.text.toString()
-            Toast.makeText(context, "You clicked on item $name", Toast.LENGTH_SHORT).show()
             val intent = Intent(context, ChatItselfWindow::class.java)
             intent.putExtra("Chat Name", name)
             context.startActivity(intent)
