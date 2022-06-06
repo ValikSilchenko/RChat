@@ -12,24 +12,14 @@ import org.json.JSONObject
 
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
-    var outgoingMessagesList = mutableListOf<String>()
-    var incomingMessagesList = mutableListOf<String>()
-    var previewMessagesList = mutableListOf<String>()
-    var previewLoginsList = mutableListOf<String>()
-    var previewTimeList = mutableListOf<String>()
-    var incomingLoginsList = mutableListOf<String>()
-    var outgoingLoginsList = mutableListOf<String>()
-    private lateinit var response: List<JSONObject>
     private var webSocketClient = WebSocketClient()
-    private var chatItselfWindowRecView: RecyclerView? = null
-    private lateinit var chatsWindowRecView: RecyclerView
     private lateinit var chatItselfContext: Activity
     private lateinit var chatsWindowContext: Activity
     private var Billy = "Herrington" // Логин собеседника
     private var Arnold = "Shwarzenegger" // Логин атворизованного пользователя
 
     private lateinit var chatWindowLV: ListView
-    private lateinit var chatItselfLV: ListView
+    private var chatItselfLV: ListView? = null
     var chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
     val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
 
@@ -49,9 +39,14 @@ object ChatSingleton {
         return Arnold
     }
 
-    fun clearLists() {
+    fun clearMessageList() {
         messagesArrayList.clear()
-        chatItselfLV.adapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
+        chatItselfLV?.adapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
+    }
+
+    fun clearChatList() {
+        chatsArrayList.clear()
+        chatWindowLV.adapter = MessageItemLVAdapter(chatsWindowContext, messagesArrayList)
     }
 
     fun openConnection(username: String) {
@@ -60,12 +55,11 @@ object ChatSingleton {
 
     fun processMessage(message: String) {
         val parsedMessage = JasonSTATHAM().parseMessage(message)
-        updateChatList(Arnold, "", parsedMessage[1])
 
-        if (chatItselfWindowRecView != null && parsedMessage[0] == Billy) {
+        updateChatList(parsedMessage[0], "", parsedMessage[1])
+
+        if (chatItselfLV != null && parsedMessage[0] == Billy)
             updateMessageList(parsedMessage[0], parsedMessage[1])
-            updateChatList(Billy, "", parsedMessage[1])
-        }
     }
 
     fun sendMessage(recipientLogin: String, message: String) {
@@ -93,19 +87,26 @@ object ChatSingleton {
             val data = PreviewChatDataClass(recipientLogin, time, message)
             chatsArrayList.add(data)
         }
-        chatWindowLV.adapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
+        val arrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
+        arrayAdapter.notifyDataSetChanged()
+        chatWindowLV.adapter = arrayAdapter
     }
 
     fun updateMessageList(senderLogin: String, message: String) {
         if (senderLogin == Arnold) {
             val data1 = MessageItemDataClass("", "", senderLogin, message)
             messagesArrayList.add(data1)
-            chatItselfLV.adapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
+            val arrayAdapter1 = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
+            arrayAdapter1.notifyDataSetChanged()
+            chatItselfLV?.adapter = arrayAdapter1
         }
         else {
             val data2 = MessageItemDataClass(senderLogin, message, "", "")
             messagesArrayList.add(data2)
-            chatItselfLV.adapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
+            val arrayAdapter2 = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
+            arrayAdapter2.notifyDataSetChanged()
+            chatItselfLV?.adapter = arrayAdapter2
         }
+//        chatItselfLV?.setSelection((chatItselfLV?.adapter?.count ?: 1) - 1)
     }
 }

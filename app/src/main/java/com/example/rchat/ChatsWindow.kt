@@ -26,7 +26,6 @@ class ChatsWindow : AppCompatActivity() {
         setContentView(R.layout.chats)
 
         val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
-        var response: List<JSONObject>
         val userLogin: TextView = findViewById(R.id.AppName)
         val chatArray: ListView = findViewById(R.id.ChatListView)
         userLogin.text = intent.getStringExtra("User Login").toString()
@@ -41,7 +40,7 @@ class ChatsWindow : AppCompatActivity() {
             //TODO("Обработка ошибки при отсутствии интернетов")
         }
 
-        response = JasonSTATHAM().zapretParsinga(
+        var response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
             Requests().get(
                 mapOf(
                     "username" to intent.getStringExtra("User Login").toString()
