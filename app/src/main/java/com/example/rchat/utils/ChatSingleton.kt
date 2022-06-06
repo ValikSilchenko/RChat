@@ -3,7 +3,6 @@ package com.example.rchat.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.widget.ListView
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.MessageItemDataClass
 import com.example.rchat.MessageItemLVAdapter
 import com.example.rchat.PreviewChatDataClass
@@ -23,16 +22,21 @@ object ChatSingleton {
     var chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
     val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
 
+    private lateinit var chatArrayAdapter: PreviewChatLVAdapter
+    private lateinit var messagesArrayAdapter: MessageItemLVAdapter
+
     fun setChatsWindow(listView: ListView, username: String, incomingContext: Activity) {
         chatWindowLV = listView
         chatsWindowContext = incomingContext
         Arnold = username
+        chatArrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
     }
 
     fun setChatItselfWindow(listView: ListView, username: String, incomingContext: Activity) {
         chatItselfLV = listView
         Billy = username
         chatItselfContext = incomingContext
+        messagesArrayAdapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
     }
 
     fun getLogin(): String {
@@ -41,12 +45,7 @@ object ChatSingleton {
 
     fun clearMessageList() {
         messagesArrayList.clear()
-        chatItselfLV?.adapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
-    }
-
-    fun clearChatList() {
-        chatsArrayList.clear()
-        chatWindowLV.adapter = MessageItemLVAdapter(chatsWindowContext, messagesArrayList)
+        chatItselfLV?.adapter = messagesArrayAdapter
     }
 
     fun openConnection(username: String) {
@@ -65,15 +64,16 @@ object ChatSingleton {
     fun sendMessage(recipientLogin: String, message: String) {
         //TODO("Обработка ошибки отправки сообщения")
         webSocketClient.send("/app/user/", recipientLogin, "$Arnold $message")
-        updateMessageList(Arnold, message)
-        updateChatList(recipientLogin, "", message)
+        sendMessagesRequest()
+        sendChatRequest()
+//        updateMessageList(Arnold, message)
+//        updateChatList(recipientLogin, "", message)
     }
 
     fun updateChatList(recipientLogin: String, time: String, message: String) {
         var isInArray = false
         var index = 0
-        for (el in chatsArrayList.indices)
-        {
+        for (el in chatsArrayList.indices) {
             if (chatsArrayList[el].previewLogin == recipientLogin) {
                 isInArray = true
                 index = el
@@ -82,31 +82,67 @@ object ChatSingleton {
         }
         if (isInArray) {
             chatsArrayList[index].previewMessage = message
-        }
-        else {
+        } else {
             val data = PreviewChatDataClass(recipientLogin, time, message)
             chatsArrayList.add(data)
         }
-        val arrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
-        arrayAdapter.notifyDataSetChanged()
-        chatWindowLV.adapter = arrayAdapter
+        chatArrayAdapter.notifyDataSetChanged()
+        chatWindowLV.adapter = chatArrayAdapter
     }
 
     fun updateMessageList(senderLogin: String, message: String) {
         if (senderLogin == Arnold) {
             val data1 = MessageItemDataClass("", "", senderLogin, message)
             messagesArrayList.add(data1)
-            val arrayAdapter1 = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
-            arrayAdapter1.notifyDataSetChanged()
-            chatItselfLV?.adapter = arrayAdapter1
-        }
-        else {
+        } else {
             val data2 = MessageItemDataClass(senderLogin, message, "", "")
             messagesArrayList.add(data2)
-            val arrayAdapter2 = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
-            arrayAdapter2.notifyDataSetChanged()
-            chatItselfLV?.adapter = arrayAdapter2
         }
-//        chatItselfLV?.setSelection((chatItselfLV?.adapter?.count ?: 1) - 1)
+        messagesArrayAdapter.notifyDataSetChanged()
+        chatItselfLV?.adapter = messagesArrayAdapter
+    }
+
+    fun sendChatRequest() {
+        if (chatsArrayList.isNotEmpty())
+            chatsArrayList.clear()
+        var response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
+            Requests().get(
+                mapOf("username" to Arnold),
+                "http://192.168.1.107:8080/chats"
+            )
+        )
+        var username: String
+        for (el in response) {
+            username =
+                if ((el["sender"] as JSONObject)["username"].toString() == Arnold
+                )
+                    (el["recipient"] as JSONObject)["username"].toString()
+                else
+                    (el["sender"] as JSONObject)["username"].toString()
+            updateChatList(
+                username,
+                el["time"].toString(),
+                el["messageText"].toString()
+            )
+        }
+    }
+
+    fun sendMessagesRequest() {
+        if (messagesArrayList.isNotEmpty())
+            messagesArrayList.clear()
+        var response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
+            Requests().get(
+                mapOf(
+                    "sender" to Arnold,
+                    "recipient" to Billy
+                ),
+                "http://192.168.1.107:8080/personal"
+            )
+        )
+        for (el in response)
+            updateMessageList(
+                (el["sender"] as JSONObject)["username"].toString(),
+                el["messageText"].toString()
+            )
     }
 }
