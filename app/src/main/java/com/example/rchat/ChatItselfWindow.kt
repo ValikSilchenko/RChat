@@ -5,10 +5,7 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
-import com.example.rchat.utils.JasonSTATHAM
-import com.example.rchat.utils.Requests
 import org.json.JSONObject
 
 class ChatItselfWindow : AppCompatActivity() {
@@ -34,30 +31,31 @@ class ChatItselfWindow : AppCompatActivity() {
         chatName.text = intent.getStringExtra("Chat Name")
 
         // Вывод сообщений на экран
-        try {
-            response = JasonSTATHAM().zapretParsinga(
-                Requests().get(
-                    mapOf(
-                        "sender" to ChatSingleton.getLogin(),
-                        "recipient" to chatName.text.toString()
-                    ),
-                    "http://192.168.1.107:8080/personal"
-                )
-            )
-
-            for (el in response)
-                ChatSingleton.updateMessageList(
-                    (el["sender"] as JSONObject)["username"].toString(),
-                    el["messageText"].toString()
-                )
-
-        } catch (exception: Exception) {
-            ChatFunctions().showMessage(
-                "Ошибка",
-                "Ошибка отправки данных: ${exception.message}",
-                this
-            )
-        }
+        ChatSingleton.sendMessagesRequest()
+//        try {
+//            response = JasonSTATHAM().zapretParsinga(
+//                Requests().get(
+//                    mapOf(
+//                        "sender" to ChatSingleton.getLogin(),
+//                        "recipient" to chatName.text.toString()
+//                    ),
+//                    "http://192.168.1.107:8080/personal"
+//                )
+//            )
+//
+//            for (el in response)
+//                ChatSingleton.updateMessageList(
+//                    (el["sender"] as JSONObject)["username"].toString(),
+//                    el["messageText"].toString()
+//                )
+//
+//        } catch (exception: Exception) {
+//            ChatFunctions().showMessage(
+//                "Ошибка",
+//                "Ошибка отправки данных: ${exception.message}",
+//                this
+//            )
+//        }
         backToMainMenuBtn.setOnClickListener {
             super.onBackPressed()
         }
