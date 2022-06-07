@@ -1,5 +1,6 @@
 package com.example.rchat
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
@@ -19,12 +20,12 @@ class SettingsWindow : AppCompatActivity() {
         val backBtn: Button = findViewById(R.id.SettingsChat_Btn)
 
         backBtn.setOnClickListener {
-            super.onBackPressed()
+            startActivity(Intent(this, ChatsWindow::class.java))
         }
     }
 
     @Override
     override fun onBackPressed() {
-        super.onBackPressed()
+        startActivity(Intent(this, ChatsWindow::class.java))
     }
 }

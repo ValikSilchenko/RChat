@@ -49,11 +49,14 @@
             android:layout_marginStart="10dp"/>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ListView
         android:id="@+id/FoundUsers_Array"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
+        android:dividerHeight="5dp"
+        android:divider="@null"
+        android:scrollbars="none"
         app:layout_constraintTop_toBottomOf="@id/Container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
