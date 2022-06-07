@@ -59,7 +59,7 @@ class ChatItselfWindow : AppCompatActivity() {
 //            )
 //        }
         backToMainMenuBtn.setOnClickListener {
-            startActivity(Intent(this, ChatsWindow::class.java))
+            startIntent()
         }
 
         sendMessageBtn.setOnClickListener {
@@ -68,22 +68,19 @@ class ChatItselfWindow : AppCompatActivity() {
                     intent.getStringExtra("Chat Name").toString(),
                     messageInput.text.toString()
                 )
-                //focusLastItem(messagesListView)
                 messageInput.text = null
             }
         }
     }
 
-//    private fun focusLastItem(recView: ListView) {
-//        if (ChatSingleton.incomingLoginsList.isNotEmpty())
-//            recView.smoothScrollToPosition(ChatSingleton.incomingLoginsList.size - 1)
-//        else if (ChatSingleton.outgoingLoginsList.isNotEmpty())
-//            recView.smoothScrollToPosition(ChatSingleton.outgoingLoginsList.size - 1)
-//    }
-
     @Override
     override fun onBackPressed() {
-        //ChatSingleton.sendChatsRequest()
-        startActivity(Intent(this, ChatsWindow::class.java))
+        startIntent()
+    }
+
+    fun startIntent() {
+        val intent = Intent(this, ChatsWindow::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        startActivity(intent)
     }
 }

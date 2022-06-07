@@ -20,7 +20,7 @@ class WebSocketClient {
     private var session: StompSession? = null
 
     fun connect(url: String, username: String) {
-        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
+//        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
         val simpleWebSocketClient: WebSocketClient = StandardWebSocketClient()
 
         val transports: MutableList<Transport> = ArrayList(1)
@@ -38,6 +38,7 @@ class WebSocketClient {
                     }
 
                     override fun handleFrame(headers: StompHeaders, @Nullable payload: Any?) {
+                        println("received")
                         ChatSingleton.processMessage(payload as String)
                     }
                 })

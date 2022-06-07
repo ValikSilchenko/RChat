@@ -43,9 +43,15 @@ object ChatSingleton {
         return Arnold
     }
 
+    fun clearChatList() {
+        if (chatsArrayList.isNotEmpty())
+            chatsArrayList.clear()
+    }
+
     fun clearMessageList() {
-        messagesArrayList.clear()
-        chatItselfLV?.adapter = messagesArrayAdapter
+        if (chatsArrayList.isNotEmpty())
+            messagesArrayList.clear()
+//        chatItselfLV?.adapter = messagesArrayAdapter
     }
 
     fun openConnection(username: String) {
@@ -54,20 +60,25 @@ object ChatSingleton {
 
     fun processMessage(message: String) {
         val parsedMessage = JasonSTATHAM().parseMessage(message)
+        println("parsed")
 
         updateChatList(parsedMessage[0], "", parsedMessage[1])
+        println("after receive: chats list update")
 
-        if (chatItselfLV != null && parsedMessage[0] == Billy)
+        if (chatItselfLV != null && parsedMessage[0] == Billy) {
+            println("//")
             updateMessageList(parsedMessage[0], parsedMessage[1])
+            println("after receive: msg list updated")
+        }
     }
 
     fun sendMessage(recipientLogin: String, message: String) {
         //TODO("Обработка ошибки отправки сообщения")
         webSocketClient.send("/app/user/", recipientLogin, "$Arnold $message")
-        sendMessagesRequest()
-        sendChatRequest()
-//        updateMessageList(Arnold, message)
-//        updateChatList(recipientLogin, "", message)
+        updateMessageList(Arnold, message)
+        println("after send: msg list updated")
+        updateChatList(recipientLogin, "", message)
+        println("after send: chats list updated")
     }
 
     fun updateChatList(recipientLogin: String, time: String, message: String) {
@@ -100,31 +111,7 @@ object ChatSingleton {
         }
         messagesArrayAdapter.notifyDataSetChanged()
         chatItselfLV?.adapter = messagesArrayAdapter
-    }
-
-    fun sendChatRequest() {
-        if (chatsArrayList.isNotEmpty())
-            chatsArrayList.clear()
-        var response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
-            Requests().get(
-                mapOf("username" to Arnold),
-                "http://192.168.1.107:8080/chats"
-            )
-        )
-        var username: String
-        for (el in response) {
-            username =
-                if ((el["sender"] as JSONObject)["username"].toString() == Arnold
-                )
-                    (el["recipient"] as JSONObject)["username"].toString()
-                else
-                    (el["sender"] as JSONObject)["username"].toString()
-            updateChatList(
-                username,
-                el["time"].toString(),
-                el["messageText"].toString()
-            )
-        }
+        chatItselfLV?.setSelection(messagesArrayList.size - 1)
     }
 
     fun sendMessagesRequest() {

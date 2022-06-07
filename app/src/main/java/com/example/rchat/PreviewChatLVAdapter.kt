@@ -27,6 +27,7 @@ class PreviewChatLVAdapter(private val context: Activity, private val arrayList:
         view.setOnClickListener {
             val name = previewLogin.text.toString()
             val intent = Intent(context, ChatItselfWindow::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             intent.putExtra("Chat Name", name)
             context.startActivity(intent)
         }
