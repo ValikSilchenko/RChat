@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query
 
 interface PersonalMessageRepository: JpaRepository<PersonalMessage, Int> {
     @Query("select msg from PersonalMessage msg where msg.sender in (:user1, :user2)" +
-            " and msg.recipient in (:user1, :user2) order by msg.time, msg.date")
+            " and msg.recipient in (:user1, :user2) order by msg.date, msg.time")
     fun getChatMessages(user1: Users, user2: Users): List<PersonalMessage?>
 
     @Query("select msg from PersonalMessage msg" +

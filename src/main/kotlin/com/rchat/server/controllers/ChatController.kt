@@ -20,7 +20,7 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
     @MessageMapping("/user/{recipient}/")
     @SendTo("/chatTopic/{recipient}/")
     fun processPersonal(@DestinationVariable recipient: String,  msg: String): String {
-        val data = parseMessage(msg)  // data[0] - senderId, data[1] - message
+        val data = parseMessage(msg)  // data[0] - sender, data[1] - message
         val message = PersonalMessage(userService.getByName(data[0]),
             userService.getByName(recipient),
             LocalTime.now(),

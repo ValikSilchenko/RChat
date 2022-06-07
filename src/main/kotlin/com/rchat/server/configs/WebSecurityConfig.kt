@@ -1,6 +1,5 @@
 package com.rchat.server.configs
 
-import com.rchat.server.security.JwtTokenRepository
 import com.rchat.server.services.PgUserDetailsService
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -17,8 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 @EnableWebSecurity
 @EnableConfigurationProperties
-class WebSecurityConfig(private var userDetailsService: PgUserDetailsService,
-                        private var csrfRepository: JwtTokenRepository) : WebSecurityConfigurerAdapter() {
+class WebSecurityConfig(private var userDetailsService: PgUserDetailsService) : WebSecurityConfigurerAdapter() {
     @Override
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
