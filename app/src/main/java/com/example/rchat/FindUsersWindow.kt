@@ -4,25 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.JasonSTATHAM
 import com.example.rchat.utils.Requests
 
 class FindUsersWindow : AppCompatActivity() {
 
-    // Переменные для списка чатов
-    private var previewChatLogins = mutableListOf<String>()
-    private var previewChatReceivingTimes = mutableListOf<String>()
-    private var previewChatMessages = mutableListOf<String>()
+    private var foundUserArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
+    private lateinit var arrayAdapter: PreviewChatLVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.find_users)
 
-        val foundUsersRv: RecyclerView = findViewById(R.id.FoundUsers_Array)
+        val foundUsersLv: ListView = findViewById(R.id.FoundUsers_Array)
         val backToChatsWindow: Button = findViewById(R.id.FindUserBack_Btn)
         val findBtn: Button = findViewById(R.id.FindUserFind_Btn)
         val loginInput: EditText = findViewById(R.id.FindUserLogin_EditText)
@@ -43,23 +40,11 @@ class FindUsersWindow : AppCompatActivity() {
                         )
                     )
                     for (element in foundUsers) {
-                        ChatFunctions().addToList(
-                            previewChatLogins,
-                            previewChatReceivingTimes,
-                            previewChatMessages,
-                            element,
-                            "",
-                            ""
-                        )
+                        foundUserArrayList.add(PreviewChatDataClass(element, "", ""))
                     }
-                    foundUsersRv.layoutManager =
-                        LinearLayoutManager(this) // Возможно, строки 54 и 55 надо поместить в цикл for, что выше
-                    foundUsersRv.adapter = PreviewChatRvAdapter(
-                        previewChatLogins,
-                        previewChatReceivingTimes,
-                        previewChatMessages,
-                        this
-                    )
+                    arrayAdapter = PreviewChatLVAdapter(this, foundUserArrayList)
+                    arrayAdapter.notifyDataSetChanged()
+                    foundUsersLv.adapter = arrayAdapter
                     loginInput.text = null
                 } catch (exception: Exception) {
                     ChatFunctions().showMessage(
