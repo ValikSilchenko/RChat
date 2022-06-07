@@ -1,6 +1,6 @@
 package com.example.rchat.utils
 
-import android.os.StrictMode
+import kotlinx.coroutines.*
 import org.springframework.lang.Nullable
 import org.springframework.messaging.converter.StringMessageConverter
 import org.springframework.messaging.simp.stomp.StompFrameHandler
@@ -38,7 +38,6 @@ class WebSocketClient {
                     }
 
                     override fun handleFrame(headers: StompHeaders, @Nullable payload: Any?) {
-                        println("received")
                         ChatSingleton.processMessage(payload as String)
                     }
                 })

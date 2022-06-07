@@ -9,7 +9,10 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 
-class PreviewChatLVAdapter(private val context: Activity, private val arrayList: ArrayList<PreviewChatDataClass>):
+class PreviewChatLVAdapter(
+    private val context: Activity,
+    private val arrayList: ArrayList<PreviewChatDataClass>
+) :
     ArrayAdapter<PreviewChatDataClass>(context, R.layout.preview_chat, arrayList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
