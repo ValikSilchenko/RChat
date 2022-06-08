@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
@@ -69,5 +70,16 @@ class ChatsWindow : AppCompatActivity() {
 
     @Override
     override fun onBackPressed() {
+        val exitMessage: AlertDialog.Builder = AlertDialog.Builder(this)
+        exitMessage
+            .setTitle("Предупреждение")
+            .setMessage("Вы действительно хотите выйти?")
+            .setCancelable(true)
+            .setPositiveButton("Да") { _, _ -> finish() }
+            .setNegativeButton(
+                "Нет"
+            ) { dialog, _ -> dialog.cancel() }
+        val exitWindow = exitMessage.create()
+        exitWindow.show()
     }
 }

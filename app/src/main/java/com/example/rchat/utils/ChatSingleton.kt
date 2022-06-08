@@ -116,7 +116,7 @@ object ChatSingleton {
     fun sendMessagesRequest() {
         if (messagesArrayList.isNotEmpty())
             messagesArrayList.clear()
-        var response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
+        val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
             Requests().get(
                 mapOf(
                     "sender" to Arnold,
