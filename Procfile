@@ -1,1 +1,1 @@
-web: java -jar build/libs/rchat.jar --server.port=$PORT
+web: java -jar target/server-1.0.0.jar --server.port=$PORT
