@@ -33,31 +33,7 @@ class ChatItselfWindow : AppCompatActivity() {
 
         // Вывод сообщений на экран
         ChatSingleton.sendMessagesRequest()
-        // Вывод сообщений на экран
-//        try {
-//            response = JasonSTATHAM().zapretParsinga(
-//                Requests().get(
-//                    mapOf(
-//                        "sender" to ChatSingleton.getLogin(),
-//                        "recipient" to chatName.text.toString()
-//                    ),
-//                    "http://192.168.1.107:8080/personal"
-//                )
-//            )
-//
-//            for (el in response)
-//                ChatSingleton.updateMessageList(
-//                    (el["sender"] as JSONObject)["username"].toString(),
-//                    el["messageText"].toString()
-//                )
-//
-//        } catch (exception: Exception) {
-//            ChatFunctions().showMessage(
-//                "Ошибка",
-//                "Ошибка отправки данных: ${exception.message}",
-//                this
-//            )
-//        }
+
         backToMainMenuBtn.setOnClickListener {
             startIntent()
         }

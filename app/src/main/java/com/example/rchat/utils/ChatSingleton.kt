@@ -51,7 +51,6 @@ object ChatSingleton {
     fun clearMessageList() {
         if (chatsArrayList.isNotEmpty())
             messagesArrayList.clear()
-//        chatItselfLV?.adapter = messagesArrayAdapter
     }
 
     fun openConnection(username: String) {
@@ -65,7 +64,7 @@ object ChatSingleton {
         updateChatList(parsedMessage[0], "", parsedMessage[1])
         println("after receive: chats list update")
 
-        if (chatItselfLV != null && parsedMessage[0] == Billy) {
+        if (parsedMessage[0] == Billy) {
             println("//")
             updateMessageList(parsedMessage[0], parsedMessage[1])
             println("after receive: msg list updated")
@@ -117,7 +116,7 @@ object ChatSingleton {
     fun sendMessagesRequest() {
         if (messagesArrayList.isNotEmpty())
             messagesArrayList.clear()
-        var response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
+        val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
             Requests().get(
                 mapOf(
                     "sender" to Arnold,
