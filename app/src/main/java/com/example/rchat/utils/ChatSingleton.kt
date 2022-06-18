@@ -8,6 +8,7 @@ import com.example.rchat.MessageItemLVAdapter
 import com.example.rchat.PreviewChatDataClass
 import com.example.rchat.PreviewChatLVAdapter
 import org.json.JSONObject
+import kotlin.coroutines.coroutineContext
 
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
@@ -30,6 +31,7 @@ object ChatSingleton {
         chatsWindowContext = incomingContext
         Arnold = username
         chatArrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
+        chatWindowLV.adapter = chatArrayAdapter
     }
 
     fun setChatItselfWindow(listView: ListView, username: String, incomingContext: Activity) {
@@ -37,6 +39,7 @@ object ChatSingleton {
         Billy = username
         chatItselfContext = incomingContext
         messagesArrayAdapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
+        chatItselfLV!!.adapter = messagesArrayAdapter
     }
 
     fun getLogin(): String {
@@ -58,16 +61,18 @@ object ChatSingleton {
     }
 
     fun processMessage(message: String) {
-        val parsedMessage = JasonSTATHAM().parseMessage(message)
-        println("parsed")
+        chatsWindowContext.runOnUiThread {
+            val parsedMessage = JasonSTATHAM().parseMessage(message)
+            println("parsed")
 
-        updateChatList(parsedMessage[0], "", parsedMessage[1])
-        println("after receive: chats list update")
+            updateChatList(parsedMessage[0], "", parsedMessage[1])
+            println("after receive: chats list update")
 
-        if (parsedMessage[0] == Billy) {
-            println("//")
-            updateMessageList(parsedMessage[0], parsedMessage[1])
-            println("after receive: msg list updated")
+            if (parsedMessage[0] == Billy) {
+                println("//")
+                updateMessageList(parsedMessage[0], parsedMessage[1])
+                println("after receive: msg list updated")
+            }
         }
     }
 
@@ -83,6 +88,7 @@ object ChatSingleton {
     fun updateChatList(recipientLogin: String, time: String, message: String) {
         var isInArray = false
         var index = 0
+        println("1")
         for (el in chatsArrayList.indices) {
             if (chatsArrayList[el].previewLogin == recipientLogin) {
                 isInArray = true
@@ -90,14 +96,18 @@ object ChatSingleton {
                 break
             }
         }
+        println("2")
         if (isInArray) {
             chatsArrayList[index].previewMessage = message
         } else {
             val data = PreviewChatDataClass(recipientLogin, time, message)
             chatsArrayList.add(data)
         }
+        println("3")
+
         chatArrayAdapter.notifyDataSetChanged()
-        chatWindowLV.adapter = chatArrayAdapter
+        println("4")
+//        chatWindowLV.adapter = chatArrayAdapter - затирает список чатов при получении сообщения
     }
 
     fun updateMessageList(senderLogin: String, message: String) {
@@ -109,7 +119,7 @@ object ChatSingleton {
             messagesArrayList.add(data2)
         }
         messagesArrayAdapter.notifyDataSetChanged()
-        chatItselfLV?.adapter = messagesArrayAdapter
+//        chatItselfLV?.adapter = messagesArrayAdapter - затирает все сообщения при получении нового
         chatItselfLV?.setSelection(messagesArrayList.size - 1)
     }
 

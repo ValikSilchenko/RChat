@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.Requests
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 
 class AuthorizationWindow : AppCompatActivity() {
@@ -39,20 +41,25 @@ class AuthorizationWindow : AppCompatActivity() {
             if (authorizeLoginText.text.isNotEmpty() && authorizePasswordText.text.isNotEmpty()) {
                 login = authorizeLoginText.text.toString()
                 try {
-                    Requests().post(
-                        mapOf(
-                            "username" to authorizeLoginText.text.toString(),
-                            "password" to authorizePasswordText.text.toString()
-                        ),
-                        "http://192.168.1.107:8080/login"
-                    )
+                    GlobalScope.async {
+                        Requests().post(
+                            mapOf(
+                                "username" to authorizeLoginText.text.toString(),
+                                "password" to authorizePasswordText.text.toString()
+                            ),
+                            "http://192.168.1.107:8080/login"
+                        )
+                    }
                     try {
-                        ChatSingleton.openConnection(authorizeLoginText.text.toString())
+                        GlobalScope.async {
+                            ChatSingleton.openConnection(authorizeLoginText.text.toString())
+                        }
                         startIntent(ChatsWindow::class.java)
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
                         //TODO("Обработка ошибки при отсутствии интернетов")
                     }
+
                 } catch (exception: Exception) {
                     ChatFunctions().showMessage("Ошибка", "Ошибка отправки данных", this)
                 }

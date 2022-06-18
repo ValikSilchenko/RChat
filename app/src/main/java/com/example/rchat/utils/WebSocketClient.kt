@@ -1,6 +1,5 @@
 package com.example.rchat.utils
 
-import kotlinx.coroutines.*
 import org.springframework.lang.Nullable
 import org.springframework.messaging.converter.StringMessageConverter
 import org.springframework.messaging.simp.stomp.StompFrameHandler
@@ -25,7 +24,7 @@ class WebSocketClient {
 
         val transports: MutableList<Transport> = ArrayList(1)
         transports.add(WebSocketTransport(simpleWebSocketClient))
-        val sockJsClient = SockJsClient(transports)
+        val sockJsClient = SockJsClient(transports)  // TODO("Didn't find class "javax.xml.stream.XMLResolver"")
         val stompClient = WebSocketStompClient(sockJsClient)
 
         stompClient.messageConverter = StringMessageConverter()
