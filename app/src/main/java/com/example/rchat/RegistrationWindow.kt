@@ -59,10 +59,10 @@ class RegistrationWindow : AppCompatActivity() {
                     )
                     try {
 
-                        val editor = pref.edit()
-                        editor.putBoolean("IsAuthorized", true)
-                        editor.putString("User Login", login)
-                        editor.apply()
+//                        val editor = pref.edit()
+//                        editor.putBoolean("IsAuthorized", true)
+//                        editor.putString("User Login", login)
+//                        editor.apply()
 
                         ChatSingleton.openConnection(loginText.text.toString())
                         startIntent(ChatsWindow::class.java)

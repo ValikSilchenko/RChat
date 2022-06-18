@@ -18,8 +18,8 @@ class AuthorizationWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val pref = getSharedPreferences("Account", Context.MODE_PRIVATE)
-        if (pref.getBoolean("IsAuthorized", true))
-            startIntent(ChatsWindow::class.java)
+//        if (pref.getBoolean("IsAuthorized", true))
+//            startIntent(ChatsWindow::class.java)
 
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
@@ -53,10 +53,10 @@ class AuthorizationWindow : AppCompatActivity() {
                     )
                     try {
 
-                        val editor = pref.edit()
-                        editor.putBoolean("IsAuthorized", true)
-                        editor.putString("User Login", login)
-                        editor.apply()
+//                        val editor = pref.edit()
+//                        editor.putBoolean("IsAuthorized", true)
+//                        editor.putString("User Login", login)
+//                        editor.apply()
 
                         ChatSingleton.openConnection(authorizeLoginText.text.toString())
                         startIntent(ChatsWindow::class.java)

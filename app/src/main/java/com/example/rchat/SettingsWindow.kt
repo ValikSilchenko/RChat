@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 class SettingsWindow : AppCompatActivity() {
@@ -28,27 +27,27 @@ class SettingsWindow : AppCompatActivity() {
         }
 
         // Тестовая система выхода из аккаунта, не бейте, если не работает
-        exitAccBtn.setOnClickListener {
-            val messageBody = AlertDialog.Builder(this)
-            messageBody
-                .setTitle("Внимание")
-                .setMessage("Вы уверены, что хотите выйти из текущего аккаунта?")
-                .setCancelable(true)
-                .setNegativeButton("Нет") { dialog, _ -> dialog.cancel() }
-                .setPositiveButton("Да") { dialog, _ ->
-
-                    val editor = pref.edit()
-                    editor.remove("IsAuthorized")
-                    editor.remove("User Login")
-                    editor.apply()
-
-                    val intent = Intent(this, AuthorizationWindow::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    startActivity(intent)
-                }
-            val messageWindow = messageBody.create()
-            messageWindow.show()
-        }
+//        exitAccBtn.setOnClickListener {
+//            val messageBody = AlertDialog.Builder(this)
+//            messageBody
+//                .setTitle("Внимание")
+//                .setMessage("Вы уверены, что хотите выйти из текущего аккаунта?")
+//                .setCancelable(true)
+//                .setNegativeButton("Нет") { dialog, _ -> dialog.cancel() }
+//                .setPositiveButton("Да") { dialog, _ ->
+//
+//                    val editor = pref.edit()
+//                    editor.remove("IsAuthorized")
+//                    editor.remove("User Login")
+//                    editor.apply()
+//
+//                    val intent = Intent(this, AuthorizationWindow::class.java)
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                    startActivity(intent)
+//                }
+//            val messageWindow = messageBody.create()
+//            messageWindow.show()
+//        }
     }
 
     @Override

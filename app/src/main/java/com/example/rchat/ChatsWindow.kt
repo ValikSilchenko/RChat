@@ -32,8 +32,8 @@ class ChatsWindow : AppCompatActivity() {
         val chatArray: ListView = findViewById(R.id.ChatListView)
         val pref = getSharedPreferences("Account", Context.MODE_PRIVATE)
 
-//        val user = intent.getStringExtra("User Login").toString()
-        val user = pref.getString("User Login", "").toString()
+        val user = intent.getStringExtra("User Login").toString()
+        //val user = pref.getString("User Login", "").toString()
         userLogin.text = user
 
         ChatSingleton.setChatsWindow(chatArray, user, this)     // Заполняем сеттер для окна чатов в синглтоне
