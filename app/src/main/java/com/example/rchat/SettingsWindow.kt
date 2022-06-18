@@ -20,7 +20,6 @@ class SettingsWindow : AppCompatActivity() {
 
         val pref = getSharedPreferences("Account", Context.MODE_PRIVATE)
         val backBtn: Button = findViewById(R.id.SettingsChat_Btn)
-        val exitAccBtn: Button = findViewById(R.id.ExitAcccount_Btn)
 
         backBtn.setOnClickListener {
             startActivity(Intent(this, ChatsWindow::class.java))
