@@ -1,5 +1,6 @@
 package com.example.rchat
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -24,6 +25,7 @@ class RegistrationWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_window)
 
+        val pref = getSharedPreferences("Account", Context.MODE_PRIVATE)
         val loginText: EditText = findViewById(R.id.RegistrationLogin_Input)
         val emailText: EditText = findViewById(R.id.RegistrationEmail_Input)
         val phoneNumberText: EditText = findViewById(R.id.RegistrationPhoneNumber_Input)
@@ -56,6 +58,12 @@ class RegistrationWindow : AppCompatActivity() {
                         "http://192.168.1.107:8080/user"
                     )
                     try {
+
+                        val editor = pref.edit()
+                        editor.putBoolean("IsAuthorized", true)
+                        editor.putString("User Login", login)
+                        editor.apply()
+
                         ChatSingleton.openConnection(loginText.text.toString())
                         startIntent(ChatsWindow::class.java)
                     } catch (exception: Exception) {
@@ -98,6 +106,7 @@ class RegistrationWindow : AppCompatActivity() {
     private fun startIntent(Window: Class<*>?) {
         val intent = Intent(this, Window)
         intent.putExtra("User Login", login)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         startActivity(intent)
     }
 }

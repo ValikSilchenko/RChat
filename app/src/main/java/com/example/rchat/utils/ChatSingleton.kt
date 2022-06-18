@@ -15,7 +15,7 @@ object ChatSingleton {
     private lateinit var chatItselfContext: Activity
     private lateinit var chatsWindowContext: Activity
     private var Billy = "Herrington" // Логин собеседника
-    private var Arnold = "Shwarzenegger" // Логин атворизованного пользователя
+    private var Van = "Darkholme" // Логин авторизованного пользователя
 
     private lateinit var chatWindowLV: ListView
     private var chatItselfLV: ListView? = null
@@ -28,7 +28,7 @@ object ChatSingleton {
     fun setChatsWindow(listView: ListView, username: String, incomingContext: Activity) {
         chatWindowLV = listView
         chatsWindowContext = incomingContext
-        Arnold = username
+        Van = username
         chatArrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
     }
 
@@ -37,10 +37,6 @@ object ChatSingleton {
         Billy = username
         chatItselfContext = incomingContext
         messagesArrayAdapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
-    }
-
-    fun getLogin(): String {
-        return Arnold
     }
 
     fun clearChatList() {
@@ -73,8 +69,8 @@ object ChatSingleton {
 
     fun sendMessage(recipientLogin: String, message: String) {
         //TODO("Обработка ошибки отправки сообщения")
-        webSocketClient.send("/app/user/", recipientLogin, "$Arnold $message")
-        updateMessageList(Arnold, message)
+        webSocketClient.send("/app/user/", recipientLogin, "$Van $message")
+        updateMessageList(Van, message)
         println("after send: msg list updated")
         updateChatList(recipientLogin, "", message)
         println("after send: chats list updated")
@@ -93,7 +89,7 @@ object ChatSingleton {
         if (isInArray) {
             chatsArrayList[index].previewMessage = message
         } else {
-            val data = PreviewChatDataClass(recipientLogin, time, message)
+            val data = PreviewChatDataClass(recipientLogin, time, "Вы: $message")
             chatsArrayList.add(data)
         }
         chatArrayAdapter.notifyDataSetChanged()
@@ -101,7 +97,7 @@ object ChatSingleton {
     }
 
     fun updateMessageList(senderLogin: String, message: String) {
-        if (senderLogin == Arnold) {
+        if (senderLogin == Van) {
             val data1 = MessageItemDataClass("", "", senderLogin, message)
             messagesArrayList.add(data1)
         } else {
@@ -119,7 +115,7 @@ object ChatSingleton {
         val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
             Requests().get(
                 mapOf(
-                    "sender" to Arnold,
+                    "sender" to Van,
                     "recipient" to Billy
                 ),
                 "http://192.168.1.107:8080/personal"

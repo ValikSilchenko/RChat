@@ -1,5 +1,6 @@
 package com.example.rchat
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -13,7 +14,6 @@ import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
 import com.example.rchat.utils.Requests
 import org.json.JSONObject
-import java.lang.Exception
 
 class ChatsWindow : AppCompatActivity() {
 
@@ -30,13 +30,16 @@ class ChatsWindow : AppCompatActivity() {
         val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
         val userLogin: TextView = findViewById(R.id.AppName)
         val chatArray: ListView = findViewById(R.id.ChatListView)
-        userLogin.text = intent.getStringExtra("User Login").toString()
+        val pref = getSharedPreferences("Account", Context.MODE_PRIVATE)
 
-        val user = intent.getStringExtra("User Login").toString()
+//        val user = intent.getStringExtra("User Login").toString()
+        val user = pref.getString("User Login", "").toString()
+        userLogin.text = user
 
-        ChatSingleton.setChatsWindow(chatArray, user, this)
-        ChatSingleton.clearChatList()
+        ChatSingleton.setChatsWindow(chatArray, user, this)     // Заполняем сеттер для окна чатов в синглтоне
+        ChatSingleton.clearChatList()       // Очищаем старый список чатов во избежание дублирования чатов
 
+        // Подгрузка списка чатов при открытии окна
         try {
             val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
                 Requests().get(
@@ -58,11 +61,11 @@ class ChatsWindow : AppCompatActivity() {
                     el["messageText"].toString()
                 )
             }
-        } catch (error: Exception) {  // TODO
+        } catch (error: Exception) {
             ChatFunctions().showMessage("Ошибка", "${error.message}", this)
         }
 
-
+        // Откытие окна поиска чатов
         newChatBtn.setOnClickListener {
             startActivity(Intent(this, FindUsersWindow::class.java))
         }

@@ -1,5 +1,6 @@
 package com.example.rchat
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -15,6 +16,10 @@ import com.example.rchat.utils.Requests
 class AuthorizationWindow : AppCompatActivity() {
     private var login: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val pref = getSharedPreferences("Account", Context.MODE_PRIVATE)
+        if (pref.getBoolean("IsAuthorized", true))
+            startIntent(ChatsWindow::class.java)
 
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
@@ -47,6 +52,12 @@ class AuthorizationWindow : AppCompatActivity() {
                         "http://192.168.1.107:8080/login"
                     )
                     try {
+
+                        val editor = pref.edit()
+                        editor.putBoolean("IsAuthorized", true)
+                        editor.putString("User Login", login)
+                        editor.apply()
+
                         ChatSingleton.openConnection(authorizeLoginText.text.toString())
                         startIntent(ChatsWindow::class.java)
                     } catch (exception: Exception) {
@@ -84,6 +95,7 @@ class AuthorizationWindow : AppCompatActivity() {
     private fun startIntent(Window: Class<*>?) {
         val intent = Intent(this, Window)
         intent.putExtra("User Login", login)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         startActivity(intent)
     }
 }

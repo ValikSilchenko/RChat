@@ -16,33 +16,4 @@ class ChatFunctions {
         val messageWindow = message.create()
         messageWindow.show()
     }
-
-    fun addToList(
-        previewChatLogins: MutableList<String>,
-        previewChatReceivingTimes: MutableList<String>,
-        previewChatMessages: MutableList<String>,
-        previewLogin: String,
-        previewReceivingTime: String,
-        previewMessage: String
-    ) {
-        previewChatLogins.add(previewLogin)
-        previewChatReceivingTimes.add(previewReceivingTime)
-        previewChatMessages.add(previewMessage)
-    }
-
-    fun addToList(
-        incomingLogins: MutableList<String>,
-        incomingMessages: MutableList<String>,
-        outgoingLogins: MutableList<String>,
-        outgoingMessages: MutableList<String>,
-        incomingLogin: String,
-        incomingMessage: String,
-        outgoingLogin: String,
-        outgoingMessage: String
-    ) {
-        incomingLogins.add(incomingLogin)
-        incomingMessages.add(incomingMessage)
-        outgoingLogins.add(outgoingLogin)
-        outgoingMessages.add(outgoingMessage)
-    }
 }

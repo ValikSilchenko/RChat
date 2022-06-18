@@ -18,4 +18,5 @@
     <string name="login_text_settings_window">Логин</string>
     <string name="enter_phone_number_registration_window">Введите номер телефона</string>
     <string name="enter_user_login">Введите логин пользователя...</string>
+    <string name="exit_account_text">Выйти из аккаунта</string>
 </resources>
