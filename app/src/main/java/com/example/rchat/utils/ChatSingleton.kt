@@ -11,19 +11,28 @@ import org.json.JSONObject
 
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
-    private var webSocketClient = WebSocketClient()
+
     private lateinit var chatItselfContext: Activity
     private lateinit var chatsWindowContext: Activity
-    private var Billy = "Herrington" // Логин собеседника
-    private var Van = "Darkholme" // Логин авторизованного пользователя
-
     private lateinit var chatWindowLV: ListView
-    private var chatItselfLV: ListView? = null
-    var chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
-    val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
-
     private lateinit var chatArrayAdapter: PreviewChatLVAdapter
     private lateinit var messagesArrayAdapter: MessageItemLVAdapter
+    private var Billy = "Herrington" // Логин собеседника
+    private var Van = "Darkholme" // Логин авторизованного пользователя
+    private var webSocketClient = WebSocketClient()
+    private var chatItselfLV: ListView? = null
+    private var chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
+    private val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
+
+    private fun updateMessageList(senderLogin: String, message: String) {
+        if (senderLogin == Van) {
+            messagesArrayList.add(MessageItemDataClass("", "", senderLogin, message))
+        } else {
+            messagesArrayList.add(MessageItemDataClass(senderLogin, message, "", ""))
+        }
+        messagesArrayAdapter.notifyDataSetChanged()
+        chatItselfLV?.setSelection(messagesArrayList.size - 1)
+    }
 
     fun setChatsWindow(listView: ListView, username: String, incomingContext: Activity) {
         chatWindowLV = listView
@@ -101,18 +110,6 @@ object ChatSingleton {
 
         chatArrayAdapter.notifyDataSetChanged()
         println("4")
-//        chatWindowLV.adapter = chatArrayAdapter - затирает список чатов при получении сообщения
-    }
-
-    fun updateMessageList(senderLogin: String, message: String) {
-        if (senderLogin == Van) {
-            messagesArrayList.add(MessageItemDataClass("", "", senderLogin, message))
-        } else {
-            messagesArrayList.add(MessageItemDataClass(senderLogin, message, "", ""))
-        }
-        messagesArrayAdapter.notifyDataSetChanged()
-//        chatItselfLV?.adapter = messagesArrayAdapter - затирает все сообщения при получении нового
-        chatItselfLV?.setSelection(messagesArrayList.size - 1)
     }
 
     fun sendMessagesRequest() {
