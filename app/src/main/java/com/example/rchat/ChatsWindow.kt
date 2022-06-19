@@ -3,7 +3,7 @@ package com.example.rchat
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -24,9 +24,9 @@ class ChatsWindow : AppCompatActivity() {
         }
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.chats)
+        setContentView(R.layout.chats_window)
 
-        val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
+        val newChatBtn: ImageButton = findViewById(R.id.NewChat_Btn)
         val userLogin: TextView = findViewById(R.id.AppName)
         val chatArray: ListView = findViewById(R.id.ChatListView)
 

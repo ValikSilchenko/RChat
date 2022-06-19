@@ -17,13 +17,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/MainMenu_Btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:backgroundTint="?attr/button_color"
+            android:background="@drawable/roundcorner"
             android:clickable="true"
-            android:drawableTop="@drawable/ic_back_btn_img"
+            android:src="@drawable/ic_back_btn_img"
             android:focusable="true"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -36,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
-            android:text="User name / Chat name"
+            android:text="Recipient Login"
             android:textColor="?attr/text_color"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +52,6 @@
         android:layout_margin="10dp"
         android:divider="@null"
         android:dividerHeight="10dp"
-        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@id/BottomLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,15 +68,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/SendMessage_Btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:backgroundTint="?attr/button_color"
+            android:background="@drawable/roundcorner"
             android:clickable="true"
-            android:drawableTop="@drawable/ic_send_btn_img"
+            android:src="@drawable/ic_send_btn_img"
+            android:rotation="180"
             android:focusable="true"
-            app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

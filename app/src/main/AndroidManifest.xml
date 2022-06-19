@@ -13,11 +13,13 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Light">
+        android:theme="@style/Theme.Light"
+        android:screenOrientation="portrait">
 
         <activity
             android:name=".FindUsersWindow"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +29,8 @@
 
         <activity
             android:name=".ChatItselfWindow"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,7 +62,8 @@
 
         <activity
             android:name=".ChatsWindow"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -69,7 +73,8 @@
 
         <activity
             android:name=".SettingsWindow"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

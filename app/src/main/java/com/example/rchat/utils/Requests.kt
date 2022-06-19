@@ -1,8 +1,10 @@
 package com.example.rchat.utils
 
 import android.os.StrictMode
-import okhttp3.*
+import okhttp3.FormBody
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okio.IOException
 
 
@@ -50,23 +52,4 @@ class Requests {
             return response.body!!.string()
         }
     }
-
-//    val response = client.newCall(
-//        request
-//            .get()
-//            .url(queryData.build())
-//            .build()
-//    ).enqueue(object : Callback {
-//        override fun onFailure(call: Call, e: IOException) {
-//            e.printStackTrace()
-//        }
-//
-//        override fun onResponse(call: Call, response: Response) {
-//            response.use {
-//                if (!response.isSuccessful) throw IOException("Unexpected code $response")
-//
-//                ChatSingleton.func(response.body!!.string())
-//            }
-//        }
-//    })
 }

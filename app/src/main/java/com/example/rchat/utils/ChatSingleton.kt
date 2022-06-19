@@ -107,7 +107,6 @@ object ChatSingleton {
             chatsArrayList.add(PreviewChatDataClass(recipientLogin, time, message))
         }
         println("3")
-
         chatArrayAdapter.notifyDataSetChanged()
         println("4")
     }
