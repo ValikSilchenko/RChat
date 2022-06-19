@@ -1,5 +1,6 @@
 package com.example.rchat
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -17,11 +18,35 @@ class SettingsWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
 
+        val pref = getSharedPreferences("Account", Context.MODE_PRIVATE)
         val backBtn: Button = findViewById(R.id.SettingsChat_Btn)
 
         backBtn.setOnClickListener {
             startActivity(Intent(this, ChatsWindow::class.java))
         }
+
+        // Тестовая система выхода из аккаунта, не бейте, если не работает
+//        exitAccBtn.setOnClickListener {
+//            val messageBody = AlertDialog.Builder(this)
+//            messageBody
+//                .setTitle("Внимание")
+//                .setMessage("Вы уверены, что хотите выйти из текущего аккаунта?")
+//                .setCancelable(true)
+//                .setNegativeButton("Нет") { dialog, _ -> dialog.cancel() }
+//                .setPositiveButton("Да") { dialog, _ ->
+//
+//                    val editor = pref.edit()
+//                    editor.remove("IsAuthorized")
+//                    editor.remove("User Login")
+//                    editor.apply()
+//
+//                    val intent = Intent(this, AuthorizationWindow::class.java)
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                    startActivity(intent)
+//                }
+//            val messageWindow = messageBody.create()
+//            messageWindow.show()
+//        }
     }
 
     @Override
