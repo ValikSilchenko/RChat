@@ -95,7 +95,6 @@ object ChatSingleton {
         if (isInArray) {
             chatsArrayList[index].previewMessage = message
         } else {
-//            val data = PreviewChatDataClass(recipientLogin, time, message) - решил убрать ненужную переменную, тк можно сразу передать датакласс
             chatsArrayList.add(PreviewChatDataClass(recipientLogin, time, message))
         }
         println("3")
@@ -107,10 +106,8 @@ object ChatSingleton {
 
     fun updateMessageList(senderLogin: String, message: String) {
         if (senderLogin == Van) {
-//            val data1 = MessageItemDataClass("", "", senderLogin, message) - решил убрать ненужную переменную, тк можно сразу передать датакласс
             messagesArrayList.add(MessageItemDataClass("", "", senderLogin, message))
         } else {
-//            val data2 = MessageItemDataClass(senderLogin, message, "", "") - решил убрать ненужную переменную, тк можно сразу передать датакласс
             messagesArrayList.add(MessageItemDataClass(senderLogin, message, "", ""))
         }
         messagesArrayAdapter.notifyDataSetChanged()
