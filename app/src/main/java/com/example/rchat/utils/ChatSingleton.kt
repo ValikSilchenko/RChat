@@ -8,28 +8,36 @@ import com.example.rchat.MessageItemLVAdapter
 import com.example.rchat.PreviewChatDataClass
 import com.example.rchat.PreviewChatLVAdapter
 import org.json.JSONObject
-import kotlin.coroutines.coroutineContext
 
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
-    private var webSocketClient = WebSocketClient()
+
     private lateinit var chatItselfContext: Activity
     private lateinit var chatsWindowContext: Activity
-    private var Billy = "Herrington" // Логин собеседника
-    private var Arnold = "Shwarzenegger" // Логин атворизованного пользователя
-
     private lateinit var chatWindowLV: ListView
-    private var chatItselfLV: ListView? = null
-    var chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
-    val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
-
     private lateinit var chatArrayAdapter: PreviewChatLVAdapter
     private lateinit var messagesArrayAdapter: MessageItemLVAdapter
+    private var Billy = "Herrington" // Логин собеседника
+    private var Van = "Darkholme" // Логин авторизованного пользователя
+    private var webSocketClient = WebSocketClient()
+    private var chatItselfLV: ListView? = null
+    private var chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
+    private val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
+
+    private fun updateMessageList(senderLogin: String, message: String) {
+        if (senderLogin == Van) {
+            messagesArrayList.add(MessageItemDataClass("", "", senderLogin, message))
+        } else {
+            messagesArrayList.add(MessageItemDataClass(senderLogin, message, "", ""))
+        }
+        messagesArrayAdapter.notifyDataSetChanged()
+        chatItselfLV?.setSelection(messagesArrayList.size - 1)
+    }
 
     fun setChatsWindow(listView: ListView, username: String, incomingContext: Activity) {
         chatWindowLV = listView
         chatsWindowContext = incomingContext
-        Arnold = username
+        Van = username
         chatArrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
         chatWindowLV.adapter = chatArrayAdapter
     }
@@ -40,10 +48,6 @@ object ChatSingleton {
         chatItselfContext = incomingContext
         messagesArrayAdapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
         chatItselfLV!!.adapter = messagesArrayAdapter
-    }
-
-    fun getLogin(): String {
-        return Arnold
     }
 
     fun clearChatList() {
@@ -78,8 +82,8 @@ object ChatSingleton {
 
     fun sendMessage(recipientLogin: String, message: String) {
         //TODO("Обработка ошибки отправки сообщения")
-        webSocketClient.send("/app/user/", recipientLogin, "$Arnold $message")
-        updateMessageList(Arnold, message)
+        webSocketClient.send("/app/user/", recipientLogin, "$Van $message")
+        updateMessageList(Van, message)
         println("after send: msg list updated")
         updateChatList(recipientLogin, "", message)
         println("after send: chats list updated")
@@ -100,27 +104,12 @@ object ChatSingleton {
         if (isInArray) {
             chatsArrayList[index].previewMessage = message
         } else {
-            val data = PreviewChatDataClass(recipientLogin, time, message)
-            chatsArrayList.add(data)
+            chatsArrayList.add(PreviewChatDataClass(recipientLogin, time, message))
         }
         println("3")
 
         chatArrayAdapter.notifyDataSetChanged()
         println("4")
-//        chatWindowLV.adapter = chatArrayAdapter - затирает список чатов при получении сообщения
-    }
-
-    fun updateMessageList(senderLogin: String, message: String) {
-        if (senderLogin == Arnold) {
-            val data1 = MessageItemDataClass("", "", senderLogin, message)
-            messagesArrayList.add(data1)
-        } else {
-            val data2 = MessageItemDataClass(senderLogin, message, "", "")
-            messagesArrayList.add(data2)
-        }
-        messagesArrayAdapter.notifyDataSetChanged()
-//        chatItselfLV?.adapter = messagesArrayAdapter - затирает все сообщения при получении нового
-        chatItselfLV?.setSelection(messagesArrayList.size - 1)
     }
 
     fun sendMessagesRequest() {
@@ -129,7 +118,7 @@ object ChatSingleton {
         val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
             Requests().get(
                 mapOf(
-                    "sender" to Arnold,
+                    "sender" to Van,
                     "recipient" to Billy
                 ),
                 "http://192.168.1.107:8080/personal"

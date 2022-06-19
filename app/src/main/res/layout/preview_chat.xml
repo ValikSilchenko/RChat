@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:text="10:21"
         android:textColor="?attr/text_color"
-        android:textSize="18sp"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

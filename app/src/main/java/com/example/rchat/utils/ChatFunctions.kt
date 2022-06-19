@@ -1,7 +1,9 @@
 package com.example.rchat.utils
 
+import android.app.NotificationManager
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.NotificationCompat
 
 class ChatFunctions {
     fun showMessage(titleText: CharSequence, messageText: CharSequence, context: Context) {
@@ -17,32 +19,13 @@ class ChatFunctions {
         messageWindow.show()
     }
 
-    fun addToList(
-        previewChatLogins: MutableList<String>,
-        previewChatReceivingTimes: MutableList<String>,
-        previewChatMessages: MutableList<String>,
-        previewLogin: String,
-        previewReceivingTime: String,
-        previewMessage: String
-    ) {
-        previewChatLogins.add(previewLogin)
-        previewChatReceivingTimes.add(previewReceivingTime)
-        previewChatMessages.add(previewMessage)
-    }
-
-    fun addToList(
-        incomingLogins: MutableList<String>,
-        incomingMessages: MutableList<String>,
-        outgoingLogins: MutableList<String>,
-        outgoingMessages: MutableList<String>,
-        incomingLogin: String,
-        incomingMessage: String,
-        outgoingLogin: String,
-        outgoingMessage: String
-    ) {
-        incomingLogins.add(incomingLogin)
-        incomingMessages.add(incomingMessage)
-        outgoingLogins.add(outgoingLogin)
-        outgoingMessages.add(outgoingMessage)
+    fun showNotification(context: Context, login: String, message: String, id: Int) {
+        val builder = NotificationCompat.Builder(context)
+            .setContentTitle(login)
+            .setContentText(message)
+        // Добавить иконку уведомления
+        val notification = builder.build()
+        val notifManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notifManager.notify(id, notification)
     }
 }

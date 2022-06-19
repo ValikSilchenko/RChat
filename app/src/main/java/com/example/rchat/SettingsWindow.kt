@@ -1,5 +1,6 @@
 package com.example.rchat
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -17,6 +18,7 @@ class SettingsWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
 
+        val pref = getSharedPreferences("Account", Context.MODE_PRIVATE)
         val backBtn: Button = findViewById(R.id.SettingsChat_Btn)
 
         backBtn.setOnClickListener {

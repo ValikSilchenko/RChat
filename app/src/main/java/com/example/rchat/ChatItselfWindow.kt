@@ -7,7 +7,6 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatSingleton
-import org.json.JSONObject
 
 class ChatItselfWindow : AppCompatActivity() {
 
@@ -21,7 +20,6 @@ class ChatItselfWindow : AppCompatActivity() {
         val chatName: TextView = findViewById(R.id.UserName_ChatText)
         val messagesListView: ListView = findViewById(R.id.Messages_List)
         val messageInput: TextView = findViewById(R.id.Message_Input)
-        var response: List<JSONObject>
 
         ChatSingleton.setChatItselfWindow(
             messagesListView,
