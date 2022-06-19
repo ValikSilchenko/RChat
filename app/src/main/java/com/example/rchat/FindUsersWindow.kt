@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
+import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
 import com.example.rchat.utils.Requests
 
@@ -36,7 +37,7 @@ class FindUsersWindow : AppCompatActivity() {
                         Requests().get(
                             mapOf(
                                 "username" to loginInput.text.toString()
-                            ), "http://192.168.1.107:8080/find"
+                            ), "${ChatSingleton.httpAddress}/find"
                         )
                     )
                     for (element in foundUsers) {

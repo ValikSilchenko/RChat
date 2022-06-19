@@ -41,7 +41,7 @@ class ChatsWindow : AppCompatActivity() {
             val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
                 Requests().get(
                     mapOf("username" to user),
-                    "http://192.168.1.107:8080/chats"
+                    "${ChatSingleton.httpAddress}/chats"
                 )
             )
             var username: String

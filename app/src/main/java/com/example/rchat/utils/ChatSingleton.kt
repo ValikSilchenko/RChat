@@ -12,6 +12,8 @@ import org.json.JSONObject
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
 
+    const val httpAddress = "http://192.168.1.107:8080"
+
     private lateinit var chatItselfContext: Activity
     private lateinit var chatsWindowContext: Activity
     private lateinit var chatWindowLV: ListView
@@ -61,7 +63,7 @@ object ChatSingleton {
     }
 
     fun openConnection(username: String) {
-        webSocketClient.connect("http://192.168.1.107:8080/ws", username)
+        webSocketClient.connect("$httpAddress/ws", username)
     }
 
     fun processMessage(message: String) {
@@ -120,7 +122,7 @@ object ChatSingleton {
                     "sender" to Van,
                     "recipient" to Billy
                 ),
-                "http://192.168.1.107:8080/personal"
+                "$httpAddress/personal"
             )
         )
         for (el in response)

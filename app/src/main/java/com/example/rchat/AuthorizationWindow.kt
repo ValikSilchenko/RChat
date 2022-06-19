@@ -15,7 +15,7 @@ import kotlinx.coroutines.async
 
 
 class AuthorizationWindow : AppCompatActivity() {
-    private var login: String = ""
+    private lateinit var login: String
     override fun onCreate(savedInstanceState: Bundle?) {
 
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
@@ -47,7 +47,7 @@ class AuthorizationWindow : AppCompatActivity() {
                                 "username" to authorizeLoginText.text.toString(),
                                 "password" to authorizePasswordText.text.toString()
                             ),
-                            "http://192.168.1.107:8080/login"
+                            "${ChatSingleton.httpAddress}/login"
                         )
                     }
                     try {

@@ -1,6 +1,5 @@
 package com.example.rchat
 
-import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -14,7 +13,7 @@ import com.example.rchat.utils.Requests
 
 
 class RegistrationWindow : AppCompatActivity() {
-    private var login: String = ""
+    private lateinit var login: String
     override fun onCreate(savedInstanceState: Bundle?) {
 
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
@@ -25,7 +24,6 @@ class RegistrationWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_window)
 
-        val pref = getSharedPreferences("Account", Context.MODE_PRIVATE)
         val loginText: EditText = findViewById(R.id.RegistrationLogin_Input)
         val emailText: EditText = findViewById(R.id.RegistrationEmail_Input)
         val phoneNumberText: EditText = findViewById(R.id.RegistrationPhoneNumber_Input)
@@ -55,15 +53,9 @@ class RegistrationWindow : AppCompatActivity() {
                             "phone" to phoneNumberText.text.toString(),
                             "password" to passwordText.text.toString()
                         ),
-                        "http://192.168.1.107:8080/user"
+                        "${ChatSingleton.httpAddress}/user"
                     )
                     try {
-
-//                        val editor = pref.edit()
-//                        editor.putBoolean("IsAuthorized", true)
-//                        editor.putString("User Login", login)
-//                        editor.apply()
-
                         ChatSingleton.openConnection(loginText.text.toString())
                         startIntent(ChatsWindow::class.java)
                     } catch (exception: Exception) {
