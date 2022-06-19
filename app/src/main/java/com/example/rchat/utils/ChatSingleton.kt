@@ -8,7 +8,6 @@ import com.example.rchat.MessageItemLVAdapter
 import com.example.rchat.PreviewChatDataClass
 import com.example.rchat.PreviewChatLVAdapter
 import org.json.JSONObject
-import kotlin.coroutines.coroutineContext
 
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
@@ -16,7 +15,7 @@ object ChatSingleton {
     private lateinit var chatItselfContext: Activity
     private lateinit var chatsWindowContext: Activity
     private var Billy = "Herrington" // Логин собеседника
-    private var Arnold = "Shwarzenegger" // Логин атворизованного пользователя
+    private var Van = "Darkholme" // Логин авторизованного пользователя
 
     private lateinit var chatWindowLV: ListView
     private var chatItselfLV: ListView? = null
@@ -29,7 +28,7 @@ object ChatSingleton {
     fun setChatsWindow(listView: ListView, username: String, incomingContext: Activity) {
         chatWindowLV = listView
         chatsWindowContext = incomingContext
-        Arnold = username
+        Van = username
         chatArrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
         chatWindowLV.adapter = chatArrayAdapter
     }
@@ -40,10 +39,6 @@ object ChatSingleton {
         chatItselfContext = incomingContext
         messagesArrayAdapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
         chatItselfLV!!.adapter = messagesArrayAdapter
-    }
-
-    fun getLogin(): String {
-        return Arnold
     }
 
     fun clearChatList() {
@@ -78,8 +73,8 @@ object ChatSingleton {
 
     fun sendMessage(recipientLogin: String, message: String) {
         //TODO("Обработка ошибки отправки сообщения")
-        webSocketClient.send("/app/user/", recipientLogin, "$Arnold $message")
-        updateMessageList(Arnold, message)
+        webSocketClient.send("/app/user/", recipientLogin, "$Van $message")
+        updateMessageList(Van, message)
         println("after send: msg list updated")
         updateChatList(recipientLogin, "", message)
         println("after send: chats list updated")
@@ -100,8 +95,8 @@ object ChatSingleton {
         if (isInArray) {
             chatsArrayList[index].previewMessage = message
         } else {
-            val data = PreviewChatDataClass(recipientLogin, time, message)
-            chatsArrayList.add(data)
+//            val data = PreviewChatDataClass(recipientLogin, time, message) - решил убрать ненужную переменную, тк можно сразу передать датакласс
+            chatsArrayList.add(PreviewChatDataClass(recipientLogin, time, message))
         }
         println("3")
 
@@ -111,12 +106,12 @@ object ChatSingleton {
     }
 
     fun updateMessageList(senderLogin: String, message: String) {
-        if (senderLogin == Arnold) {
-            val data1 = MessageItemDataClass("", "", senderLogin, message)
-            messagesArrayList.add(data1)
+        if (senderLogin == Van) {
+//            val data1 = MessageItemDataClass("", "", senderLogin, message) - решил убрать ненужную переменную, тк можно сразу передать датакласс
+            messagesArrayList.add(MessageItemDataClass("", "", senderLogin, message))
         } else {
-            val data2 = MessageItemDataClass(senderLogin, message, "", "")
-            messagesArrayList.add(data2)
+//            val data2 = MessageItemDataClass(senderLogin, message, "", "") - решил убрать ненужную переменную, тк можно сразу передать датакласс
+            messagesArrayList.add(MessageItemDataClass(senderLogin, message, "", ""))
         }
         messagesArrayAdapter.notifyDataSetChanged()
 //        chatItselfLV?.adapter = messagesArrayAdapter - затирает все сообщения при получении нового
@@ -129,7 +124,7 @@ object ChatSingleton {
         val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
             Requests().get(
                 mapOf(
-                    "sender" to Arnold,
+                    "sender" to Van,
                     "recipient" to Billy
                 ),
                 "http://192.168.1.107:8080/personal"
