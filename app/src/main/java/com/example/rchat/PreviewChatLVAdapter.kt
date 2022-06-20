@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.isVisible
 
 class PreviewChatLVAdapter(
     private val context: Activity,
@@ -23,14 +21,12 @@ class PreviewChatLVAdapter(
         val previewLogin: TextView = view.findViewById(R.id.Preview_Chat_Sender_Login)
         val previewTime: TextView = view.findViewById(R.id.Preview_Chat_Receiving_Time)
         val previewMessage: TextView = view.findViewById(R.id.Preview_Chat_Message_Txt)
-        val unreadImg: ImageView = view.findViewById(R.id.Unread_Img)
 
         previewLogin.text = arrayList[position].previewLogin
         previewTime.text = arrayList[position].previewTime
         previewMessage.text = arrayList[position].previewMessage
 
         view.setOnClickListener {
-            unreadImg.isVisible = false
             val intent = Intent(context, ChatItselfWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             intent.putExtra("Chat Name", previewLogin.text.toString())

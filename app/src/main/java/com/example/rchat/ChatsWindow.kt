@@ -30,7 +30,8 @@ class ChatsWindow : AppCompatActivity() {
         val userLogin: TextView = findViewById(R.id.AppName)
         val chatArray: ListView = findViewById(R.id.ChatListView)
 
-        val user = intent.getStringExtra("User Login").toString()
+//        val user = intent.getStringExtra("User Login").toString()
+        val user = ChatFunctions().getSavedLogin(this)
         userLogin.text = user
 
         ChatSingleton.setChatsWindow(chatArray, user, this)

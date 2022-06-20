@@ -12,7 +12,7 @@ import org.json.JSONObject
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
 
-    const val httpAddress = "http://192.168.1.107:8080"
+    const val httpAddress = "http://194.87.248.192:8080/"
 
     private lateinit var chatItselfContext: Activity
     private lateinit var chatsWindowContext: Activity
