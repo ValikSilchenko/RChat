@@ -11,6 +11,7 @@ import org.json.JSONObject
 
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
+    var serverUrl = "http://194.87.248.192:8080"
 
     private lateinit var chatItselfContext: Activity
     private lateinit var chatsWindowContext: Activity
@@ -61,7 +62,7 @@ object ChatSingleton {
     }
 
     fun openConnection(username: String) {
-        webSocketClient.connect("http://192.168.1.107:8080/ws", username)
+        webSocketClient.connect(username)
     }
 
     fun processMessage(message: String) {
@@ -82,7 +83,7 @@ object ChatSingleton {
 
     fun sendMessage(recipientLogin: String, message: String) {
         //TODO("Обработка ошибки отправки сообщения")
-        webSocketClient.send("/app/user/", recipientLogin, "$Van $message")
+        webSocketClient.send(recipientLogin, "$Van $message")
         updateMessageList(Van, message)
         println("after send: msg list updated")
         updateChatList(recipientLogin, "", message)
@@ -121,7 +122,7 @@ object ChatSingleton {
                     "sender" to Van,
                     "recipient" to Billy
                 ),
-                "http://192.168.1.107:8080/personal"
+                "$serverUrl/personal"
             )
         )
         for (el in response)

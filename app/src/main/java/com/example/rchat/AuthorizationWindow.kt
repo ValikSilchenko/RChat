@@ -47,7 +47,7 @@ class AuthorizationWindow : AppCompatActivity() {
                                 "username" to authorizeLoginText.text.toString(),
                                 "password" to authorizePasswordText.text.toString()
                             ),
-                            "http://192.168.1.107:8080/login"
+                            "${ChatSingleton.serverUrl}/login"
                         )
                     }
                     try {

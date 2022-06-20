@@ -55,7 +55,7 @@ class RegistrationWindow : AppCompatActivity() {
                             "phone" to phoneNumberText.text.toString(),
                             "password" to passwordText.text.toString()
                         ),
-                        "http://192.168.1.107:8080/user"
+                        "${ChatSingleton.serverUrl}/user"
                     )
                     try {
 
