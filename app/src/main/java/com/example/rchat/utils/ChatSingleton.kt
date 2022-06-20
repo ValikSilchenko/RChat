@@ -32,6 +32,10 @@ object ChatSingleton {
             messagesArrayList.add(MessageItemDataClass(senderLogin, message, "", ""))
         }
         messagesArrayAdapter.notifyDataSetChanged()
+        setSelection()
+    }
+
+    fun setSelection() {
         chatItselfLV?.setSelection(messagesArrayList.size - 1)
     }
 
@@ -76,6 +80,7 @@ object ChatSingleton {
             if (parsedMessage[0] == Billy) {
                 println("//")
                 updateMessageList(parsedMessage[0], parsedMessage[1])
+                setSelection()
                 println("after receive: msg list updated")
             }
         }
