@@ -2,7 +2,7 @@ package com.example.rchat
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,10 +13,10 @@ class ChatItselfWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.chat_itself)
+        setContentView(R.layout.chat_itself_window)
 
-        val backToMainMenuBtn: Button = findViewById(R.id.MainMenu_Btn)
-        val sendMessageBtn: Button = findViewById(R.id.SendMessage_Btn)
+        val backToMainMenuBtn: ImageButton = findViewById(R.id.MainMenu_Btn)
+        val sendMessageBtn: ImageButton = findViewById(R.id.SendMessage_Btn)
         val chatName: TextView = findViewById(R.id.UserName_ChatText)
         val messagesListView: ListView = findViewById(R.id.Messages_List)
         val messageInput: TextView = findViewById(R.id.Message_Input)
@@ -52,7 +52,7 @@ class ChatItselfWindow : AppCompatActivity() {
         startIntent()
     }
 
-    fun startIntent() {
+    private fun startIntent() {
         val intent = Intent(this, ChatsWindow::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivity(intent)

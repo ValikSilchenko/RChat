@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import android.widget.Toast
 
 class PreviewChatLVAdapter(
     private val context: Activity,
@@ -28,10 +27,9 @@ class PreviewChatLVAdapter(
         previewMessage.text = arrayList[position].previewMessage
 
         view.setOnClickListener {
-            val name = previewLogin.text.toString()
             val intent = Intent(context, ChatItselfWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-            intent.putExtra("Chat Name", name)
+            intent.putExtra("Chat Name", previewLogin.text.toString())
             context.startActivity(intent)
         }
 

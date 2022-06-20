@@ -28,4 +28,26 @@ class ChatFunctions {
         val notifManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notifManager.notify(id, notification)
     }
+
+    fun isAuthorized(context: Context): Boolean {
+        val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
+        val isAuthorized = prefs.getBoolean("IS_AUTHORIZED_KEY", false)
+        if (isAuthorized)
+            return true
+        return false
+    }
+
+    fun saveData(context: Context, stringToSave: String, isAuthorized: Boolean) {
+        val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.apply {
+            putString("LOGIN_KEY", stringToSave)
+            putBoolean("IS_AUTHORIZED_KEY", isAuthorized)
+        }.apply()
+    }
+
+    fun getSavedLogin(context: Context): String {
+        val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
+        return prefs.getString("LOGIN_KEY", "NaN").toString()
+    }
 }

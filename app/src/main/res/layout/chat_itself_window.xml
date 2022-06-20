@@ -17,14 +17,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/MainMenu_Btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@drawable/roundcorner"
             android:backgroundTint="?attr/button_color"
             android:clickable="true"
-            android:drawableTop="@drawable/ic_back_btn_img"
             android:focusable="true"
+            android:src="@drawable/ic_back_btn_img"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/UserName_ChatText"
@@ -36,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
-            android:text="User name / Chat name"
+            android:text="Recipient Login"
             android:textColor="?attr/text_color"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +52,6 @@
         android:layout_margin="10dp"
         android:divider="@null"
         android:dividerHeight="10dp"
-        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@id/BottomLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,30 +68,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/SendMessage_Btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@drawable/roundcorner"
             android:backgroundTint="?attr/button_color"
             android:clickable="true"
-            android:drawableTop="@drawable/ic_send_btn_img"
             android:focusable="true"
-            app:cornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:rotation="180"
+            android:src="@drawable/ic_send_btn_img" />
 
         <EditText
             android:id="@+id/Message_Input"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
             android:backgroundTint="?attr/edit_text_color"
             android:hint="@string/Message_Input_Hint"
-            android:inputType="textCapSentences"
+            android:inputType="textMultiLine"
+            android:maxHeight="150dp"
             android:textColor="?attr/text_color"
-            android:textColorHint="?attr/edit_text_color"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/SendMessage_Btn"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textColorHint="?attr/edit_text_color" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

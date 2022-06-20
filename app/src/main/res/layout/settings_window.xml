@@ -7,15 +7,17 @@
     android:background="?attr/background_color"
     tools:context=".SettingsWindow">
 
-    <Button
+    <ImageButton
         android:id="@+id/SettingsChat_Btn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:clickable="true"
-        android:drawableTop="@drawable/ic_back_btn_img"
+        android:src="@drawable/ic_back_btn_img"
         android:focusable="true"
+        android:backgroundTint="?attr/button_color"
+        android:background="@drawable/roundcorner"
         app:cornerRadius="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
