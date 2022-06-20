@@ -21,11 +21,11 @@
             android:id="@+id/MainMenu_Btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:backgroundTint="?attr/button_color"
             android:background="@drawable/roundcorner"
+            android:backgroundTint="?attr/button_color"
             android:clickable="true"
-            android:src="@drawable/ic_back_btn_img"
             android:focusable="true"
+            android:src="@drawable/ic_back_btn_img"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/UserName_ChatText"
@@ -72,27 +72,22 @@
             android:id="@+id/SendMessage_Btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:backgroundTint="?attr/button_color"
             android:background="@drawable/roundcorner"
+            android:backgroundTint="?attr/button_color"
             android:clickable="true"
-            android:src="@drawable/ic_send_btn_img"
-            android:rotation="180"
             android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:rotation="180"
+            android:src="@drawable/ic_send_btn_img" />
 
         <EditText
             android:id="@+id/Message_Input"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
             android:backgroundTint="?attr/edit_text_color"
             android:hint="@string/Message_Input_Hint"
-            android:inputType="textCapSentences"
+            android:inputType="textMultiLine"
+            android:maxHeight="150dp"
             android:textColor="?attr/text_color"
-            android:textColorHint="?attr/edit_text_color"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/SendMessage_Btn"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textColorHint="?attr/edit_text_color" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
