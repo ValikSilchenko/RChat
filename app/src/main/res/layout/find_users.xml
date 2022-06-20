@@ -10,11 +10,11 @@
         android:id="@+id/FindUserBack_Btn"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:backgroundTint="?attr/button_color"
-        android:drawableTop="@drawable/ic_back_btn_img"
         android:layout_margin="10dp"
+        android:backgroundTint="?attr/button_color"
+        android:clickable="true"
+        android:drawableTop="@drawable/ic_back_btn_img"
+        android:focusable="true"
         app:cornerRadius="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,30 +23,31 @@
         android:id="@+id/Container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layoutDirection="rtl"
         android:layout_margin="10dp"
-        app:layout_constraintTop_toBottomOf="@id/FindUserBack_Btn"
+        android:layoutDirection="rtl"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/FindUserBack_Btn">
 
         <Button
             android:id="@+id/FindUserFind_Btn"
             android:layout_width="70dp"
             android:layout_height="50dp"
+            android:backgroundTint="?attr/button_color"
             android:clickable="true"
-            android:focusable="true"
             android:drawableTop="@drawable/ic_search_img"
-            android:backgroundTint="?attr/button_color"/>
+            android:focusable="true" />
 
         <EditText
             android:id="@+id/FindUserLogin_EditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:backgroundTint="?attr/edit_text_color"
             android:hint="@string/enter_user_login"
+            android:layoutDirection="ltr"
             android:textColor="?attr/text_color"
-            android:textColorHint="?attr/edit_text_color"
-            android:layout_marginStart="10dp"/>
+            android:textColorHint="?attr/edit_text_color" />
     </LinearLayout>
 
     <ListView
@@ -54,12 +55,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
-        android:dividerHeight="5dp"
         android:divider="@null"
+        android:dividerHeight="5dp"
         android:scrollbars="none"
-        app:layout_constraintTop_toBottomOf="@id/Container"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/preview_chat"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Container"
+        tools:listitem="@layout/preview_chat" />
 </androidx.constraintlayout.widget.ConstraintLayout>

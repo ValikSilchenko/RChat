@@ -15,7 +15,7 @@ import kotlinx.coroutines.async
 
 
 class AuthorizationWindow : AppCompatActivity() {
-    private var login: String = ""
+    private lateinit var login: String
     override fun onCreate(savedInstanceState: Bundle?) {
 
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
@@ -33,7 +33,7 @@ class AuthorizationWindow : AppCompatActivity() {
 
         // Переход на страницу регистрации
         hasNoAccountBtn.setOnClickListener {
-            startIntent(RegistrationWindow::class.java)
+            startIntent(RegistrationWindow::class.java, "")
         }
 
         // Вход в аккаунт
@@ -44,7 +44,7 @@ class AuthorizationWindow : AppCompatActivity() {
                     GlobalScope.async {
                         Requests().post(
                             mapOf(
-                                "username" to authorizeLoginText.text.toString(),
+                                "username" to login,
                                 "password" to authorizePasswordText.text.toString()
                             ),
                             "${ChatSingleton.serverUrl}/login"
@@ -52,9 +52,9 @@ class AuthorizationWindow : AppCompatActivity() {
                     }
                     try {
                         GlobalScope.async {
-                            ChatSingleton.openConnection(authorizeLoginText.text.toString())
+                            ChatSingleton.openConnection(login)
                         }
-                        startIntent(ChatsWindow::class.java)
+                        startIntent(ChatsWindow::class.java, login)
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
                         //TODO("Обработка ошибки при отсутствии интернетов")
@@ -88,7 +88,7 @@ class AuthorizationWindow : AppCompatActivity() {
     }
 
     // Открытие нового окна
-    private fun startIntent(Window: Class<*>?) {
+    private fun startIntent(Window: Class<*>?, login: String) {
         val intent = Intent(this, Window)
         intent.putExtra("User Login", login)
         startActivity(intent)
