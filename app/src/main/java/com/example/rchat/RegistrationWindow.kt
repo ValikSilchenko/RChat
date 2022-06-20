@@ -1,6 +1,5 @@
 package com.example.rchat
 
-import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -14,7 +13,7 @@ import com.example.rchat.utils.Requests
 
 
 class RegistrationWindow : AppCompatActivity() {
-    private var login: String = ""
+    private lateinit var login: String
     override fun onCreate(savedInstanceState: Bundle?) {
 
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
@@ -25,7 +24,6 @@ class RegistrationWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_window)
 
-        val pref = getSharedPreferences("Account", Context.MODE_PRIVATE)
         val loginText: EditText = findViewById(R.id.RegistrationLogin_Input)
         val emailText: EditText = findViewById(R.id.RegistrationEmail_Input)
         val phoneNumberText: EditText = findViewById(R.id.RegistrationPhoneNumber_Input)
@@ -36,7 +34,7 @@ class RegistrationWindow : AppCompatActivity() {
 
         // Нажатие кнопки RegistrationAuthorize_Btn
         authorizeBtn.setOnClickListener {
-            startIntent(AuthorizationWindow::class.java)
+            startIntent(AuthorizationWindow::class.java, "")
         }
 
         // Нажатие кнопки RegistrationRegistration_Btn
@@ -50,34 +48,28 @@ class RegistrationWindow : AppCompatActivity() {
                 try {
                     Requests().post(
                         mapOf(
-                            "username" to loginText.text.toString(),
+                            "username" to login,
                             "email" to emailText.text.toString(),
                             "phone" to phoneNumberText.text.toString(),
                             "password" to passwordText.text.toString()
                         ),
                         "${ChatSingleton.serverUrl}/user"
                     )
+
                     try {
+                        ChatSingleton.openConnection(login)
 
-//                        val editor = pref.edit()
-//                        editor.putBoolean("IsAuthorized", true)
-//                        editor.putString("User Login", login)
-//                        editor.apply()
-
-                        ChatSingleton.openConnection(loginText.text.toString())
-                        startIntent(ChatsWindow::class.java)
+                        startIntent(ChatsWindow::class.java, login)
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
                         //TODO("Обработка ошибки при отсутствии интернетов")
                     }
-                    startIntent(ChatsWindow::class.java)
                 } catch (exception: Exception) {
                     ChatFunctions().showMessage(
                         "Ошибка",
                         "Ошибка отправки данных. Код: ${exception.message}", this
                     )
                 }
-
             } else
                 ChatFunctions().showMessage(
                     "Ошибка",
@@ -102,11 +94,9 @@ class RegistrationWindow : AppCompatActivity() {
         exitWindow.show()
     }
 
-    // Открыть новое окно
-    private fun startIntent(Window: Class<*>?) {
+    private fun startIntent(Window: Class<*>?, login: String) {
         val intent = Intent(this, Window)
         intent.putExtra("User Login", login)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         startActivity(intent)
     }
 }

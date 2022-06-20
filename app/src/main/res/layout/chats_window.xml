@@ -52,6 +52,7 @@
         android:dividerHeight="5dp"
         android:divider="@null"
         android:scrollbars="none"
+        android:longClickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

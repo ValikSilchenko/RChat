@@ -86,6 +86,7 @@
             android:backgroundTint="?attr/edit_text_color"
             android:hint="@string/Message_Input_Hint"
             android:inputType="textMultiLine"
+            android:layoutDirection="ltr"
             android:maxHeight="150dp"
             android:textColor="?attr/text_color"
             android:textColorHint="?attr/edit_text_color" />

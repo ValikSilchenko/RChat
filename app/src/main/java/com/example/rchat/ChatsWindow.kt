@@ -47,8 +47,7 @@ class ChatsWindow : AppCompatActivity() {
             var username: String
             for (el in response) {
                 username =
-                    if ((el["sender"] as JSONObject)["username"].toString() == user
-                    )
+                    if ((el["sender"] as JSONObject)["username"].toString() == user)
                         (el["recipient"] as JSONObject)["username"].toString()
                     else
                         (el["sender"] as JSONObject)["username"].toString()
@@ -59,7 +58,7 @@ class ChatsWindow : AppCompatActivity() {
                 )
             }
         } catch (error: Exception) {
-            ChatFunctions().showMessage("Ошибка", "${error.message}", this)
+            ChatFunctions().showMessage("Ошибка", "Окно чатов: ${error.message}", this)
         }
 
         // Откытие окна поиска чатов

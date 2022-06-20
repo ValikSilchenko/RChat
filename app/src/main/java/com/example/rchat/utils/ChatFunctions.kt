@@ -50,4 +50,10 @@ class ChatFunctions {
         val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
         return prefs.getString("LOGIN_KEY", "NaN").toString()
     }
+
+//    fun transformPhoneNumber(phoneNumber: String): String {
+//        for (i in phoneNumber.indices) {
+//
+//        }
+//    }
 }
