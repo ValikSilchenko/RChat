@@ -66,7 +66,9 @@ class RegistrationWindow : AppCompatActivity() {
                         "${ChatSingleton.serverUrl}/user"
                     )
                     try {
-                        ChatSingleton.openConnection(login)
+                        GlobalScope.async {
+                            ChatSingleton.openConnection(login)
+                        }
                         ChatFunctions().saveData(this, login, true)
                         startIntent(ChatsWindow::class.java, login)
                     } catch (exception: Exception) {
