@@ -3,7 +3,7 @@ package com.example.rchat
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.ImageButton
+import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -24,14 +24,13 @@ class ChatsWindow : AppCompatActivity() {
         }
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.chats_window)
+        setContentView(R.layout.chats)
 
-        val newChatBtn: ImageButton = findViewById(R.id.NewChat_Btn)
+        val newChatBtn: Button = findViewById(R.id.NewChat_Btn)
         val userLogin: TextView = findViewById(R.id.AppName)
         val chatArray: ListView = findViewById(R.id.ChatListView)
 
-//        val user = intent.getStringExtra("User Login").toString()
-        val user = ChatFunctions().getSavedLogin(this)
+        val user = intent.getStringExtra("User Login").toString()
         userLogin.text = user
 
         ChatSingleton.setChatsWindow(chatArray, user, this)
@@ -42,7 +41,7 @@ class ChatsWindow : AppCompatActivity() {
             val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
                 Requests().get(
                     mapOf("username" to user),
-                    "${ChatSingleton.httpAddress}/chats"
+                    "${ChatSingleton.serverUrl}/chats"
                 )
             )
             var username: String

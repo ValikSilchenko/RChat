@@ -27,7 +27,9 @@ class FindUsersWindow : AppCompatActivity() {
         var foundUsers: List<String>
 
         backToChatsWindow.setOnClickListener {
-            startActivity(Intent(this, ChatsWindow::class.java))
+            onBackPressed()
+//            intent.putExtra("User Login", login)
+//            startActivity(Intent(this, ChatsWindow::class.java))
         }
 
         findBtn.setOnClickListener {
@@ -37,7 +39,7 @@ class FindUsersWindow : AppCompatActivity() {
                         Requests().get(
                             mapOf(
                                 "username" to loginInput.text.toString()
-                            ), "${ChatSingleton.httpAddress}/find"
+                            ), "${ChatSingleton.serverUrl}/find"
                         )
                     )
                     for (element in foundUsers) {
@@ -60,6 +62,7 @@ class FindUsersWindow : AppCompatActivity() {
 
     @Override
     override fun onBackPressed() {
-        startActivity(Intent(this, ChatsWindow::class.java))
+        super.onBackPressed()
+//        startActivity(Intent(this, ChatsWindow::class.java))
     }
 }

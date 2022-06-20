@@ -1,5 +1,6 @@
 package com.example.rchat
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -10,12 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.Requests
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 
 
 class RegistrationWindow : AppCompatActivity() {
-    private lateinit var login: String
+    private var login: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
 
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
@@ -26,14 +25,7 @@ class RegistrationWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_window)
 
-        if (ChatFunctions().isAuthorized(this)) {
-            login = ChatFunctions().getSavedLogin(this)
-            GlobalScope.async {
-                ChatSingleton.openConnection(login)
-            }
-            startIntent(ChatsWindow::class.java, login)
-        }
-
+        val pref = getSharedPreferences("Account", Context.MODE_PRIVATE)
         val loginText: EditText = findViewById(R.id.RegistrationLogin_Input)
         val emailText: EditText = findViewById(R.id.RegistrationEmail_Input)
         val phoneNumberText: EditText = findViewById(R.id.RegistrationPhoneNumber_Input)
@@ -44,7 +36,7 @@ class RegistrationWindow : AppCompatActivity() {
 
         // Нажатие кнопки RegistrationAuthorize_Btn
         authorizeBtn.setOnClickListener {
-            startActivity(Intent(this, AuthorizationWindow::class.java))
+            startIntent(AuthorizationWindow::class.java)
         }
 
         // Нажатие кнопки RegistrationRegistration_Btn
@@ -56,28 +48,29 @@ class RegistrationWindow : AppCompatActivity() {
             ) {
                 login = loginText.text.toString()
                 try {
-                    GlobalScope.async {
-                        Requests().post(
-                            mapOf(
-                                "username" to login,
-                                "email" to emailText.text.toString(),
-                                "phone" to phoneNumberText.text.toString(),
-                                "password" to passwordText.text.toString()
-                            ),
-                            "${ChatSingleton.httpAddress}/user"
-                        )
-                    }
+                    Requests().post(
+                        mapOf(
+                            "username" to loginText.text.toString(),
+                            "email" to emailText.text.toString(),
+                            "phone" to phoneNumberText.text.toString(),
+                            "password" to passwordText.text.toString()
+                        ),
+                        "${ChatSingleton.serverUrl}/user"
+                    )
                     try {
-                        ChatFunctions().saveData(this, login, true)
-                        GlobalScope.async {
-                            ChatSingleton.openConnection(login)
-                        }
-                        startIntent(ChatsWindow::class.java, ChatFunctions().getSavedLogin(this))
+
+//                        val editor = pref.edit()
+//                        editor.putBoolean("IsAuthorized", true)
+//                        editor.putString("User Login", login)
+//                        editor.apply()
+
+                        ChatSingleton.openConnection(loginText.text.toString())
+                        startIntent(ChatsWindow::class.java)
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
                         //TODO("Обработка ошибки при отсутствии интернетов")
                     }
-//                    startIntent(ChatsWindow::class.java)
+                    startIntent(ChatsWindow::class.java)
                 } catch (exception: Exception) {
                     ChatFunctions().showMessage(
                         "Ошибка",
@@ -110,10 +103,10 @@ class RegistrationWindow : AppCompatActivity() {
     }
 
     // Открыть новое окно
-    private fun startIntent(Window: Class<*>?, login: String) {
+    private fun startIntent(Window: Class<*>?) {
         val intent = Intent(this, Window)
         intent.putExtra("User Login", login)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         startActivity(intent)
     }
 }
