@@ -51,6 +51,15 @@ class ChatFunctions {
         return prefs.getString("LOGIN_KEY", "NaN").toString()
     }
 
+    fun deleteData(context: Context) {
+        val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.apply {
+            remove("LOGIN_KEY")
+            remove("IS_AUTHORIZED_KEY")
+        }.apply()
+    }
+
 //    fun transformPhoneNumber(phoneNumber: String): String {
 //        for (i in phoneNumber.indices) {
 //

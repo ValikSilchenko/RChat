@@ -51,7 +51,6 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="2dp"
         android:maxLines="1"
-        android:ellipsize="end"
         app:layout_constraintTop_toBottomOf="@id/Preview_Chat_Sender_Login"
         app:layout_constraintStart_toEndOf="@id/Preview_Chat_Avatar_Img"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

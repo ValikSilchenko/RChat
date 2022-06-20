@@ -43,6 +43,7 @@ class ChatItselfWindow : AppCompatActivity() {
                     messageInput.text.toString()
                 )
                 messageInput.text = null
+                ChatSingleton.setSelection()
             }
         }
     }

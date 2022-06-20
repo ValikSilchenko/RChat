@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
@@ -25,6 +24,14 @@ class AuthorizationWindow : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.authorize_window)
+
+        if (ChatFunctions().isAuthorized(this)) {
+            login = ChatFunctions().getSavedLogin(this)
+            GlobalScope.async {
+                ChatSingleton.openConnection(login)
+            }
+            startIntent(ChatsWindow::class.java, login)
+        }
 
         val authorizeLoginText: EditText = findViewById(R.id.AuthorizeLogin_Input)
         val authorizePasswordText: EditText = findViewById(R.id.AuthorizePassword_Input)
@@ -54,6 +61,7 @@ class AuthorizationWindow : AppCompatActivity() {
                         GlobalScope.async {
                             ChatSingleton.openConnection(login)
                         }
+                        ChatFunctions().saveData(this, login, true)
                         startIntent(ChatsWindow::class.java, login)
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
@@ -74,17 +82,17 @@ class AuthorizationWindow : AppCompatActivity() {
 
     @Override
     override fun onBackPressed() {
-        val exitMessage: AlertDialog.Builder = AlertDialog.Builder(this)
-        exitMessage
-            .setTitle("Предупреждение")
-            .setMessage("Вы действительно хотите выйти?")
-            .setCancelable(true)
-            .setPositiveButton("Да") { _, _ -> finish() }
-            .setNegativeButton(
-                "Нет"
-            ) { dialog, _ -> dialog.cancel() }
-        val exitWindow = exitMessage.create()
-        exitWindow.show()
+//        val exitMessage: AlertDialog.Builder = AlertDialog.Builder(this)
+//        exitMessage
+//            .setTitle("Предупреждение")
+//            .setMessage("Вы действительно хотите выйти?")
+//            .setCancelable(true)
+//            .setPositiveButton("Да") { _, _ -> finish() }
+//            .setNegativeButton(
+//                "Нет"
+//            ) { dialog, _ -> dialog.cancel() }
+//        val exitWindow = exitMessage.create()
+//        exitWindow.show()
     }
 
     // Открытие нового окна

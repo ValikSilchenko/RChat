@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.Requests
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 
 class RegistrationWindow : AppCompatActivity() {
@@ -23,6 +25,14 @@ class RegistrationWindow : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_window)
+
+        if (ChatFunctions().isAuthorized(this)) {
+            login = ChatFunctions().getSavedLogin(this)
+            GlobalScope.async {
+                ChatSingleton.openConnection(login)
+            }
+            startIntent(ChatsWindow::class.java, login)
+        }
 
         val loginText: EditText = findViewById(R.id.RegistrationLogin_Input)
         val emailText: EditText = findViewById(R.id.RegistrationEmail_Input)
@@ -55,10 +65,9 @@ class RegistrationWindow : AppCompatActivity() {
                         ),
                         "${ChatSingleton.serverUrl}/user"
                     )
-
                     try {
                         ChatSingleton.openConnection(login)
-
+                        ChatFunctions().saveData(this, login, true)
                         startIntent(ChatsWindow::class.java, login)
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)

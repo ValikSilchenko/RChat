@@ -1,9 +1,8 @@
 package com.example.rchat
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
@@ -21,8 +20,8 @@ class FindUsersWindow : AppCompatActivity() {
         setContentView(R.layout.find_users)
 
         val foundUsersLv: ListView = findViewById(R.id.FoundUsers_Array)
-        val backToChatsWindow: Button = findViewById(R.id.FindUserBack_Btn)
-        val findBtn: Button = findViewById(R.id.FindUserFind_Btn)
+        val backToChatsWindow: ImageButton = findViewById(R.id.FindUserBack_Btn)
+        val findBtn: ImageButton = findViewById(R.id.FindUserFind_Btn)
         val loginInput: EditText = findViewById(R.id.FindUserLogin_EditText)
         var foundUsers: List<String>
 
@@ -35,6 +34,9 @@ class FindUsersWindow : AppCompatActivity() {
         findBtn.setOnClickListener {
             if (loginInput.text.isNotEmpty()) {
                 try {
+                    if (foundUserArrayList.isNotEmpty())
+                        foundUserArrayList.clear()
+
                     foundUsers = JasonSTATHAM().parseUsers(
                         Requests().get(
                             mapOf(
