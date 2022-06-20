@@ -48,7 +48,6 @@ class AuthorizationWindow : AppCompatActivity() {
             if (authorizeLoginText.text.isNotEmpty() && authorizePasswordText.text.isNotEmpty()) {
                 login = authorizeLoginText.text.toString()
                 try {
-                    GlobalScope.async {
                         Requests().post(
                             mapOf(
                                 "username" to login,
@@ -56,7 +55,6 @@ class AuthorizationWindow : AppCompatActivity() {
                             ),
                             "${ChatSingleton.serverUrl}/login"
                         )
-                    }
                     try {
                         GlobalScope.async {
                             ChatSingleton.openConnection(login)
