@@ -15,7 +15,8 @@ import org.json.JSONObject
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
     val CHANNEL_ID = "channel_id"
-    var serverUrl = "http://194.87.248.192:8080"
+    val serverUrl = "http://194.87.248.192:8080"
+    var isInChat = false
 
     private lateinit var chatItselfContext: Activity
     private lateinit var chatsWindowContext: Activity
@@ -76,14 +77,15 @@ object ChatSingleton {
     fun processMessage(message: String) {
         chatsWindowContext.runOnUiThread {
             val parsedMessage = JasonSTATHAM().parseMessage(message)
-            sendNotification(1, parsedMessage[0], parsedMessage[1]) // Передвинуть в другое место
-
             updateChatList(parsedMessage[0], "", parsedMessage[1], "")
-
             if (parsedMessage[0] == Billy) {
+                if (!isInChat) {
+                    sendNotification(1, parsedMessage[0], parsedMessage[1])
+                }
                 updateMessageList(parsedMessage[0], parsedMessage[1])
                 setSelection()
-            }
+            } else
+                sendNotification(1, parsedMessage[0], parsedMessage[1])
         }
     }
 
@@ -131,7 +133,6 @@ object ChatSingleton {
                 el["messageText"].toString()
             )
     }
-
 
     fun createNotifChannel(context: Context) {  // Для версий выше Орео
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
@@ -27,13 +26,13 @@ class RegistrationWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_window)
 
-        if (ChatFunctions().isAuthorized(this)) {
-            login = ChatFunctions().getSavedLogin(this)
-            GlobalScope.async {
-                ChatSingleton.openConnection(login)
-            }
-            startIntent(ChatsWindow::class.java, login)
-        }
+//        if (ChatFunctions().isAuthorized(this)) {
+//            login = ChatFunctions().getSavedLogin(this)
+//            GlobalScope.async {
+//                ChatSingleton.openConnection(login)
+//            }
+//            startIntent(ChatsWindow::class.java, login)
+//        }
 
         val loginText: EditText = findViewById(R.id.RegistrationLogin_Input)
         val emailText: EditText = findViewById(R.id.RegistrationEmail_Input)
@@ -45,7 +44,7 @@ class RegistrationWindow : AppCompatActivity() {
 
         // Нажатие кнопки RegistrationAuthorize_Btn
         authorizeBtn.setOnClickListener {
-            startIntent(AuthorizationWindow::class.java, "")
+            onBackPressed()
         }
 
         // Нажатие кнопки RegistrationRegistration_Btn
@@ -95,22 +94,17 @@ class RegistrationWindow : AppCompatActivity() {
 
     @Override
     override fun onBackPressed() {
-        val exitMessage: AlertDialog.Builder = AlertDialog.Builder(this)
-        exitMessage
-            .setTitle("Предупреждение")
-            .setMessage("Вы действительно хотите выйти?")
-            .setCancelable(true)
-            .setPositiveButton("Да") { _, _ -> finish() }
-            .setNegativeButton(
-                "Нет"
-            ) { dialog, _ -> dialog.cancel() }
-        val exitWindow = exitMessage.create()
-        exitWindow.show()
+        val intent = Intent(this, AuthorizationWindow::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        startActivity(intent)
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 
     private fun startIntent(Window: Class<*>?, login: String) {
         val intent = Intent(this, Window)
         intent.putExtra("User Login", login)
         startActivity(intent)
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        finish()
     }
 }

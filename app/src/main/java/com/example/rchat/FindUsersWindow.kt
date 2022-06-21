@@ -17,7 +17,7 @@ class FindUsersWindow : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.find_users)
+        setContentView(R.layout.find_users_window)
 
         val foundUsersLv: ListView = findViewById(R.id.FoundUsers_Array)
         val backToChatsWindow: ImageButton = findViewById(R.id.FindUserBack_Btn)
@@ -27,6 +27,7 @@ class FindUsersWindow : AppCompatActivity() {
 
         backToChatsWindow.setOnClickListener {
             onBackPressed()
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
 
         findBtn.setOnClickListener {
@@ -63,5 +64,6 @@ class FindUsersWindow : AppCompatActivity() {
     @Override
     override fun onBackPressed() {
         super.onBackPressed()
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 }

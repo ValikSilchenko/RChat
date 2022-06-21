@@ -64,14 +64,20 @@ class ChatsWindow : AppCompatActivity() {
 
         newChatBtn.setOnClickListener {
             startActivity(Intent(this, FindUsersWindow::class.java))
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
 
         settingsBtn.setOnClickListener {
-            startActivity(Intent(this, SettingsWindow::class.java))
+            val intent = Intent(this, SettingsWindow::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
     }
 
     @Override
     override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 }
