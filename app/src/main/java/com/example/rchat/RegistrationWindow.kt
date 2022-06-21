@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
@@ -49,6 +50,8 @@ class RegistrationWindow : AppCompatActivity() {
 
         // Нажатие кнопки RegistrationRegistration_Btn
         registrationBtn.setOnClickListener {
+            Toast.makeText(this,
+                ChatFunctions().transformPhoneNumber(phoneNumberText.text.toString()), Toast.LENGTH_LONG).show()
             if (emailText.text.isNotEmpty() && loginText.text.isNotEmpty()
                 && phoneNumberText.text.isNotEmpty() && passwordText.text.isNotEmpty()
                 && repeatPasswordText.text.isNotEmpty()

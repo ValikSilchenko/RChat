@@ -27,8 +27,6 @@ class FindUsersWindow : AppCompatActivity() {
 
         backToChatsWindow.setOnClickListener {
             onBackPressed()
-//            intent.putExtra("User Login", login)
-//            startActivity(Intent(this, ChatsWindow::class.java))
         }
 
         findBtn.setOnClickListener {
@@ -45,7 +43,7 @@ class FindUsersWindow : AppCompatActivity() {
                         )
                     )
                     for (element in foundUsers) {
-                        foundUserArrayList.add(PreviewChatDataClass(element, "", ""))
+                        foundUserArrayList.add(PreviewChatDataClass(element, "", "",""))
                     }
                     arrayAdapter = PreviewChatLVAdapter(this, foundUserArrayList)
                     arrayAdapter.notifyDataSetChanged()
@@ -65,6 +63,5 @@ class FindUsersWindow : AppCompatActivity() {
     @Override
     override fun onBackPressed() {
         super.onBackPressed()
-//        startActivity(Intent(this, ChatsWindow::class.java))
     }
 }

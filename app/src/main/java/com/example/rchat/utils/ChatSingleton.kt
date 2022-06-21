@@ -2,15 +2,19 @@ package com.example.rchat.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.widget.ListView
-import com.example.rchat.MessageItemDataClass
-import com.example.rchat.MessageItemLVAdapter
-import com.example.rchat.PreviewChatDataClass
-import com.example.rchat.PreviewChatLVAdapter
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import com.example.rchat.*
 import org.json.JSONObject
 
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
+    val CHANNEL_ID = "channel_id"
     var serverUrl = "http://194.87.248.192:8080"
 
     private lateinit var chatItselfContext: Activity
@@ -72,16 +76,13 @@ object ChatSingleton {
     fun processMessage(message: String) {
         chatsWindowContext.runOnUiThread {
             val parsedMessage = JasonSTATHAM().parseMessage(message)
-            println("parsed")
+            sendNotification(1, parsedMessage[0], parsedMessage[1]) // Передвинуть в другое место
 
-            updateChatList(parsedMessage[0], "", parsedMessage[1])
-            println("after receive: chats list update")
+            updateChatList(parsedMessage[0], "", parsedMessage[1], "")
 
             if (parsedMessage[0] == Billy) {
-                println("//")
                 updateMessageList(parsedMessage[0], parsedMessage[1])
                 setSelection()
-                println("after receive: msg list updated")
             }
         }
     }
@@ -90,15 +91,12 @@ object ChatSingleton {
         //TODO("Обработка ошибки отправки сообщения")
         webSocketClient.send(recipientLogin, "$Van $message")
         updateMessageList(Van, message)
-        println("after send: msg list updated")
-        updateChatList(recipientLogin, "", message)
-        println("after send: chats list updated")
+        updateChatList(recipientLogin, "", message, "You:")
     }
 
-    fun updateChatList(recipientLogin: String, time: String, message: String) {
+    fun updateChatList(recipientLogin: String, time: String, message: String, youTxt: String) {
         var isInArray = false
         var index = 0
-        println("1")
         for (el in chatsArrayList.indices) {
             if (chatsArrayList[el].previewLogin == recipientLogin) {
                 isInArray = true
@@ -106,16 +104,13 @@ object ChatSingleton {
                 break
             }
         }
-        println("2")
         if (isInArray) {
             chatsArrayList[index].previewMessage = message
-        } else {
-            chatsArrayList.add(PreviewChatDataClass(recipientLogin, time, message))
-        }
-        println("3")
+            chatsArrayList[index].previewYouTxt = youTxt
+        } else
+            chatsArrayList.add(PreviewChatDataClass(recipientLogin, time, message, youTxt))
 
         chatArrayAdapter.notifyDataSetChanged()
-        println("4")
     }
 
     fun sendMessagesRequest() {
@@ -135,5 +130,34 @@ object ChatSingleton {
                 (el["sender"] as JSONObject)["username"].toString(),
                 el["messageText"].toString()
             )
+    }
+
+
+    fun createNotifChannel(context: Context) {  // Для версий выше Орео
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, "notif_title", importance).apply {
+                description = "notif description"
+            }
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    fun sendNotification(
+        notifId: Int,
+        loginTitle: String,
+        messageText: String
+    ) {    // Для версий ниже Орео
+        val builder = NotificationCompat.Builder(chatsWindowContext, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle(loginTitle)
+            .setContentText(messageText)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        with(NotificationManagerCompat.from(chatsWindowContext)) {
+            notify(notifId, builder.build())
+        }
     }
 }
