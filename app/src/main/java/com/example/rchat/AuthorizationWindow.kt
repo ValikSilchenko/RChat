@@ -36,11 +36,13 @@ class AuthorizationWindow : AppCompatActivity() {
         val authorizeLoginText: EditText = findViewById(R.id.AuthorizeLogin_Input)
         val authorizePasswordText: EditText = findViewById(R.id.AuthorizePassword_Input)
         val enterAccountBtn: Button = findViewById(R.id.AuthorizeAuthorize_Btn)
-        val hasNoAccountBtn: Button = findViewById(R.id.Authorize_DontHaveAccount_Btn)
+        val noBitches: Button = findViewById(R.id.Authorize_DontHaveAccount_Btn)
 
         // Переход на страницу регистрации
-        hasNoAccountBtn.setOnClickListener {
-            startIntent(RegistrationWindow::class.java, "")
+        noBitches.setOnClickListener {
+            val intent = Intent(this, RegistrationWindow::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            startActivity(intent)
         }
 
         // Вход в аккаунт
@@ -80,17 +82,7 @@ class AuthorizationWindow : AppCompatActivity() {
 
     @Override
     override fun onBackPressed() {
-//        val exitMessage: AlertDialog.Builder = AlertDialog.Builder(this)
-//        exitMessage
-//            .setTitle("Предупреждение")
-//            .setMessage("Вы действительно хотите выйти?")
-//            .setCancelable(true)
-//            .setPositiveButton("Да") { _, _ -> finish() }
-//            .setNegativeButton(
-//                "Нет"
-//            ) { dialog, _ -> dialog.cancel() }
-//        val exitWindow = exitMessage.create()
-//        exitWindow.show()
+        // Выход из приложения
     }
 
     // Открытие нового окна
@@ -98,5 +90,7 @@ class AuthorizationWindow : AppCompatActivity() {
         val intent = Intent(this, Window)
         intent.putExtra("User Login", login)
         startActivity(intent)
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        finish()
     }
 }

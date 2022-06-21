@@ -36,7 +36,8 @@ class ChatsWindow : AppCompatActivity() {
         ChatSingleton.setChatsWindow(chatArray, user, this)
         ChatSingleton.clearChatList()
 
-        // Подгрузка списка чатов при открытии окна
+        ChatSingleton.createNotifChannel(this)
+
         try {
             val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
                 Requests().get(
@@ -45,44 +46,38 @@ class ChatsWindow : AppCompatActivity() {
                 )
             )
             var username: String
+            var youTxt: String
             for (el in response) {
-                username =
-                    if ((el["sender"] as JSONObject)["username"].toString() == user)
-                        (el["recipient"] as JSONObject)["username"].toString()
-                    else
-                        (el["sender"] as JSONObject)["username"].toString()
-                ChatSingleton.updateChatList(
-                    username,
-                    el["time"].toString(),
-                    el["messageText"].toString()
-                )
+                    if ((el["sender"] as JSONObject)["username"].toString() == user) {
+                        username = (el["recipient"] as JSONObject)["username"].toString()
+                        youTxt = "You:"
+                    }
+                    else {
+                        username = (el["sender"] as JSONObject)["username"].toString()
+                        youTxt = ""
+                    }
+                ChatSingleton.updateChatList(username, el["time"].toString(), el["messageText"].toString(), youTxt)
             }
         } catch (error: Exception) {
             ChatFunctions().showMessage("Ошибка", "Окно чатов: ${error.message}", this)
         }
 
-        // Откытие окна поиска чатов
         newChatBtn.setOnClickListener {
             startActivity(Intent(this, FindUsersWindow::class.java))
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
 
         settingsBtn.setOnClickListener {
-            startActivity(Intent(this, SettingsWindow::class.java))
+            val intent = Intent(this, SettingsWindow::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
     }
 
     @Override
     override fun onBackPressed() {
-//        val exitMessage: AlertDialog.Builder = AlertDialog.Builder(this)
-//        exitMessage
-//            .setTitle("Предупреждение")
-//            .setMessage("Вы действительно хотите выйти?")
-//            .setCancelable(true)
-//            .setPositiveButton("Да") { _, _ -> finish() }
-//            .setNegativeButton(
-//                "Нет"
-//            ) { dialog, _ -> dialog.cancel() }
-//        val exitWindow = exitMessage.create()
-//        exitWindow.show()
+        super.onBackPressed()
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 }

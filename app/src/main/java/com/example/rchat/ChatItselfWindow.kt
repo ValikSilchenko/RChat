@@ -1,6 +1,5 @@
 package com.example.rchat
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ListView
@@ -54,8 +53,11 @@ class ChatItselfWindow : AppCompatActivity() {
     }
 
     private fun startIntent() {
-        val intent = Intent(this, ChatsWindow::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-        startActivity(intent)
+        ChatSingleton.isInChat = false
+        super.onBackPressed()
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+//        val intent = Intent(this, ChatsWindow::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+//        startActivity(intent)
     }
 }

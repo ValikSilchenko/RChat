@@ -1,11 +1,11 @@
 package com.example.rchat.utils
 
-import android.app.NotificationManager
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.NotificationCompat
 
 class ChatFunctions {
+
+    private var symbols: Array<Char> = arrayOf('+', '-', '(', ')', '.')
     fun showMessage(titleText: CharSequence, messageText: CharSequence, context: Context) {
         val message: AlertDialog.Builder = AlertDialog.Builder(context)
         message
@@ -17,16 +17,6 @@ class ChatFunctions {
             ) { dialog, _ -> dialog.cancel() }
         val messageWindow = message.create()
         messageWindow.show()
-    }
-
-    fun showNotification(context: Context, login: String, message: String, id: Int) {
-        val builder = NotificationCompat.Builder(context)
-            .setContentTitle(login)
-            .setContentText(message)
-        // Добавить иконку уведомления
-        val notification = builder.build()
-        val notifManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notifManager.notify(id, notification)
     }
 
     fun isAuthorized(context: Context): Boolean {
@@ -60,9 +50,12 @@ class ChatFunctions {
         }.apply()
     }
 
-//    fun transformPhoneNumber(phoneNumber: String): String {
-//        for (i in phoneNumber.indices) {
-//
-//        }
-//    }
+    fun transformPhoneNumber(phoneNumber: String): String {
+        var number = phoneNumber.filter { it.isDigit() }
+        if (number.length == 12)
+            number.drop(2)
+        else
+            number.drop(1)
+        return number
+    }
 }

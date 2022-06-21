@@ -31,6 +31,7 @@ class SettingsWindow : AppCompatActivity() {
             val intent = Intent(this, AuthorizationWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
     }
 
@@ -40,8 +41,7 @@ class SettingsWindow : AppCompatActivity() {
     }
 
     private fun startIntent() {
-        val intent = Intent(this, ChatsWindow::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-        startActivity(intent)
+        super.onBackPressed()
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 }
