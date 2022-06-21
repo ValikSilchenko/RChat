@@ -23,13 +23,16 @@ class PreviewChatLVAdapter(
         val previewTime: TextView = view.findViewById(R.id.Preview_Chat_Receiving_Time)
         val previewMessage: TextView = view.findViewById(R.id.Preview_Chat_Message_Txt)
         val previewYouTxt: TextView = view.findViewById(R.id.You_Txt)
+//        val unreadTxt: TextView = view.findViewById(R.id.Unread_Txt)
 
         previewLogin.text = arrayList[position].previewLogin
         previewTime.text = arrayList[position].previewTime
         previewMessage.text = arrayList[position].previewMessage
         previewYouTxt.text = arrayList[position].previewYouTxt
+//        unreadTxt.text = arrayList[position].unreadTxt
 
         view.setOnClickListener {
+//            unreadTxt.visibility = View.GONE
             val intent = Intent(context, ChatItselfWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             intent.putExtra("Chat Name", previewLogin.text.toString())

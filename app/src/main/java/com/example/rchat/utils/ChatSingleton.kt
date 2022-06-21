@@ -80,12 +80,12 @@ object ChatSingleton {
             updateChatList(parsedMessage[0], "", parsedMessage[1], "")
             if (parsedMessage[0] == Billy) {
                 if (!isInChat) {
-                    sendNotification(1, parsedMessage[0], parsedMessage[1])
+                    sendNotification(1, parsedMessage[0], parsedMessage[1], chatsWindowContext)
                 }
                 updateMessageList(parsedMessage[0], parsedMessage[1])
                 setSelection()
             } else
-                sendNotification(1, parsedMessage[0], parsedMessage[1])
+                sendNotification(1, parsedMessage[0], parsedMessage[1], chatsWindowContext)
         }
     }
 
@@ -134,7 +134,7 @@ object ChatSingleton {
             )
     }
 
-    fun createNotifChannel(context: Context) {  // Для версий выше Орео
+    fun createNotifChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(CHANNEL_ID, "notif_title", importance).apply {
@@ -146,14 +146,17 @@ object ChatSingleton {
         }
     }
 
-    fun sendNotification(
-        notifId: Int,
-        loginTitle: String,
-        messageText: String
-    ) {    // Для версий ниже Орео
+    private fun sendNotification(notifId: Int, loginTitle: String, messageText: String, context: Activity) {
+//        val intent = Intent(context, ChatItselfWindow::class.java).apply {
+//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//            putExtra("Chat Name", loginTitle)
+//        }
+//        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+
         val builder = NotificationCompat.Builder(chatsWindowContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(loginTitle)
+//            .setContentIntent(pendingIntent)
             .setContentText(messageText)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
