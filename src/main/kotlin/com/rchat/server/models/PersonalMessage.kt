@@ -1,5 +1,6 @@
 package com.rchat.server.models
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonView
 import com.rchat.server.views.View
@@ -13,6 +14,7 @@ import javax.persistence.*
 open class PersonalMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(View.MessageWithId::class)
     @Column(name = "msg_id", nullable = false)
     open var id: Int? = null
 
@@ -29,6 +31,7 @@ open class PersonalMessage {
     open var recipient: Users? = null
 
     @JsonView(View.Message::class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm")
     @Column(name = "\"time\"", nullable = false)
     open var time: LocalTime? = null
 

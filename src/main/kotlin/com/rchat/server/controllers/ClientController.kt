@@ -56,7 +56,7 @@ class ClientController(private var userService: PgUserDetailsService,
         return userService.getMatchUsers(username)
     }
 
-    @JsonView(View.Message::class)
+    @JsonView(View.MessageWithId::class)
     @GetMapping("/personal")
     fun getPersonalMessages(@RequestParam sender: String, @RequestParam recipient: String): List<PersonalMessage?> {
         return personalMessageRepo.getChatMessages(

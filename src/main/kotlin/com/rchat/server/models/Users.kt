@@ -10,6 +10,7 @@ import javax.validation.constraints.Size
 open class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(View.AllWithId::class)
     @Column(name = "id", nullable = false)
     open var id: Int? = null
 

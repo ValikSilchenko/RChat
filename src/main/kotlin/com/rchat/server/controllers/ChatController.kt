@@ -1,10 +1,12 @@
 package com.rchat.server.controllers
 
+import com.fasterxml.jackson.annotation.JsonView
 import com.rchat.server.models.ChannelMessage
 import com.rchat.server.models.PersonalMessage
 import com.rchat.server.repos.ChannelMessageRepository
 import com.rchat.server.repos.PersonalMessageRepository
 import com.rchat.server.services.PgUserDetailsService
+import com.rchat.server.views.View
 
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
@@ -17,9 +19,10 @@ import java.time.LocalTime
 class ChatController(private var personalMessageRepo: PersonalMessageRepository,
                      private var channelMessageRepo: ChannelMessageRepository,
                      private var userService: PgUserDetailsService) {
+    @JsonView(View.AllWithId::class)
     @MessageMapping("/user/{recipient}/")
     @SendTo("/chatTopic/{recipient}/")
-    fun processPersonal(@DestinationVariable recipient: String,  msg: String): String {
+    fun processPersonal(@DestinationVariable recipient: String,  msg: String): PersonalMessage {
         val data = parseMessage(msg)  // data[0] - sender, data[1] - message
         val message = PersonalMessage(userService.getByName(data[0]),
             userService.getByName(recipient),
@@ -27,7 +30,7 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
             LocalDate.now(),
             data[1])
         personalMessageRepo.save(message)
-        return "${data[0]} ${data[1]}"
+        return message
     }
 
 //    @MessageMapping("/channel")
