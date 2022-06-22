@@ -1,5 +1,6 @@
 package com.example.rchat
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -30,13 +31,11 @@ class ChatsWindow : AppCompatActivity() {
         val chatArray: ListView = findViewById(R.id.ChatListView)
         val settingsBtn: ImageButton = findViewById(R.id.Settings_Btn)
 
-        val user = intent.getStringExtra("User Login").toString()
+        val user = getSharedPreferences("Authorization", Context.MODE_PRIVATE).getString("LOGIN_KEY", "NaN").toString()
         userLogin.text = user
 
         ChatSingleton.setChatsWindow(chatArray, user, this)
         ChatSingleton.clearChatList()
-
-        ChatSingleton.createNotifChannel(this)
 
         try {
             val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
