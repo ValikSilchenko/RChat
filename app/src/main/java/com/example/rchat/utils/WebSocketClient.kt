@@ -1,7 +1,7 @@
 package com.example.rchat.utils
 
 import org.springframework.lang.Nullable
-import org.springframework.messaging.converter.StringMessageConverter
+import org.springframework.messaging.converter.MappingJackson2MessageConverter
 import org.springframework.messaging.simp.stomp.StompFrameHandler
 import org.springframework.messaging.simp.stomp.StompHeaders
 import org.springframework.messaging.simp.stomp.StompSession
@@ -24,20 +24,20 @@ class WebSocketClient {
 
         val transports: MutableList<Transport> = ArrayList(1)
         transports.add(WebSocketTransport(simpleWebSocketClient))
-        val sockJsClient = SockJsClient(transports)  // TODO("Didn't find class "javax.xml.stream.XMLResolver"")
+        val sockJsClient = SockJsClient(transports)  // TODO("Didn't find (didn't read lol) class "javax.xml.stream.XMLResolver"")
         val stompClient = WebSocketStompClient(sockJsClient)
 
-        stompClient.messageConverter = StringMessageConverter()
+        stompClient.messageConverter = MappingJackson2MessageConverter()
 
         session = stompClient.connect("${ChatSingleton.serverUrl}/ws", object : StompSessionHandlerAdapter() {
             override fun afterConnected(session: StompSession, connectedHeaders: StompHeaders) {
                 session.subscribe("/chatTopic/$username/", object : StompFrameHandler {
                     override fun getPayloadType(headers: StompHeaders): Type {
-                        return String::class.java
+                        return Map::class.java
                     }
 
                     override fun handleFrame(headers: StompHeaders, @Nullable payload: Any?) {
-                        ChatSingleton.processMessage(payload as String)
+                        ChatSingleton.processMessage(payload as Map<*, *>)
                     }
                 })
             }

@@ -53,6 +53,7 @@
         android:layout_margin="10dp"
         android:divider="@null"
         android:dividerHeight="10dp"
+        android:transcriptMode="normal"
         app:layout_constraintBottom_toTopOf="@id/BottomLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,8 +68,8 @@
         android:layoutDirection="rtl"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Messages_List"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Messages_List">
 
         <ImageButton
             android:id="@+id/SendMessage_Btn"

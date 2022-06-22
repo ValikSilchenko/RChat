@@ -30,7 +30,7 @@ class AuthorizationWindow : AppCompatActivity() {
             GlobalScope.async {
                 ChatSingleton.openConnection(login)
             }
-            startIntent(ChatsWindow::class.java, login)
+            startIntent(ChatsWindow::class.java)
         }
 
         val authorizeLoginText: EditText = findViewById(R.id.AuthorizeLogin_Input)
@@ -62,7 +62,7 @@ class AuthorizationWindow : AppCompatActivity() {
                             ChatSingleton.openConnection(login)
                         }
                         ChatFunctions().saveData(this, login, true)
-                        startIntent(ChatsWindow::class.java, login)
+                        startIntent(ChatsWindow::class.java)
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
                         //TODO("Обработка ошибки при отсутствии интернетов")
@@ -86,10 +86,8 @@ class AuthorizationWindow : AppCompatActivity() {
     }
 
     // Открытие нового окна
-    private fun startIntent(Window: Class<*>?, login: String) {
-        val intent = Intent(this, Window)
-        intent.putExtra("User Login", login)
-        startActivity(intent)
+    private fun startIntent(Window: Class<*>?) {
+        startActivity(Intent(this, Window))
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         finish()
     }
