@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
+import com.example.rchat.utils.ChatSingleton
 
 class SettingsWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +28,7 @@ class SettingsWindow : AppCompatActivity() {
         }
 
         exitAccountBtn.setOnClickListener {
+            ChatSingleton.closeConnection()
             ChatFunctions().deleteData(this)
             val intent = Intent(this, AuthorizationWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
