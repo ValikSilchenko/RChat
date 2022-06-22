@@ -2,7 +2,10 @@ package com.example.rchat.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import android.widget.ListView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -61,6 +64,10 @@ object ChatSingleton {
         webSocketClient.connect(username)
     }
 
+    fun closeConnection() {
+        webSocketClient.disconnect()
+    }
+
     fun sendMessage(recipientLogin: String, message: String) {
         //TODO("Обработка ошибки отправки сообщения")
         webSocketClient.send(recipientLogin, message, Van)
@@ -114,8 +121,23 @@ object ChatSingleton {
         }
     }
 
+    fun createNotifChannel(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, "notif_title", importance).apply {
+                description = "notif description"
+            }
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
     private fun sendNotification(
-        notifId: Int, loginTitle: String, messageText: String, context: Context
+        notifId: Int,
+        loginTitle: String,
+        messageText: String,
+        context: Context
     ) {
 //        val intent = Intent(context, ChatItselfWindow::class.java)
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
