@@ -18,10 +18,12 @@ import javax.validation.Valid
 import com.fasterxml.jackson.annotation.JsonView
 
 @RestController
-class ClientController(private var userService: PgUserDetailsService,
-                       private var channelRepo: ChannelRepository,
-                       private var memberRepo: MemberRepository,
-                       private var personalMessageRepo: PersonalMessageRepository) {
+class ClientController(
+    private var userService: PgUserDetailsService,
+    private var channelRepo: ChannelRepository,
+    private var memberRepo: MemberRepository,
+    private var personalMessageRepo: PersonalMessageRepository
+) {
     @PostMapping("/channel")
     fun addChannel(@Valid channel: Channel, bindingResult: BindingResult): ResponseEntity<Int> {
         if (bindingResult.hasErrors())
@@ -49,6 +51,11 @@ class ClientController(private var userService: PgUserDetailsService,
     @GetMapping("/chats")
     fun getListOfChats(@RequestParam username: String): List<PersonalMessage?> {
         return personalMessageRepo.getChats(userService.getByName(username))
+    }
+
+    @GetMapping("/count")
+    fun getUnreadCount(@RequestParam sender: String, recipient: String): Int {
+        return personalMessageRepo.getUnreadCount(userService.getByName(sender), userService.getByName(recipient))
     }
 
     @GetMapping("/find")

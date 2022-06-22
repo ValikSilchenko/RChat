@@ -20,15 +20,17 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
                      private var channelMessageRepo: ChannelMessageRepository,
                      private var userService: PgUserDetailsService) {
     @JsonView(View.AllWithId::class)
-    @MessageMapping("/user/{recipient}/")
-    @SendTo("/chatTopic/{recipient}/")
-    fun processPersonal(@DestinationVariable recipient: String,  msg: String): PersonalMessage {
-        val data = parseMessage(msg)  // data[0] - sender, data[1] - message
-        val message = PersonalMessage(userService.getByName(data[0]),
+    @MessageMapping("/user/{recipient}/{sender}/")
+    @SendTo("/chatTopic/{recipient}/", "/chatTopic/{sender}/")
+    fun processPersonal(
+        @DestinationVariable recipient: String,
+        @DestinationVariable sender: String,
+        msg: String): PersonalMessage {
+        val message = PersonalMessage(userService.getByName(sender),
             userService.getByName(recipient),
             LocalTime.now(),
             LocalDate.now(),
-            data[1])
+            msg)
         personalMessageRepo.save(message)
         return message
     }
@@ -42,15 +44,4 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
 //        message.time = LocalTime.now()
 //        return channelMessageRepo.save(message)
 //    }
-
-    @MessageMapping("/test/{recipientId}/")
-    @SendTo("/chatTopic/")
-    fun test(@DestinationVariable recipientId: String,  msg: String): String {
-        println("Message: $msg; Sender: $recipientId")
-        return msg
-    }
-
-    fun parseMessage(msg: String): List<String> {
-        return listOf(msg.substringBefore(' '), msg.substringAfter(' '))
-    }
 }

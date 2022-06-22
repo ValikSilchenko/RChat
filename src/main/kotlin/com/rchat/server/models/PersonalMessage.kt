@@ -14,7 +14,7 @@ import javax.persistence.*
 open class PersonalMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(View.MessageWithId::class)
+    @JsonView(View.AllWithId::class)
     @Column(name = "msg_id", nullable = false)
     open var id: Int? = null
 
@@ -31,7 +31,7 @@ open class PersonalMessage {
     open var recipient: Users? = null
 
     @JsonView(View.Message::class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm")
     @Column(name = "\"time\"", nullable = false)
     open var time: LocalTime? = null
 
@@ -44,6 +44,9 @@ open class PersonalMessage {
     @JsonView(View.Message::class)
     @Column(name = "message_text", nullable = false)
     open var messageText: String? = null
+
+    @Column(name = "read", nullable = false)
+    open var read: Boolean = false
 
     constructor() {}
 

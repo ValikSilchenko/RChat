@@ -17,4 +17,8 @@ interface PersonalMessageRepository: JpaRepository<PersonalMessage, Int> {
             "select max(msg1.time) from PersonalMessage msg1 where msg1.sender in (msg.sender, msg.recipient)" +
             "and msg1.recipient in (msg.sender, msg.recipient) and msg1.date = msg.date)")
     fun getChats(forUser: Users): List<PersonalMessage?>
+
+    @Query("select count(msg) - 0 as count from PersonalMessage msg" +
+            " where msg.sender = :sender and msg.recipient = :recipient and msg.read = false")
+    fun getUnreadCount(sender: Users, recipient: Users): Int
 }
