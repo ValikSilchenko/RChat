@@ -5,10 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:padding="5dp"
-    android:background="@drawable/preview_chat_roundcorner"
-    android:backgroundTint="?attr/previewchat_color"
     android:clickable="true"
+    android:longClickable="true"
     android:focusable="true">
 
     <ImageView
@@ -50,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="2dp"
+        android:text="You:"
         android:textColor="?attr/text_color"
         android:textSize="15sp"
         android:textStyle="italic"
@@ -62,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
-        android:maxLength="48"
+        android:maxLength="45"
         android:maxLines="1"
         android:text="This is the message that gonna be displayed in chatswindow"
         android:textColor="?attr/text_color"

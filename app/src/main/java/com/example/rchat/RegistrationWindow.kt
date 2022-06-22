@@ -31,7 +31,7 @@ class RegistrationWindow : AppCompatActivity() {
 //            GlobalScope.async {
 //                ChatSingleton.openConnection(login)
 //            }
-//            startIntent(ChatsWindow::class.java, login)
+//            startIntent(ChatsWindow::class.java)
 //        }
 
         val loginText: EditText = findViewById(R.id.RegistrationLogin_Input)
@@ -68,11 +68,11 @@ class RegistrationWindow : AppCompatActivity() {
                         "${ChatSingleton.serverUrl}/user"
                     )
                     try {
+                        ChatFunctions().saveData(this, login, true)
                         GlobalScope.async {
                             ChatSingleton.openConnection(login)
                         }
-                        ChatFunctions().saveData(this, login, true)
-                        startIntent(ChatsWindow::class.java, login)
+                        startIntent(ChatsWindow::class.java)
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
                         //TODO("Обработка ошибки при отсутствии интернетов")
@@ -100,10 +100,8 @@ class RegistrationWindow : AppCompatActivity() {
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 
-    private fun startIntent(Window: Class<*>?, login: String) {
-        val intent = Intent(this, Window)
-        intent.putExtra("User Login", login)
-        startActivity(intent)
+    private fun startIntent(Window: Class<*>?) {
+        startActivity(Intent(this, Window))
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         finish()
     }

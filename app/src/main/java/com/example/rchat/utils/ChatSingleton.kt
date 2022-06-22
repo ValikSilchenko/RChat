@@ -2,10 +2,7 @@ package com.example.rchat.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
 import android.widget.ListView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -30,24 +27,14 @@ object ChatSingleton {
     private var chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
     private val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
 
-    private fun updateMessageList(senderLogin: String, message: String) {
-        if (senderLogin == Van) {
-            messagesArrayList.add(MessageItemDataClass("", "", senderLogin, message))
-        } else {
-            messagesArrayList.add(MessageItemDataClass(senderLogin, message, "", ""))
-        }
-        messagesArrayAdapter.notifyDataSetChanged()
-        setSelection()
-    }
-
     fun setSelection() {
         chatItselfLV?.setSelection(messagesArrayList.size - 1)
     }
 
     fun setChatsWindow(listView: ListView, username: String, incomingContext: Activity) {
+        Van = username
         chatWindowLV = listView
         chatsWindowContext = incomingContext
-        Van = username
         chatArrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
         chatWindowLV.adapter = chatArrayAdapter
     }
@@ -74,45 +61,22 @@ object ChatSingleton {
         webSocketClient.connect(username)
     }
 
-    fun processMessage(message: String) {
+    fun processMessage(message: Map<*, *>) {
         chatsWindowContext.runOnUiThread {
-            val parsedMessage = JasonSTATHAM().parseMessage(message)
-            updateChatList(parsedMessage[0], "", parsedMessage[1], "")
-            if (parsedMessage[0] == Billy) {
+            val parsedMessage = JSONObject(message)
+            val username = (parsedMessage["sender"] as JSONObject)["username"].toString()
+            val messageText = parsedMessage["messageText"].toString()
+            val userId = (parsedMessage["sender"] as JSONObject)["id"] as Int
+            updateChatList(username, parsedMessage["time"].toString(), messageText, "")
+            if (username == Billy) {
                 if (!isInChat) {
-                    sendNotification(1, parsedMessage[0], parsedMessage[1], chatsWindowContext)
+                    sendNotification(userId, username, messageText, chatsWindowContext)
                 }
-                updateMessageList(parsedMessage[0], parsedMessage[1])
+                updateMessageList(username, messageText)
                 setSelection()
             } else
-                sendNotification(1, parsedMessage[0], parsedMessage[1], chatsWindowContext)
+                sendNotification(userId, username, messageText, chatsWindowContext)
         }
-    }
-
-    fun sendMessage(recipientLogin: String, message: String) {
-        //TODO("Обработка ошибки отправки сообщения")
-        webSocketClient.send(recipientLogin, "$Van $message")
-        updateMessageList(Van, message)
-        updateChatList(recipientLogin, "", message, "You:")
-    }
-
-    fun updateChatList(recipientLogin: String, time: String, message: String, youTxt: String) {
-        var isInArray = false
-        var index = 0
-        for (el in chatsArrayList.indices) {
-            if (chatsArrayList[el].previewLogin == recipientLogin) {
-                isInArray = true
-                index = el
-                break
-            }
-        }
-        if (isInArray) {
-            chatsArrayList[index].previewMessage = message
-            chatsArrayList[index].previewYouTxt = youTxt
-        } else
-            chatsArrayList.add(PreviewChatDataClass(recipientLogin, time, message, youTxt))
-
-        chatArrayAdapter.notifyDataSetChanged()
     }
 
     fun sendMessagesRequest() {
@@ -134,23 +98,19 @@ object ChatSingleton {
             )
     }
 
-    fun createNotifChannel(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, "notif_title", importance).apply {
-                description = "notif description"
-            }
-            val notificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
+    fun sendMessage(recipientLogin: String, message: String) {
+        //TODO("Обработка ошибки отправки сообщения")
+        webSocketClient.send(recipientLogin, "$Van $message")
+        updateMessageList(Van, message)
+        updateChatList(recipientLogin, "", message, "You:")
     }
 
-    private fun sendNotification(notifId: Int, loginTitle: String, messageText: String, context: Activity) {
-//        val intent = Intent(context, ChatItselfWindow::class.java).apply {
-//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//            putExtra("Chat Name", loginTitle)
-//        }
+    private fun sendNotification(
+        notifId: Int, loginTitle: String, messageText: String, context: Context
+    ) {
+//        val intent = Intent(context, ChatItselfWindow::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//        intent.putExtra("Chat Name", loginTitle)
 //        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
 
         val builder = NotificationCompat.Builder(chatsWindowContext, CHANNEL_ID)
@@ -163,5 +123,35 @@ object ChatSingleton {
         with(NotificationManagerCompat.from(chatsWindowContext)) {
             notify(notifId, builder.build())
         }
+    }
+
+    fun updateChatList(recipientLogin: String, time: String, message: String, youTxt: String) {
+        var isInArray = false
+        var index = 0
+        for (el in chatsArrayList.indices) {
+            if (chatsArrayList[el].previewLogin == recipientLogin) {
+                isInArray = true
+                index = el
+                break
+            }
+        }
+        if (isInArray) {
+            chatsArrayList[index].previewMessage = message
+            chatsArrayList[index].previewYouTxt = youTxt
+            chatsArrayList[index].previewTime = time
+        } else
+            chatsArrayList.add(PreviewChatDataClass(recipientLogin, time, message, youTxt))
+
+        chatArrayAdapter.notifyDataSetChanged()
+    }
+
+    private fun updateMessageList(senderLogin: String, message: String) {
+        if (senderLogin == Van)
+            messagesArrayList.add(MessageItemDataClass("", "", senderLogin, message))
+        else
+            messagesArrayList.add(MessageItemDataClass(senderLogin, message, "", ""))
+
+        messagesArrayAdapter.notifyDataSetChanged()
+        setSelection()
     }
 }
