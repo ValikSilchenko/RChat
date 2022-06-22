@@ -44,7 +44,7 @@ class WebSocketClient {
         }).get()
     }
 
-    fun send(username: String, msg: String) {
-        session?.send("/app/user/$username/", msg)  // /app/test/
+    fun send(username: String, msg: String, sender: String) {
+        session?.send("/app/user/$username/$sender/", msg)  // /app/test/
     }
 }
