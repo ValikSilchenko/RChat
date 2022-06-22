@@ -61,22 +61,9 @@ object ChatSingleton {
         webSocketClient.connect(username)
     }
 
-    fun processMessage(message: Map<*, *>) {
-        chatsWindowContext.runOnUiThread {
-            val parsedMessage = JSONObject(message)
-            val username = (parsedMessage["sender"] as JSONObject)["username"].toString()
-            val messageText = parsedMessage["messageText"].toString()
-            val userId = (parsedMessage["sender"] as JSONObject)["id"] as Int
-            updateChatList(username, parsedMessage["time"].toString(), messageText, "")
-            if (username == Billy) {
-                if (!isInChat) {
-                    sendNotification(userId, username, messageText, chatsWindowContext)
-                }
-                updateMessageList(username, messageText)
-                setSelection()
-            } else
-                sendNotification(userId, username, messageText, chatsWindowContext)
-        }
+    fun sendMessage(recipientLogin: String, message: String) {
+        //TODO("Обработка ошибки отправки сообщения")
+        webSocketClient.send(recipientLogin, message, Van)
     }
 
     fun sendMessagesRequest() {
@@ -98,11 +85,33 @@ object ChatSingleton {
             )
     }
 
-    fun sendMessage(recipientLogin: String, message: String) {
-        //TODO("Обработка ошибки отправки сообщения")
-        webSocketClient.send(recipientLogin, "$Van $message")
-        updateMessageList(Van, message)
-        updateChatList(recipientLogin, "", message, "You:")
+    fun processMessage(message: Map<*, *>) {
+        chatsWindowContext.runOnUiThread {
+            val parsedMessage = JSONObject(message)
+            val sender = (parsedMessage["sender"] as JSONObject)["username"].toString()
+            val messageText = parsedMessage["messageText"].toString()
+            val userId = (parsedMessage["sender"] as JSONObject)["id"] as Int
+
+            if (sender == Van) {
+                updateChatList(
+                    (parsedMessage["recipient"] as JSONObject)["username"].toString(),
+                    parsedMessage["time"].toString(),
+                    messageText,
+                    "You:"
+                )
+                updateMessageList(sender, messageText)
+            } else {
+                updateChatList(sender, parsedMessage["time"].toString(), messageText, "")
+                if (sender == Billy) {
+                    if (!isInChat) {
+                        sendNotification(userId, sender, messageText, chatsWindowContext)
+                    }
+                    updateMessageList(sender, messageText)
+                    setSelection()
+                } else
+                    sendNotification(userId, sender, messageText, chatsWindowContext)
+            }
+        }
     }
 
     private fun sendNotification(
