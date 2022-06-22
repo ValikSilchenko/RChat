@@ -33,7 +33,10 @@ class ChatsWindow : AppCompatActivity() {
         val chatArray: ListView = findViewById(R.id.ChatListView)
         val settingsBtn: ImageButton = findViewById(R.id.Settings_Btn)
 
-        val user = getSharedPreferences("Authorization", Context.MODE_PRIVATE).getString("LOGIN_KEY", "NaN").toString()
+        val user = getSharedPreferences("Authorization", Context.MODE_PRIVATE).getString(
+            "LOGIN_KEY",
+            "NaN"
+        ).toString()
         userLogin.text = user
 
         ChatSingleton.setChatsWindow(chatArray, user, this)
@@ -49,18 +52,26 @@ class ChatsWindow : AppCompatActivity() {
             var username: String
             var youTxt: String
             for (el in response) {
-                    if ((el["sender"] as JSONObject)["username"].toString() == user) {
-                        username = (el["recipient"] as JSONObject)["username"].toString()
-                        youTxt = "You:"
-                    }
-                    else {
-                        username = (el["sender"] as JSONObject)["username"].toString()
-                        youTxt = ""
-                    }
-                ChatSingleton.updateChatList(username, el["time"].toString(), el["messageText"].toString(), youTxt)
+                if ((el["sender"] as JSONObject)["username"].toString() == user) {
+                    username = (el["recipient"] as JSONObject)["username"].toString()
+                    youTxt = "You:"
+                } else {
+                    username = (el["sender"] as JSONObject)["username"].toString()
+                    youTxt = ""
+                }
+                ChatSingleton.updateChatList(
+                    username,
+                    el["time"].toString(),
+                    el["messageText"].toString(),
+                    youTxt
+                )
             }
         } catch (error: Exception) {
-            ChatFunctions().showMessage("Ошибка", "Окно чатов: ${error.message}", this)
+            ChatFunctions().showMessage(
+                "Ошибка",
+                "Окно чатов: ${error.message}",
+                this
+            )
         }
 
         newChatBtn.setOnClickListener {

@@ -7,7 +7,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.IOException
 
-
 class Requests {
     private val client = OkHttpClient()
     private val request = Request.Builder()

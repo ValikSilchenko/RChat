@@ -44,7 +44,11 @@ class FindUsersWindow : AppCompatActivity() {
                         )
                     )
                     for (element in foundUsers) {
-                        foundUserArrayList.add(PreviewChatDataClass(element, "", "",""))
+                        foundUserArrayList.add(
+                            PreviewChatDataClass(
+                                element, "", "", ""
+                            )
+                        )
                     }
                     arrayAdapter = PreviewChatLVAdapter(this, foundUserArrayList)
                     arrayAdapter.notifyDataSetChanged()
@@ -57,7 +61,11 @@ class FindUsersWindow : AppCompatActivity() {
                     )
                 }
             } else
-                ChatFunctions().showMessage(" Ошибка", "Ничего не было введено", this)
+                ChatFunctions().showMessage(
+                    " Ошибка",
+                    "Ничего не было введено",
+                    this
+                )
         }
     }
 

@@ -13,7 +13,6 @@ import com.example.rchat.utils.Requests
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
-
 class RegistrationWindow : AppCompatActivity() {
     private lateinit var login: String
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,8 +48,11 @@ class RegistrationWindow : AppCompatActivity() {
 
         // Нажатие кнопки RegistrationRegistration_Btn
         registrationBtn.setOnClickListener {
-            Toast.makeText(this,
-                ChatFunctions().transformPhoneNumber(phoneNumberText.text.toString()), Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                ChatFunctions().transformPhoneNumber(phoneNumberText.text.toString()),
+                Toast.LENGTH_LONG
+            ).show()
             if (emailText.text.isNotEmpty() && loginText.text.isNotEmpty()
                 && phoneNumberText.text.isNotEmpty() && passwordText.text.isNotEmpty()
                 && repeatPasswordText.text.isNotEmpty()
@@ -74,7 +76,11 @@ class RegistrationWindow : AppCompatActivity() {
                         }
                         startIntent(ChatsWindow::class.java)
                     } catch (exception: Exception) {
-                        ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
+                        ChatFunctions().showMessage(
+                            "Ошибка",
+                            "Ошибка установки соединения",
+                            this
+                        )
                         //TODO("Обработка ошибки при отсутствии интернетов")
                     }
                 } catch (exception: Exception) {
@@ -86,7 +92,8 @@ class RegistrationWindow : AppCompatActivity() {
             } else
                 ChatFunctions().showMessage(
                     "Ошибка",
-                    "Внимательно проверьте корректность введенных данных, а также совпали ли пароли",
+                    "Внимательно проверьте корректность введенных данных," +
+                            " а также совпали ли пароли",
                     this
                 )
         }

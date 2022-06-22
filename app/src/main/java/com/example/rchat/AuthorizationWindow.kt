@@ -12,7 +12,6 @@ import com.example.rchat.utils.Requests
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
-
 class AuthorizationWindow : AppCompatActivity() {
     private lateinit var login: String
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,13 +49,13 @@ class AuthorizationWindow : AppCompatActivity() {
             if (authorizeLoginText.text.isNotEmpty() && authorizePasswordText.text.isNotEmpty()) {
                 login = authorizeLoginText.text.toString()
                 try {
-                        Requests().post(
-                            mapOf(
-                                "username" to login,
-                                "password" to authorizePasswordText.text.toString()
-                            ),
-                            "${ChatSingleton.serverUrl}/login"
-                        )
+                    Requests().post(
+                        mapOf(
+                            "username" to login,
+                            "password" to authorizePasswordText.text.toString()
+                        ),
+                        "${ChatSingleton.serverUrl}/login"
+                    )
                     try {
                         GlobalScope.async {
                             ChatSingleton.openConnection(login)
