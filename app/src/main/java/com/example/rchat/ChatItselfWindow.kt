@@ -20,13 +20,15 @@ class ChatItselfWindow : AppCompatActivity() {
         val messagesListView: ListView = findViewById(R.id.Messages_List)
         val messageInput: TextView = findViewById(R.id.Message_Input)
 
+        val chatLogin = ChatSingleton.chatName
+        chatName.text = chatLogin
+
         ChatSingleton.setChatItselfWindow(
             messagesListView,
-            intent.getStringExtra("Chat Name").toString(),
+            chatLogin,
             this
         )
         ChatSingleton.clearMessageList()
-        chatName.text = intent.getStringExtra("Chat Name")
 
         // Вывод сообщений на экран
         ChatSingleton.sendMessagesRequest()
@@ -38,7 +40,7 @@ class ChatItselfWindow : AppCompatActivity() {
         sendMessageBtn.setOnClickListener {
             if (messageInput.text.isNotEmpty()) {
                 ChatSingleton.sendMessage(
-                    intent.getStringExtra("Chat Name").toString(),
+                    chatLogin,
                     messageInput.text.toString()
                 )
                 messageInput.text = null

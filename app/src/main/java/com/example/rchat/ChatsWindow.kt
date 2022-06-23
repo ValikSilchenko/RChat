@@ -26,8 +26,6 @@ class ChatsWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chats_window)
 
-        ChatSingleton.createNotifChannel(this)      // Переместить впоследствии в момент создания фонового процесса вместе с открытием соединения с сокетом
-
         val newChatBtn: ImageButton = findViewById(R.id.NewChat_Btn)
         val userLogin: TextView = findViewById(R.id.AppName)
         val chatArray: ListView = findViewById(R.id.ChatListView)
@@ -37,6 +35,7 @@ class ChatsWindow : AppCompatActivity() {
         userLogin.text = user
 
         ChatSingleton.setChatsWindow(chatArray, user, this)
+
         ChatSingleton.clearChatList()
 
         try {
