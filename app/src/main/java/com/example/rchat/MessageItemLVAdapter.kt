@@ -31,6 +31,15 @@ class MessageItemLVAdapter(
         outgoingLogin.text = arrayList[position].outgoingLogin
         outgoingMessage.text = arrayList[position].outgoingMessage
 
+        if (incomingMessage.text == "") {
+            incomingMessage.visibility = View.GONE
+            incomingLogin.visibility = View.GONE
+
+        } else if (outgoingMessage.text == "") {
+            outgoingMessage.visibility = View.GONE
+            outgoingLogin.visibility = View.GONE
+        }
+
         return view
     }
 }

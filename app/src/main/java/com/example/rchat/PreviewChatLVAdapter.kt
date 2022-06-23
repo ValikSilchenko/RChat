@@ -35,8 +35,8 @@ class PreviewChatLVAdapter(
 //            unreadTxt.visibility = View.GONE
             val intent = Intent(context, ChatItselfWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-            intent.putExtra("Chat Name", previewLogin.text.toString())
             ChatSingleton.isInChat = true
+            ChatSingleton.chatName = previewLogin.text.toString()
             context.startActivity(intent)
             context.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
