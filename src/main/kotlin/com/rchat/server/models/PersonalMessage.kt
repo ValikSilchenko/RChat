@@ -31,7 +31,7 @@ open class PersonalMessage {
     open var recipient: Users? = null
 
     @JsonView(View.Message::class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     @Column(name = "\"time\"", nullable = false)
     open var time: LocalTime? = null
 
