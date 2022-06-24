@@ -13,7 +13,7 @@
         android:layout_margin="10dp"
         android:backgroundTint="?attr/button_color"
         android:clickable="true"
-        android:src="@drawable/ic_back_btn_img"
+        android:src="@drawable/ic_back"
         android:background="@drawable/roundcorner"
         android:focusable="true"
         app:cornerRadius="20dp"
@@ -36,7 +36,7 @@
             android:layout_height="50dp"
             android:backgroundTint="?attr/button_color"
             android:clickable="true"
-            android:src="@drawable/ic_search_img"
+            android:src="@drawable/ic_search"
             android:background="@drawable/roundcorner"
             android:focusable="true" />
 

@@ -143,7 +143,7 @@ object ChatSingleton {
 //        val intent = Intent(chatsWindowContext, ChatItselfWindow::class.java)
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
 //        chatName = loginTitle
-//        val pendingIntent = PendingIntent.getActivity(chatsWindowContext, 0, intent, 0)
+//        val pendingIntent = PendingIntent.getActivity(chatsWindowContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val builder = NotificationCompat.Builder(chatsWindowContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)

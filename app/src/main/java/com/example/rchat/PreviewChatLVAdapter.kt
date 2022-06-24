@@ -31,6 +31,9 @@ class PreviewChatLVAdapter(
         previewYouTxt.text = arrayList[position].previewYouTxt
 //        unreadTxt.text = arrayList[position].unreadTxt
 
+//        if (previewYouTxt.text == "")
+//            previewYouTxt.visibility = View.GONE
+
         view.setOnClickListener {
 //            unreadTxt.visibility = View.GONE
             val intent = Intent(context, ChatItselfWindow::class.java)

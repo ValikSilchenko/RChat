@@ -19,4 +19,6 @@
     <string name="enter_phone_number_registration_window">Введите номер телефона</string>
     <string name="enter_user_login">Введите логин пользователя...</string>
     <string name="exit_account_text">Выйти из аккаунта</string>
+    <string name="new_chat_title">Новый чат</string>
+    <string name="settings_title">Настройки</string>
 </resources>
