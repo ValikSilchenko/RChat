@@ -22,14 +22,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/Settings_Btn"
+            android:id="@+id/More_Btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:backgroundTint="?attr/button_color"
             android:background="@drawable/roundcorner"
+            android:backgroundTint="?attr/button_color"
             android:clickable="true"
-            android:src="@drawable/ic_settings_btn_img"
-            android:focusable="true" />
+            android:focusable="true"
+            android:src="@drawable/ic_more" />
 
         <TextView
             android:id="@+id/AppName"
@@ -47,29 +47,14 @@
         android:layout_height="0dp"
         android:layout_margin="10dp"
         android:clickable="true"
-        android:focusable="true"
-        android:dividerHeight="5dp"
         android:divider="@null"
-        android:scrollbars="none"
+        android:dividerHeight="5dp"
+        android:focusable="true"
         android:longClickable="true"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TopContainer"
         tools:listitem="@layout/preview_chat" />
-
-    <ImageButton
-        android:id="@+id/NewChat_Btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="?attr/button_color"
-        android:background="@drawable/roundcorner"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_unread_img"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

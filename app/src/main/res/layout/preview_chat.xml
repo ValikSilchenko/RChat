@@ -13,7 +13,7 @@
         android:id="@+id/Preview_Chat_Avatar_Img"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/ic_avatar_img"
+        android:src="@drawable/ic_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -37,13 +37,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="10:21"
-        android:textColor="?attr/text_color"
+        android:textColor="?attr/previewchat_msg_color"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/You_Txt"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -64,7 +65,7 @@
         android:maxLength="45"
         android:maxLines="1"
         android:text="This is the message that gonna be displayed in chatswindow"
-        android:textColor="?attr/text_color"
+        android:textColor="?attr/previewchat_msg_color"
         android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@id/You_Txt"
         app:layout_constraintTop_toBottomOf="@id/Preview_Chat_Sender_Login" />

@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
@@ -49,8 +48,6 @@ class RegistrationWindow : AppCompatActivity() {
 
         // Нажатие кнопки RegistrationRegistration_Btn
         registrationBtn.setOnClickListener {
-            Toast.makeText(this,
-                ChatFunctions().transformPhoneNumber(phoneNumberText.text.toString()), Toast.LENGTH_LONG).show()
             if (emailText.text.isNotEmpty() && loginText.text.isNotEmpty()
                 && phoneNumberText.text.isNotEmpty() && passwordText.text.isNotEmpty()
                 && repeatPasswordText.text.isNotEmpty()
@@ -62,7 +59,7 @@ class RegistrationWindow : AppCompatActivity() {
                         mapOf(
                             "username" to login,
                             "email" to emailText.text.toString(),
-                            "phone" to phoneNumberText.text.toString(),
+                            "phone" to ChatFunctions().transformPhoneNumber(phoneNumberText.text.toString()),
                             "password" to passwordText.text.toString()
                         ),
                         "${ChatSingleton.serverUrl}/user"

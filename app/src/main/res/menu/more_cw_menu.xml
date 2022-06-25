@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/newchat_item"
+        android:icon="@drawable/ic_message"
+        android:title="@string/new_chat_title"
+        />
+    <item
+        android:id="@+id/settings_item"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings_title"
+         />
+</menu>

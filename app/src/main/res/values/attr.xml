@@ -8,5 +8,6 @@
         <attr name="switch_color" format="color"/>
         <attr name="image_color" format="color"/>
         <attr name="previewchat_color" format="color"/>
+        <attr name="previewchat_msg_color" format="color"/>
     </declare-styleable>
 </resources>
