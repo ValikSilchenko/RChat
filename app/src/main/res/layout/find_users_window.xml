@@ -47,7 +47,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="5dp"
             android:backgroundTint="?attr/edit_text_color"
-            android:hint="@string/enter_user_login"
+            android:hint="@string/userlogin_title"
             android:layoutDirection="ltr"
             android:textColor="?attr/text_color"
             android:textColorHint="?attr/edit_text_color" />

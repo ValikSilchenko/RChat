@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.rchat.utils.ChatSingleton
 
 class PreviewChatLVAdapter(
@@ -41,9 +44,50 @@ class PreviewChatLVAdapter(
             ChatSingleton.isInChat = true
             ChatSingleton.chatName = previewLogin.text.toString()
             context.startActivity(intent)
-            context.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            context.overridePendingTransition(
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right
+            )
+        }
+
+        view.setOnLongClickListener {
+            val popupMenu = PopupMenu(context, it)
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.delete_chat_item -> {
+                        showAlertMessage(context, previewLogin.text.toString())
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popupMenu.inflate(R.menu.more_pc_menu)
+            popupMenu.show()
+            true
         }
 
         return view
+    }
+
+    private fun showAlertMessage(context: Activity, chatName: String) {
+        val message: AlertDialog.Builder = AlertDialog.Builder(context)
+        message
+            .setTitle("Внимание")
+            .setMessage("Вы действительно хотите удалить данный чат?")
+            .setCancelable(true)
+            .setPositiveButton(
+                "Да"
+            ) { _, _ ->
+                Toast.makeText(
+                    context,
+                    "Delete chat $chatName",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .setNegativeButton("Нет") { dialog, _ ->
+                dialog.cancel()
+            }
+        val messageWindow = message.create()
+        messageWindow.show()
     }
 }

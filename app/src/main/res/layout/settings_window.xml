@@ -28,9 +28,10 @@
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/roundcorner"
+        android:backgroundTint="?attr/button_color"
         android:clickable="true"
         android:focusable="true"
-        android:text="@string/exit_account_text"
+        android:text="@string/exitacc_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

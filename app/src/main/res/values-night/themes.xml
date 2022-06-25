@@ -18,6 +18,7 @@
         <item name="switch_color">@android:color/darker_gray</item>
         <item name="image_color">@android:color/darker_gray</item>
         <item name="previewchat_color">#F1BD7D</item>
+        <item name="previewchat_msg_color">#DFD2D2</item>
     </style>
 
 </resources>

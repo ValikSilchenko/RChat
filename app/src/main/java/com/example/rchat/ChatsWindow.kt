@@ -92,7 +92,7 @@ class ChatsWindow : AppCompatActivity() {
                     else -> false
                 }
             }
-            popupMenu.inflate(R.menu.chatswindow_menu)
+            popupMenu.inflate(R.menu.more_cw_menu)
             try {
                 val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")
                 fieldMPopup.isAccessible = true
