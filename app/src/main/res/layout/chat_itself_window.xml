@@ -26,7 +26,7 @@
             android:backgroundTint="?attr/button_color"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_back_btn_img"
+            android:src="@drawable/ic_back"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/UserName_ChatText"
@@ -80,7 +80,7 @@
             android:clickable="true"
             android:focusable="true"
             android:rotation="180"
-            android:src="@drawable/ic_send_btn_img" />
+            android:src="@drawable/ic_send" />
 
         <EditText
             android:id="@+id/Message_Input"

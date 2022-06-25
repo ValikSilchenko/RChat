@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.ListView
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.utils.ChatFunctions
@@ -26,12 +28,9 @@ class ChatsWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chats_window)
 
-        ChatSingleton.createNotifChannel(this)      // Переместить впоследствии в момент создания фонового процесса вместе с открытием соединения с сокетом
-
-        val newChatBtn: ImageButton = findViewById(R.id.NewChat_Btn)
         val userLogin: TextView = findViewById(R.id.AppName)
         val chatArray: ListView = findViewById(R.id.ChatListView)
-        val settingsBtn: ImageButton = findViewById(R.id.Settings_Btn)
+        val moreBtn: ImageButton = findViewById(R.id.More_Btn)
 
         val user = getSharedPreferences("Authorization", Context.MODE_PRIVATE).getString(
             "LOGIN_KEY",
@@ -40,6 +39,7 @@ class ChatsWindow : AppCompatActivity() {
         userLogin.text = user
 
         ChatSingleton.setChatsWindow(chatArray, user, this)
+
         ChatSingleton.clearChatList()
 
         try {
@@ -74,16 +74,42 @@ class ChatsWindow : AppCompatActivity() {
             )
         }
 
-        newChatBtn.setOnClickListener {
-            startActivity(Intent(this, FindUsersWindow::class.java))
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-        }
-
-        settingsBtn.setOnClickListener {
-            val intent = Intent(this, SettingsWindow::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        moreBtn.setOnClickListener {
+            val popupMenu = PopupMenu(this, it)
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.newchat_item -> {
+                        startActivity(Intent(this, FindUsersWindow::class.java))
+                        overridePendingTransition(
+                            android.R.anim.slide_in_left,
+                            android.R.anim.slide_out_right
+                        )
+                        true
+                    }
+                    R.id.settings_item -> {
+                        val intent = Intent(this, SettingsWindow::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        startActivity(intent)
+                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popupMenu.inflate(R.menu.more_cw_menu)
+            try {
+                val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")
+                fieldMPopup.isAccessible = true
+                val mPopup = fieldMPopup.get(popupMenu)
+                mPopup.javaClass
+                    .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                    .invoke(mPopup, true)
+            } catch (e: Exception) {
+                Log.e("Main", "Error of showing popup menu icons")
+            }
+            finally {
+                popupMenu.show()
+            }
         }
     }
 

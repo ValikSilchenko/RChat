@@ -17,6 +17,7 @@ object ChatSingleton {
     val CHANNEL_ID = "channel_id"
     val serverUrl = "http://194.87.248.192:8080"
     var isInChat = false
+    lateinit var chatName: String
 
     private lateinit var chatItselfContext: Activity
     private lateinit var chatsWindowContext: Activity
@@ -40,6 +41,7 @@ object ChatSingleton {
         chatsWindowContext = incomingContext
         chatArrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
         chatWindowLV.adapter = chatArrayAdapter
+        createNotificationChannel()
     }
 
     fun setChatItselfWindow(listView: ListView, username: String, incomingContext: Activity) {
@@ -111,38 +113,37 @@ object ChatSingleton {
                 updateChatList(sender, parsedMessage["time"].toString(), messageText, "")
                 if (sender == Billy) {
                     if (!isInChat) {
-                        sendNotification(userId, sender, messageText, chatsWindowContext)
+                        sendNotification(userId, sender, messageText)
                     }
                     updateMessageList(sender, messageText)
                     setSelection()
                 } else
-                    sendNotification(userId, sender, messageText, chatsWindowContext)
+                    sendNotification(userId, sender, messageText)
             }
         }
     }
 
-    fun createNotifChannel(context: Context) {
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(CHANNEL_ID, "notif_title", importance).apply {
                 description = "notif description"
             }
             val notificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                chatsWindowContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
 
     private fun sendNotification(
-        notifId: Int,
+        notificationId: Int,
         loginTitle: String,
-        messageText: String,
-        context: Context
+        messageText: String
     ) {
-//        val intent = Intent(context, ChatItselfWindow::class.java)
+//        val intent = Intent(chatsWindowContext, ChatItselfWindow::class.java)
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//        intent.putExtra("Chat Name", loginTitle)
-//        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+//        chatName = loginTitle
+//        val pendingIntent = PendingIntent.getActivity(chatsWindowContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val builder = NotificationCompat.Builder(chatsWindowContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -152,7 +153,7 @@ object ChatSingleton {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         with(NotificationManagerCompat.from(chatsWindowContext)) {
-            notify(notifId, builder.build())
+            notify(notificationId, builder.build())
         }
     }
 
