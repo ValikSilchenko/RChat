@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">R Chat</string>
+    <string name="Message_Input_Hint">Введите сообщение...</string>
+    <string name="firsttime_in_rchat_title">Впервые в R Chat?</string>
+    <string name="enter_email_title">Введите e-mail</string>
+    <string name="enter_password_title">Введите пароль</string>
+    <string name="finish_registration_title">Завершить регистрацию</string>
+    <string name="enter_login_title">Введите логин</string>
+    <string name="already_have_acc_title">У меня уже есть аккаунт</string>
+    <string name="repeat_password_title">Повторите пароль</string>
+    <string name="welcome_back_title">Авторизация</string>
+    <string name="enteracc_title">Войти в аккаунт</string>
+    <string name="dont_have_acc_title">У меня нет аккаунта</string>
+    <string name="forgot_password_title">Забыли пароль?</string>
+    <string name="user_name_text">Имя пользователя</string>
+    <string name="toptext_settings_title">Настройки</string>
+    <string name="dark_theme_title">Темная тема</string>
+    <string name="login_text_title">Логин</string>
+    <string name="phonenumber_title">Введите номер телефона</string>
+    <string name="userlogin_title">Введите логин пользователя...</string>
+    <string name="exitacc_title">Выйти из аккаунта</string>
+    <string name="new_chat_title">Новый чат</string>
+    <string name="settings_title">Настройки</string>
+    <string name="delete_chat_title">Удалить чат</string>
+    <string name="delete_message_title">Удалить сообщение</string>
+    <string name="edit_message_title">Редактировать сообщение</string>
+    <string name="reply_message_title">Ответить</string>
+</resources>

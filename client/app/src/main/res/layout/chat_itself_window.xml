@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/background_color"
+    tools:context=".ChatItselfWindow">
+
+    <LinearLayout
+        android:id="@+id/TopLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layoutDirection="ltr"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/MainMenu_Btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/roundcorner"
+            android:backgroundTint="?attr/button_color"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_back"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/UserName_ChatText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/UserName_ChatText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:text="Recipient Login"
+            android:textColor="?attr/text_color"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/MainMenu_Btn"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/Messages_List"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:divider="@null"
+        android:dividerHeight="10dp"
+        android:transcriptMode="normal"
+        app:layout_constraintBottom_toTopOf="@id/BottomLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/TopLine"
+        tools:listitem="@layout/message_item" />
+
+    <LinearLayout
+        android:id="@+id/BottomLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layoutDirection="rtl"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Messages_List">
+
+        <ImageButton
+            android:id="@+id/SendMessage_Btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/roundcorner"
+            android:backgroundTint="?attr/button_color"
+            android:clickable="true"
+            android:focusable="true"
+            android:rotation="180"
+            android:src="@drawable/ic_send" />
+
+        <EditText
+            android:id="@+id/Message_Input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/edit_text_color"
+            android:hint="@string/Message_Input_Hint"
+            android:inputType="textMultiLine"
+            android:layoutDirection="ltr"
+            android:maxHeight="150dp"
+            android:textColor="?attr/text_color"
+            android:textColorHint="?attr/edit_text_color" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

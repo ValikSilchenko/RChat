@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/PreviewChat_View"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:clickable="true"
+    android:longClickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/Preview_Chat_Avatar_Img"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_avatar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?attr/image_color" />
+
+    <TextView
+        android:id="@+id/Preview_Chat_Sender_Login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Sender Name"
+        android:textColor="?attr/text_color"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/Preview_Chat_Avatar_Img"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Preview_Chat_Receiving_Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="10:21"
+        android:textColor="?attr/previewchat_msg_color"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/You_Txt"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:text="You:"
+        android:textColor="?attr/text_color"
+        android:textSize="15sp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toEndOf="@id/Preview_Chat_Avatar_Img"
+        app:layout_constraintTop_toBottomOf="@id/Preview_Chat_Sender_Login" />
+
+    <TextView
+        android:id="@+id/Preview_Chat_Message_Txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
+        android:maxLength="45"
+        android:maxLines="1"
+        android:text="This is the message that gonna be displayed in chatswindow"
+        android:textColor="?attr/previewchat_msg_color"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@id/You_Txt"
+        app:layout_constraintTop_toBottomOf="@id/Preview_Chat_Sender_Login" />
+
+    <TextView
+        android:id="@+id/Unread_Txt"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:background="@drawable/roundcorner"
+        android:backgroundTint="?attr/button_color"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="?attr/text_color"
+        android:textSize="10sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

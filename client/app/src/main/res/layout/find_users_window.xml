@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FindUsersWindow">
+
+    <ImageButton
+        android:id="@+id/FindUserBack_Btn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:backgroundTint="?attr/button_color"
+        android:clickable="true"
+        android:src="@drawable/ic_back"
+        android:background="@drawable/roundcorner"
+        android:focusable="true"
+        app:cornerRadius="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/Container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layoutDirection="rtl"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/FindUserBack_Btn">
+
+        <ImageButton
+            android:id="@+id/FindUserFind_Btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="?attr/button_color"
+            android:clickable="true"
+            android:src="@drawable/ic_search"
+            android:background="@drawable/roundcorner"
+            android:focusable="true" />
+
+        <EditText
+            android:id="@+id/FindUserLogin_EditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="?attr/edit_text_color"
+            android:hint="@string/userlogin_title"
+            android:layoutDirection="ltr"
+            android:textColor="?attr/text_color"
+            android:textColorHint="?attr/edit_text_color" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/FoundUsers_Array"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:divider="@null"
+        android:dividerHeight="5dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Container"
+        tools:listitem="@layout/preview_chat" />
+</androidx.constraintlayout.widget.ConstraintLayout>
