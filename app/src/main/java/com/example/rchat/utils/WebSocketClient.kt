@@ -14,38 +14,39 @@ import org.springframework.web.socket.sockjs.client.Transport
 import org.springframework.web.socket.sockjs.client.WebSocketTransport
 import java.lang.reflect.Type
 
-
 class WebSocketClient {
     private var session: StompSession? = null
 
     fun connect(username: String) {
-//        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
         val simpleWebSocketClient: WebSocketClient = StandardWebSocketClient()
 
         val transports: MutableList<Transport> = ArrayList(1)
         transports.add(WebSocketTransport(simpleWebSocketClient))
-        val sockJsClient = SockJsClient(transports)  // TODO("Didn't find (didn't read lol) class "javax.xml.stream.XMLResolver"")
+        val sockJsClient =
+            SockJsClient(transports)  // TODO("Didn't find (didn't read lol) class "javax.xml.stream.XMLResolver"")
         val stompClient = WebSocketStompClient(sockJsClient)
 
         stompClient.messageConverter = MappingJackson2MessageConverter()
 
-        session = stompClient.connect("${ChatSingleton.serverUrl}/ws", object : StompSessionHandlerAdapter() {
-            override fun afterConnected(session: StompSession, connectedHeaders: StompHeaders) {
-                session.subscribe("/chatTopic/$username/", object : StompFrameHandler {
-                    override fun getPayloadType(headers: StompHeaders): Type {
-                        return Map::class.java
-                    }
+        session = stompClient.connect(
+            "${ChatSingleton.serverUrl}/ws",
+            object : StompSessionHandlerAdapter() {
+                override fun afterConnected(session: StompSession, connectedHeaders: StompHeaders) {
+                    session.subscribe("/chatTopic/$username/", object : StompFrameHandler {
+                        override fun getPayloadType(headers: StompHeaders): Type {
+                            return Map::class.java
+                        }
 
-                    override fun handleFrame(headers: StompHeaders, @Nullable payload: Any?) {
-                        ChatSingleton.processMessage(payload as Map<*, *>)
-                    }
-                })
-            }
-        }).get()
+                        override fun handleFrame(headers: StompHeaders, @Nullable payload: Any?) {
+                            ChatSingleton.processMessage(payload as Map<*, *>)
+                        }
+                    })
+                }
+            }).get()
     }
 
     fun send(username: String, msg: String, sender: String) {
-        session?.send("/app/user/$username/$sender/", msg)  // /app/test/
+        session?.send("/app/user/$username/$sender/", msg)
     }
 
     fun disconnect() {

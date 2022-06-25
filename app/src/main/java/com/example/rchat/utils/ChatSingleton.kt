@@ -179,9 +179,13 @@ object ChatSingleton {
 
     private fun updateMessageList(senderLogin: String, message: String) {
         if (senderLogin == Van)
-            messagesArrayList.add(MessageItemDataClass("", "", senderLogin, message))
+            messagesArrayList.add(
+                MessageItemDataClass("", "", senderLogin, message)
+            )
         else
-            messagesArrayList.add(MessageItemDataClass(senderLogin, message, "", ""))
+            messagesArrayList.add(
+                MessageItemDataClass(senderLogin, message, "", "")
+            )
 
         messagesArrayAdapter.notifyDataSetChanged()
         setSelection()

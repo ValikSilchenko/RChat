@@ -67,7 +67,11 @@ class ChatsWindow : AppCompatActivity() {
                 )
             }
         } catch (error: Exception) {
-            ChatFunctions().showMessage("Ошибка", "Окно чатов: ${error.message}", this)
+            ChatFunctions().showMessage(
+                "Ошибка",
+                "Окно чатов: ${error.message}",
+                this
+            )
         }
 
         moreBtn.setOnClickListener {
