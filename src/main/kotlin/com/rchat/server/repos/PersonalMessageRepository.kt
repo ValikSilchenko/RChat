@@ -2,6 +2,7 @@ package com.rchat.server.repos
 
 import com.rchat.server.models.PersonalMessage
 import com.rchat.server.models.Users
+
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 

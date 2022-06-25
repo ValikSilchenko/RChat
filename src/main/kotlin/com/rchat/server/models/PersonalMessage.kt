@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonView
 import com.rchat.server.views.View
+import org.hibernate.annotations.Proxy
 import org.hibernate.annotations.Type
 import java.time.LocalDate
 import java.time.LocalTime
@@ -11,6 +12,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "personal_messages")
+@Proxy(lazy = false)
 open class PersonalMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
