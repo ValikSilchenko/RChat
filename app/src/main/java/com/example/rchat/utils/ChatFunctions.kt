@@ -1,5 +1,6 @@
 package com.example.rchat.utils
 
+import android.app.ActivityManager
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 
@@ -57,5 +58,15 @@ class ChatFunctions {
         else
             number.drop(1)
         return number
+    }
+
+    fun isServiceRunning(serviceClass: Class<*>, context: Context): Boolean {
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
+        }
+        return false
     }
 }

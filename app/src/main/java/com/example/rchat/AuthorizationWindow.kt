@@ -6,11 +6,10 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rchat.utils.BackgroundService
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.Requests
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 
 class AuthorizationWindow : AppCompatActivity() {
     private lateinit var login: String
@@ -26,9 +25,13 @@ class AuthorizationWindow : AppCompatActivity() {
 
         if (ChatFunctions().isAuthorized(this)) {
             login = ChatFunctions().getSavedLogin(this)
-            GlobalScope.async {
-                ChatSingleton.openConnection(login)
-            }
+//            GlobalScope.async {
+//                ChatSingleton.openConnection(login)
+//            }
+
+            if (!ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
+                startService(Intent(applicationContext, BackgroundService::class.java))
+
             startIntent(ChatsWindow::class.java)
         }
 
@@ -57,10 +60,14 @@ class AuthorizationWindow : AppCompatActivity() {
                         "${ChatSingleton.serverUrl}/login"
                     )
                     try {
-                        GlobalScope.async {
-                            ChatSingleton.openConnection(login)
-                        }
+//                        GlobalScope.async {
+//                            ChatSingleton.openConnection(login)
+//                        }
                         ChatFunctions().saveData(this, login, true)
+
+                        if (!ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
+                            startService(Intent(applicationContext, BackgroundService::class.java))
+
                         startIntent(ChatsWindow::class.java)
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
