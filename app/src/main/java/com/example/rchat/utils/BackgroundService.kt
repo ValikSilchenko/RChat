@@ -25,16 +25,10 @@ class BackgroundService : Service() {
             .setContentTitle("R Chat")
             .setContentText("Приложение запущено в фоне")
             .setPriority(NotificationCompat.PRIORITY_MIN)
-
-
-        println("Notification shown")
         GlobalScope.async {
             ChatSingleton.openConnection(ChatFunctions().getSavedLogin(applicationContext)) //!
         }
-
-        println("Opened")
         startForeground(-1, builder.build())
-
         return START_STICKY
     }
 

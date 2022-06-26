@@ -58,7 +58,7 @@ class RegistrationWindow : AppCompatActivity() {
                         mapOf(
                             "username" to login,
                             "email" to emailText.text.toString(),
-                            "phone" to ChatFunctions().transformPhoneNumber(phoneNumberText.text.toString()),
+                            "phone" to phoneNumberText.text.toString(),
                             "password" to passwordText.text.toString()
                         ),
                         "${ChatSingleton.serverUrl}/user"
