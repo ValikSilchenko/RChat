@@ -106,7 +106,7 @@ object ChatSingleton {
                     (parsedMessage["recipient"] as JSONObject)["username"].toString(),
                     parsedMessage["time"].toString(),
                     messageText,
-                    "You:"
+                    "Вы:"
                 )
                 updateMessageList(sender, messageText)
             } else {

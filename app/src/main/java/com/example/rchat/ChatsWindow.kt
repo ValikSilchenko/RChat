@@ -54,7 +54,7 @@ class ChatsWindow : AppCompatActivity() {
             for (el in response) {
                 if ((el["sender"] as JSONObject)["username"].toString() == user) {
                     username = (el["recipient"] as JSONObject)["username"].toString()
-                    youTxt = "You:"
+                    youTxt = "Вы:"
                 } else {
                     username = (el["sender"] as JSONObject)["username"].toString()
                     youTxt = ""
