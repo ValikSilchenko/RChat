@@ -6,11 +6,11 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:clickable="true"
-    android:longClickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:longClickable="true">
 
     <ImageView
-        android:id="@+id/Preview_Chat_Avatar_Img"
+        android:id="@+id/PC_Avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_avatar"
@@ -20,7 +20,7 @@
         app:tint="?attr/image_color" />
 
     <TextView
-        android:id="@+id/Preview_Chat_Sender_Login"
+        android:id="@+id/PC_Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -28,11 +28,11 @@
         android:textColor="?attr/text_color"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/Preview_Chat_Avatar_Img"
+        app:layout_constraintStart_toEndOf="@id/PC_Avatar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/Preview_Chat_Receiving_Time"
+        android:id="@+id/PC_ReceivingTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -42,21 +42,47 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<!--    <ImageView-->
+<!--        android:id="@+id/PC_ReadMsg"-->
+<!--        android:layout_width="18dp"-->
+<!--        android:layout_height="18dp"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:layout_marginTop="2dp"-->
+<!--        android:src="@drawable/ic_done"-->
+<!--        android:visibility="invisible"-->
+<!--        app:layout_constraintStart_toEndOf="@id/PC_Avatar"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/PC_Login"-->
+<!--        app:tint="@color/black" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/PC_UnreadCount"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:layout_marginTop="2dp"-->
+<!--        android:gravity="center"-->
+<!--        android:text="500"-->
+<!--        android:maxWidth="18dp"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="15sp"-->
+<!--        app:layout_constraintStart_toEndOf="@id/PC_Avatar"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/PC_Login" />-->
+
     <TextView
-        android:id="@+id/You_Txt"
+        android:id="@+id/PC_You"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="2dp"
-        android:text="You:"
+        android:text="Вы:"
         android:textColor="?attr/text_color"
         android:textSize="15sp"
         android:textStyle="italic"
-        app:layout_constraintStart_toEndOf="@id/Preview_Chat_Avatar_Img"
-        app:layout_constraintTop_toBottomOf="@id/Preview_Chat_Sender_Login" />
+        app:layout_constraintStart_toEndOf="@id/PC_Avatar"
+        app:layout_constraintTop_toBottomOf="@id/PC_Login" />
 
     <TextView
-        android:id="@+id/Preview_Chat_Message_Txt"
+        android:id="@+id/PC_Message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -66,20 +92,6 @@
         android:text="This is the message that gonna be displayed in chatswindow"
         android:textColor="?attr/previewchat_msg_color"
         android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@id/You_Txt"
-        app:layout_constraintTop_toBottomOf="@id/Preview_Chat_Sender_Login" />
-
-    <TextView
-        android:id="@+id/Unread_Txt"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:background="@drawable/roundcorner"
-        android:backgroundTint="?attr/button_color"
-        android:gravity="center"
-        android:text="1"
-        android:textColor="?attr/text_color"
-        android:textSize="10sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/PC_You"
+        app:layout_constraintTop_toBottomOf="@id/PC_Login" />
 </androidx.constraintlayout.widget.ConstraintLayout>

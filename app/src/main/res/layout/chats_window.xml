@@ -8,7 +8,7 @@
     tools:context=".ChatsWindow">
 
     <LinearLayout
-        android:id="@+id/TopContainer"
+        android:id="@+id/CW_TopContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -16,13 +16,13 @@
         android:layout_marginEnd="10dp"
         android:layoutDirection="rtl"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/ChatListView"
+        app:layout_constraintBottom_toTopOf="@id/CW_ChatsArray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/More_Btn"
+            android:id="@+id/CW_MoreBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/roundcorner"
@@ -32,7 +32,7 @@
             android:src="@drawable/ic_more" />
 
         <TextView
-            android:id="@+id/AppName"
+            android:id="@+id/CW_AppName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
@@ -42,7 +42,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/ChatListView"
+        android:id="@+id/CW_ChatsArray"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
@@ -55,6 +55,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/TopContainer"
+        app:layout_constraintTop_toBottomOf="@id/CW_TopContainer"
         tools:listitem="@layout/preview_chat" />
 </androidx.constraintlayout.widget.ConstraintLayout>

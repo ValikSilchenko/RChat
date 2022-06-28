@@ -8,7 +8,7 @@
     tools:context=".SettingsWindow">
 
     <ImageButton
-        android:id="@+id/SettingsChat_Btn"
+        android:id="@+id/SW_ToChatsBtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/ExitAcccount_Btn"
+        android:id="@+id/SW_ExitAccountBtn"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"

@@ -14,11 +14,11 @@ class ChatItselfWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chat_itself_window)
 
-        val backToMainMenuBtn: ImageButton = findViewById(R.id.MainMenu_Btn)
-        val sendMessageBtn: ImageButton = findViewById(R.id.SendMessage_Btn)
-        val chatName: TextView = findViewById(R.id.UserName_ChatText)
-        val messagesListView: ListView = findViewById(R.id.Messages_List)
-        val messageInput: TextView = findViewById(R.id.Message_Input)
+        val backToMainMenuBtn: ImageButton = findViewById(R.id.CIW_BackBtn)
+        val sendMessageBtn: ImageButton = findViewById(R.id.CIW_SendMessageBtn)
+        val chatName: TextView = findViewById(R.id.CIW_ChatName)
+        val messagesListView: ListView = findViewById(R.id.CIW_MessagesArray)
+        val messageInput: TextView = findViewById(R.id.CIW_MessageInput)
 
         val chatLogin = ChatSingleton.chatName
         chatName.text = chatLogin
@@ -28,7 +28,6 @@ class ChatItselfWindow : AppCompatActivity() {
             chatLogin,
             this
         )
-        ChatSingleton.clearMessageList()
 
         // Вывод сообщений на экран
         ChatSingleton.sendMessagesRequest()

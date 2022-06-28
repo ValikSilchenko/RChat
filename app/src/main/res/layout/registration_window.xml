@@ -2,14 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/background_color"
     tools:context=".RegistrationWindow">
 
     <TextView
-        android:id="@+id/TopText"
+        android:id="@+id/RW_TopText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -25,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/RegistrationLogin_Input"
+        android:id="@+id/RW_Input"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
@@ -37,10 +36,10 @@
         android:textColorHint="?attr/edit_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/TopText" />
+        app:layout_constraintTop_toBottomOf="@id/RW_TopText" />
 
     <EditText
-        android:id="@+id/RegistrationEmail_Input"
+        android:id="@+id/RW_Email"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
@@ -52,10 +51,10 @@
         android:textColorHint="?attr/edit_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RegistrationLogin_Input" />
+        app:layout_constraintTop_toBottomOf="@id/RW_Input" />
 
     <EditText
-        android:id="@+id/RegistrationPhoneNumber_Input"
+        android:id="@+id/RW_PhoneNumber"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
@@ -69,10 +68,10 @@
         android:textColorHint="?attr/edit_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RegistrationEmail_Input" />
+        app:layout_constraintTop_toBottomOf="@id/RW_Email" />
 
     <EditText
-        android:id="@+id/RegistrationPassword_Input"
+        android:id="@+id/RW_Password"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
@@ -85,10 +84,10 @@
         android:textColorHint="?attr/edit_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RegistrationPhoneNumber_Input" />
+        app:layout_constraintTop_toBottomOf="@id/RW_PhoneNumber" />
 
     <EditText
-        android:id="@+id/RegistrationRepeatPassword_Input"
+        android:id="@+id/RW_RepeatPassword"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
@@ -101,10 +100,10 @@
         android:textColorHint="?attr/edit_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RegistrationPassword_Input" />
+        app:layout_constraintTop_toBottomOf="@id/RW_Password" />
 
     <Button
-        android:id="@+id/RegistrationRegistration_Btn"
+        android:id="@+id/RW_RegistrationBtn"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="80dp"
@@ -118,10 +117,10 @@
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RegistrationRepeatPassword_Input" />
+        app:layout_constraintTop_toBottomOf="@id/RW_RepeatPassword" />
 
     <Button
-        android:id="@+id/RegistrationAuthorize_Btn"
+        android:id="@+id/RW_AuthorizeBtn"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="80dp"
@@ -135,5 +134,5 @@
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RegistrationRegistration_Btn" />
+        app:layout_constraintTop_toBottomOf="@id/RW_RegistrationBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

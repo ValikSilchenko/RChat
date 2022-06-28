@@ -35,10 +35,10 @@ class AuthorizationWindow : AppCompatActivity() {
             startIntent(ChatsWindow::class.java)
         }
 
-        val authorizeLoginText: EditText = findViewById(R.id.AuthorizeLogin_Input)
-        val authorizePasswordText: EditText = findViewById(R.id.AuthorizePassword_Input)
-        val enterAccountBtn: Button = findViewById(R.id.AuthorizeAuthorize_Btn)
-        val noBitches: Button = findViewById(R.id.Authorize_DontHaveAccount_Btn)
+        val authorizeLoginText: EditText = findViewById(R.id.AW_Login)
+        val authorizePasswordText: EditText = findViewById(R.id.AW_Password)
+        val enterAccountBtn: Button = findViewById(R.id.AW_AuthorizeBtn)
+        val noBitches: Button = findViewById(R.id.AW_NoAccountBtn)
 
         // Переход на страницу регистрации
         noBitches.setOnClickListener {

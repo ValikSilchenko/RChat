@@ -17,6 +17,7 @@ object ChatSingleton {
     val CHANNEL_ID = "channel_id"
     val serverUrl = "http://194.87.248.192:8080"
     var isInChat = false
+    var notificationId = -2
     lateinit var chatName: String
 
     private lateinit var chatItselfContext: Activity
@@ -57,11 +58,6 @@ object ChatSingleton {
             chatsArrayList.clear()
     }
 
-    fun clearMessageList() {
-        if (chatsArrayList.isNotEmpty())
-            messagesArrayList.clear()
-    }
-
     fun openConnection(username: String) {
         webSocketClient.connect(username)
     }
@@ -90,7 +86,8 @@ object ChatSingleton {
         for (el in response)
             updateMessageList(
                 (el["sender"] as JSONObject)["username"].toString(),
-                el["messageText"].toString()
+                el["messageText"].toString(),
+                "${el["date"]} ${el["time"]}"
             )
     }
 
@@ -100,6 +97,9 @@ object ChatSingleton {
             val sender = (parsedMessage["sender"] as JSONObject)["username"].toString()
             val messageText = parsedMessage["messageText"].toString()
             val userId = (parsedMessage["sender"] as JSONObject)["id"] as Int
+            val time = parsedMessage["time"].toString()
+            val date = parsedMessage["date"].toString()
+            notificationId = userId
 
             if (sender == Van) {
                 updateChatList(
@@ -108,14 +108,14 @@ object ChatSingleton {
                     messageText,
                     "Вы:"
                 )
-                updateMessageList(sender, messageText)
+                updateMessageList(sender, messageText, "$date $time")
             } else {
                 updateChatList(sender, parsedMessage["time"].toString(), messageText, "")
                 if (sender == Billy) {
                     if (!isInChat) {
                         sendNotification(userId, sender, messageText)
                     }
-                    updateMessageList(sender, messageText)
+                    updateMessageList(sender, messageText, "$date $time")
                     setSelection()
                 } else
                     sendNotification(userId, sender, messageText)
@@ -135,19 +135,17 @@ object ChatSingleton {
         }
     }
 
-    private fun sendNotification(
-        notificationId: Int,
-        loginTitle: String,
-        messageText: String
-    ) {
+    private fun sendNotification(notificationId: Int, loginTitle: String, messageText: String) {
 //        val intent = Intent(chatsWindowContext, ChatItselfWindow::class.java)
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
 //        chatName = loginTitle
 //        val pendingIntent = PendingIntent.getActivity(chatsWindowContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
+//        val contentView = RemoteViews()
         val builder = NotificationCompat.Builder(chatsWindowContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(loginTitle)
+//            .setDefaults(Notification.DEFAULT_ALL)
 //            .setContentIntent(pendingIntent)
             .setContentText(messageText)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -177,14 +175,14 @@ object ChatSingleton {
         chatArrayAdapter.notifyDataSetChanged()
     }
 
-    private fun updateMessageList(senderLogin: String, message: String) {
+    private fun updateMessageList(senderLogin: String, message: String, time: String) {
         if (senderLogin == Van)
             messagesArrayList.add(
-                MessageItemDataClass("", "", senderLogin, message)
+                MessageItemDataClass("", "", "", senderLogin, message, time)
             )
         else
             messagesArrayList.add(
-                MessageItemDataClass(senderLogin, message, "", "")
+                MessageItemDataClass(senderLogin, message, time,"", "", "")
             )
 
         messagesArrayAdapter.notifyDataSetChanged()

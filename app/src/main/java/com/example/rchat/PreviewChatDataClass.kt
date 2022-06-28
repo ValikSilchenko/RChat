@@ -5,5 +5,4 @@ data class PreviewChatDataClass(
     var previewTime: String,
     var previewMessage: String,
     var previewYouTxt: String
-//    var unreadTxt: String
 )

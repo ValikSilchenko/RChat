@@ -15,6 +15,8 @@ import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
 import com.example.rchat.utils.Requests
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ChatsWindow : AppCompatActivity() {
 
@@ -28,9 +30,9 @@ class ChatsWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chats_window)
 
-        val userLogin: TextView = findViewById(R.id.AppName)
-        val chatArray: ListView = findViewById(R.id.ChatListView)
-        val moreBtn: ImageButton = findViewById(R.id.More_Btn)
+        val userLogin: TextView = findViewById(R.id.CW_AppName)
+        val chatArray: ListView = findViewById(R.id.CW_ChatsArray)
+        val moreBtn: ImageButton = findViewById(R.id.CW_MoreBtn)
 
         val user = getSharedPreferences("Authorization", Context.MODE_PRIVATE).getString(
             "LOGIN_KEY",
@@ -51,6 +53,7 @@ class ChatsWindow : AppCompatActivity() {
             )
             var username: String
             var youTxt: String
+            var time: String
             for (el in response) {
                 if ((el["sender"] as JSONObject)["username"].toString() == user) {
                     username = (el["recipient"] as JSONObject)["username"].toString()
@@ -59,12 +62,14 @@ class ChatsWindow : AppCompatActivity() {
                     username = (el["sender"] as JSONObject)["username"].toString()
                     youTxt = ""
                 }
-                ChatSingleton.updateChatList(
-                    username,
-                    el["time"].toString(),
-                    el["messageText"].toString(),
-                    youTxt
-                )
+                val sdf = SimpleDateFormat("dd.MM.yyyy")
+                println("Test date: ${sdf.format(Calendar.getInstance().time)}")
+                time = if (el["date"] == sdf.format(Calendar.getInstance().time))
+                    el["time"].toString()
+                else
+                    el["date"].toString()
+
+                ChatSingleton.updateChatList(username, time, el["messageText"].toString(), youTxt)
             }
         } catch (error: Exception) {
             ChatFunctions().showMessage(
