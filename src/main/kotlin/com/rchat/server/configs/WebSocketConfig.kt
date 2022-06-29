@@ -12,8 +12,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry
 class WebSocketConfig : WebSocketMessageBrokerConfigurer {
     @Override
     override fun configureMessageBroker(config: MessageBrokerRegistry) {
-        config.enableSimpleBroker("/chatTopic")
-//        config.enableSimpleBroker("/channelTopic")
+        config.enableSimpleBroker("/chatTopic", "/channelTopic")
         config.setApplicationDestinationPrefixes("/app")
     }
 

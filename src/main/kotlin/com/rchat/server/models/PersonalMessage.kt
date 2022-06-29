@@ -38,6 +38,7 @@ open class PersonalMessage {
     open var time: LocalTime? = null
 
     @JsonView(View.Message::class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(name = "date", nullable = false)
     open var date: LocalDate? = null
 
@@ -47,8 +48,8 @@ open class PersonalMessage {
     @Column(name = "message_text", nullable = false)
     open var messageText: String? = null
 
-    @Column(name = "read", nullable = false)
-    open var read: Boolean = false
+    @Column(name = "read")
+    open var read: Boolean? = false
 
     constructor() {}
 

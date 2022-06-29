@@ -18,11 +18,15 @@ open class Member {
     @JoinColumn(name = "user_id", nullable = false)
     open var user: Users? = null
 
+    @Column(name = "participating_num", nullable = false)
+    open var participatingNum: Int? = null
+
     constructor() {}
 
-    constructor(id: MemberId, channel: Channel, user: Users) {
+    constructor(id: MemberId, channel: Channel, user: Users, participatingNum: Int) {
         this.id = id
         this.channel = channel
         this.user = user
+        this.participatingNum = participatingNum
     }
 }

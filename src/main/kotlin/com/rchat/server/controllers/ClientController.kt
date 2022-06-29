@@ -16,37 +16,18 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import javax.validation.Valid
 import com.fasterxml.jackson.annotation.JsonView
+import com.rchat.server.repos.ChannelMessageRepository
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.web.bind.annotation.DeleteMapping
 
 @RestController
 class ClientController(
     private var userService: PgUserDetailsService,
     private var channelRepo: ChannelRepository,
+    private var channelMessageRepo: ChannelMessageRepository,
     private var memberRepo: MemberRepository,
     private var personalMessageRepo: PersonalMessageRepository
 ) {
-    @PostMapping("/channel")
-    fun addChannel(@Valid channel: Channel, bindingResult: BindingResult): ResponseEntity<Int> {
-        if (bindingResult.hasErrors())
-            return ResponseEntity<Int>(HttpStatus.BAD_REQUEST)
-        channelRepo.save(channel)
-        return ResponseEntity<Int>(HttpStatus.OK)
-    }
-
-//    @GetMapping("channel")
-//    fun getChannelMessages(@Valid channel: Channel, bindingResult: BindingResult): List<ChannelMessage>? {
-//        if (bindingResult.hasErrors())
-//            return null
-//        return channelRepo.getMessages(channel)
-//    }
-
-//    @PostMapping("member")
-//    fun addMember(@Valid member: Member, bindingResult: BindingResult): String {
-//        if (bindingResult.hasErrors())
-//            return "binding error"
-//        memberRepo.save(member)
-//        return "success"
-//    }
-
     @JsonView(View.Message::class)
     @GetMapping("/chats")
     fun getListOfChats(@RequestParam username: String): List<PersonalMessage?> {
@@ -54,7 +35,7 @@ class ClientController(
     }
 
     @GetMapping("/count")
-    fun getUnreadCount(@RequestParam sender: String, recipient: String): Int {
+    fun getUnreadCount(@RequestParam sender: String, @RequestParam recipient: String): Int {
         return personalMessageRepo.getUnreadCount(userService.getByName(sender), userService.getByName(recipient))
     }
 
@@ -63,7 +44,7 @@ class ClientController(
         return userService.getMatchUsers(username)
     }
 
-    @JsonView(View.MessageWithId::class)
+    @JsonView(View.AllWithId::class)
     @GetMapping("/personal")
     fun getPersonalMessages(@RequestParam sender: String, @RequestParam recipient: String): List<PersonalMessage?> {
         return personalMessageRepo.getChatMessages(
@@ -73,18 +54,98 @@ class ClientController(
     }
 
     @PostMapping("/login")
-    fun login(@RequestParam username: String, @RequestParam password: String): ResponseEntity<Int> {
+    fun login(@RequestParam username: String, @RequestParam password: String): ResponseEntity<String> {
         return userService.login(username, password)
     }
 
     @PostMapping("/user")
-    fun addUser(@Valid user: Users, bindingResult: BindingResult): ResponseEntity<Int> {
+    fun addUser(@Valid user: Users, bindingResult: BindingResult): ResponseEntity<String> {
         if (bindingResult.hasErrors())
-            return ResponseEntity<Int>(HttpStatus.BAD_REQUEST)
+            return ResponseEntity("Неверные данные", HttpStatus.BAD_REQUEST)
         if (!userService.saveUser(user)) {
-            return ResponseEntity<Int>(HttpStatus.BAD_REQUEST)
+            return ResponseEntity("Пользователь с таким именем уже существует", HttpStatus.BAD_REQUEST)
         }
 //        userService.autoLogin(user)
-        return ResponseEntity<Int>(HttpStatus.OK)
+        return ResponseEntity<String>(HttpStatus.OK)
     }
+
+    @PostMapping("/channel")
+    fun addChannel(
+        @RequestParam ownerId: String,
+        @RequestParam channelName: String,
+        @RequestParam(required = false) usersToAdd: String? = null
+    ): ResponseEntity<String> {
+        if (ownerId.toIntOrNull() == null)
+            return ResponseEntity("Неверный формат для id", HttpStatus.BAD_REQUEST)
+
+        if (usersToAdd != null) {
+            val list = usersToAdd.substring(1, usersToAdd.length - 2).split(", ")
+            println(usersToAdd)
+        }
+        val owner = userService.getById(ownerId.toInt())
+        val channel = Channel(owner, channelName)
+        channelRepo.save(channel)
+
+        memberRepo.save(
+            Member(
+                MemberId(channel.id, ownerId.toInt()),
+                channel,
+                owner,
+                1
+            )
+        )
+        return ResponseEntity<String>(HttpStatus.OK)
+    }
+
+//    @DeleteMapping("/channel")
+//    fun delChannel(@RequestParam channelId,...): ResponseEntity<String> {}
+
+    @PostMapping("/member")
+    fun addMember(@RequestParam channelId: String, @RequestParam userId: String): ResponseEntity<String> {
+        if (channelId.toIntOrNull() == null)
+            return ResponseEntity("Неверный формат id канала", HttpStatus.BAD_REQUEST)
+        if (userId.toIntOrNull() == null)
+            return ResponseEntity("Неверный формат id пользователя", HttpStatus.BAD_REQUEST)
+
+        val channel = channelRepo.getById(channelId.toInt())
+        val member = Member(
+            MemberId(channelId.toInt(), userId.toInt()),
+            channel,
+            userService.getById(userId.toInt()),
+            memberRepo.getMaxParticipatingNum(channel) + 1
+        )
+
+        if (memberRepo.findByIdOrNull(member.id) == null) {
+            memberRepo.save(member)
+            return ResponseEntity<String>(HttpStatus.OK)
+        }
+        return ResponseEntity("Пользователь уже состоит в чате", HttpStatus.BAD_REQUEST)
+    }
+
+    @DeleteMapping("/member")
+    fun delMember(@RequestParam channelId: String, @RequestParam userId: String): ResponseEntity<String> {
+        if (channelId.toIntOrNull() == null)
+            return ResponseEntity("Неверный формат id канала", HttpStatus.BAD_REQUEST)
+        if (userId.toIntOrNull() == null)
+            return ResponseEntity("Неверный формат id пользователя", HttpStatus.BAD_REQUEST)
+
+        val channel = channelRepo.getById(channelId.toInt())
+        memberRepo.deleteById(MemberId(channelId.toInt(), userId.toInt()))
+
+        if (channel.owner?.id == userId.toInt()) {
+            val newOwner = memberRepo.getFirstParticipated(channel)
+            if (newOwner != null) {
+                channel.owner = newOwner
+                channelRepo.save(channel)
+            } else
+                channelRepo.delete(channel)
+        }
+        return ResponseEntity<String>(HttpStatus.OK)
+    }
+
+//    @JsonView(View.AllWithId::class)
+//    @GetMapping("/channel")
+//    fun getChannelMessages(@RequestParam channelId: String): List<ChannelMessage?> {
+//        return channelMessageRepo.getMessages(channelRepo.getById(channelId.toInt()))  // TODO
+//    }
 }

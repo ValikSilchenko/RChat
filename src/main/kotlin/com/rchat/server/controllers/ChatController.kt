@@ -9,7 +9,6 @@ import com.rchat.server.views.View
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.SendTo
-import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Controller
 import com.fasterxml.jackson.annotation.JsonView
 import java.time.LocalDate
@@ -18,8 +17,7 @@ import java.time.LocalTime
 @Controller
 class ChatController(private var personalMessageRepo: PersonalMessageRepository,
                      private var channelMessageRepo: ChannelMessageRepository,
-                     private var userService: PgUserDetailsService,
-                     private var messagingTemplate: SimpMessagingTemplate) {
+                     private var userService: PgUserDetailsService) {
     @JsonView(View.AllWithId::class)
     @MessageMapping("/user/{recipient}/{sender}/")
     @SendTo("/chatTopic/{recipient}/", "/chatTopic/{sender}/")

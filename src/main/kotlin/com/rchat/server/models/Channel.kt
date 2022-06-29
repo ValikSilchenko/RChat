@@ -1,5 +1,6 @@
 package com.rchat.server.models
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import javax.persistence.*
 import javax.validation.constraints.Size
 
@@ -12,6 +13,7 @@ open class Channel {
     open var id: Int? = null
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnoreProperties("hibernateLazyInitializer")
     @JoinColumn(name = "owner_id", nullable = false)
     open var owner: Users? = null
 
@@ -21,7 +23,7 @@ open class Channel {
 
     constructor() {}
 
-    constructor(id: Int, owner: Users, channelName: String) {
+    constructor(owner: Users, channelName: String) {
         this.owner = owner
         this.channelName = channelName
     }

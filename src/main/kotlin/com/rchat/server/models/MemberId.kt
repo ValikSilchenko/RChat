@@ -27,7 +27,7 @@ open class MemberId : Serializable {
 
     constructor() {}
 
-    constructor(channelId: Int, userId: Int) {
+    constructor(channelId: Int?, userId: Int?) {
         this.channelId = channelId
         this.userId = userId
     }

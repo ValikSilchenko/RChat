@@ -2,11 +2,13 @@ package com.rchat.server.models
 
 import com.fasterxml.jackson.annotation.JsonView
 import com.rchat.server.views.View
+import org.hibernate.annotations.Proxy
 import javax.persistence.*
 import javax.validation.constraints.Size
 
 @Entity
 @Table(name = "users")
+@Proxy(lazy = false)
 open class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

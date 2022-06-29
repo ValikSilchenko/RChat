@@ -40,12 +40,14 @@ class PgUserDetailsService(private var userRepo: UserRepository) : UserDetailsSe
         return true
     }
 
-    fun login(username: String, password: String): ResponseEntity<Int> {
-        val dbUser = userRepo.findByUsername(username) ?: return ResponseEntity<Int>(HttpStatus.BAD_REQUEST)
+    fun login(username: String, password: String): ResponseEntity<String> {
+        val dbUser = userRepo.findByUsername(username) ?: return ResponseEntity<String>(
+            "Неверные данные", HttpStatus.BAD_REQUEST
+        )
         if (dbUser.username == username &&
             bCryptPasswordEncoder.matches(password, dbUser.password))
-            return ResponseEntity<Int>(HttpStatus.OK)
-        return ResponseEntity<Int>(HttpStatus.BAD_REQUEST)
+            return ResponseEntity<String>(HttpStatus.OK)
+        return ResponseEntity<String>("Неверные данные", HttpStatus.BAD_REQUEST)
     }
 
     fun autoLogin(user: Users) {
@@ -62,6 +64,6 @@ class PgUserDetailsService(private var userRepo: UserRepository) : UserDetailsSe
     }
 
     fun getByName(username: String): Users {
-        return userRepo.findByUsername(username) ?: throw UsernameNotFoundException("User not found")
+        return userRepo.findByUsername(username) ?: throw UsernameNotFoundException(username)
     }
 }
