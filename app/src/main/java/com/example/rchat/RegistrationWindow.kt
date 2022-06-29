@@ -32,13 +32,13 @@ class RegistrationWindow : AppCompatActivity() {
 //            startIntent(ChatsWindow::class.java)
 //        }
 
-        val loginText: EditText = findViewById(R.id.RegistrationLogin_Input)
-        val emailText: EditText = findViewById(R.id.RegistrationEmail_Input)
-        val phoneNumberText: EditText = findViewById(R.id.RegistrationPhoneNumber_Input)
-        val passwordText: EditText = findViewById(R.id.RegistrationPassword_Input)
-        val repeatPasswordText: EditText = findViewById(R.id.RegistrationRepeatPassword_Input)
-        val registrationBtn: Button = findViewById(R.id.RegistrationRegistration_Btn)
-        val authorizeBtn: Button = findViewById(R.id.RegistrationAuthorize_Btn)
+        val loginText: EditText = findViewById(R.id.RW_Input)
+        val emailText: EditText = findViewById(R.id.RW_Email)
+        val phoneNumberText: EditText = findViewById(R.id.RW_PhoneNumber)
+        val passwordText: EditText = findViewById(R.id.RW_Password)
+        val repeatPasswordText: EditText = findViewById(R.id.RW_RepeatPassword)
+        val registrationBtn: Button = findViewById(R.id.RW_RegistrationBtn)
+        val authorizeBtn: Button = findViewById(R.id.RW_AuthorizeBtn)
 
         // Нажатие кнопки RegistrationAuthorize_Btn
         authorizeBtn.setOnClickListener {

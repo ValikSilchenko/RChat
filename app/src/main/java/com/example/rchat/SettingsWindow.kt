@@ -20,8 +20,8 @@ class SettingsWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_window)
 
-        val backBtn: ImageButton = findViewById(R.id.SettingsChat_Btn)
-        val exitAccountBtn: Button = findViewById(R.id.ExitAcccount_Btn)
+        val backBtn: ImageButton = findViewById(R.id.SW_ToChatsBtn)
+        val exitAccountBtn: Button = findViewById(R.id.SW_ExitAccountBtn)
 
         backBtn.setOnClickListener {
             startIntent()

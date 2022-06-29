@@ -8,7 +8,7 @@
     tools:context=".ChatItselfWindow">
 
     <LinearLayout
-        android:id="@+id/TopLine"
+        android:id="@+id/CIW_TopContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/MainMenu_Btn"
+            android:id="@+id/CIW_BackBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/roundcorner"
@@ -29,12 +29,12 @@
             android:src="@drawable/ic_back"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/UserName_ChatText"
+            app:layout_constraintEnd_toStartOf="@id/CIW_ChatName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/UserName_ChatText"
+            android:id="@+id/CIW_ChatName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
@@ -42,26 +42,26 @@
             android:textColor="?attr/text_color"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/MainMenu_Btn"
+            app:layout_constraintStart_toEndOf="@+id/CIW_BackBtn"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
     <ListView
-        android:id="@+id/Messages_List"
+        android:id="@+id/CIW_MessagesArray"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
         android:divider="@null"
         android:dividerHeight="10dp"
         android:transcriptMode="normal"
-        app:layout_constraintBottom_toTopOf="@id/BottomLine"
+        app:layout_constraintBottom_toTopOf="@id/CIW_BottomContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/TopLine"
+        app:layout_constraintTop_toBottomOf="@id/CIW_TopContainer"
         tools:listitem="@layout/message_item" />
 
     <LinearLayout
-        android:id="@+id/BottomLine"
+        android:id="@+id/CIW_BottomContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -69,10 +69,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Messages_List">
+        app:layout_constraintTop_toBottomOf="@id/CIW_MessagesArray">
 
         <ImageButton
-            android:id="@+id/SendMessage_Btn"
+            android:id="@+id/CIW_SendMessageBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/roundcorner"
@@ -83,7 +83,7 @@
             android:src="@drawable/ic_send" />
 
         <EditText
-            android:id="@+id/Message_Input"
+            android:id="@+id/CIW_MessageInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="?attr/edit_text_color"

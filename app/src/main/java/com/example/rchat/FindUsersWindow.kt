@@ -19,10 +19,10 @@ class FindUsersWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.find_users_window)
 
-        val foundUsersLv: ListView = findViewById(R.id.FoundUsers_Array)
-        val backToChatsWindow: ImageButton = findViewById(R.id.FindUserBack_Btn)
-        val findBtn: ImageButton = findViewById(R.id.FindUserFind_Btn)
-        val loginInput: EditText = findViewById(R.id.FindUserLogin_EditText)
+        val foundUsersLv: ListView = findViewById(R.id.FUW_FoundUsersArray)
+        val backToChatsWindow: ImageButton = findViewById(R.id.FUW_BackBtn)
+        val findBtn: ImageButton = findViewById(R.id.FUW_FindUserBtn)
+        val loginInput: EditText = findViewById(R.id.FUW_FindUserLogin)
         var foundUsers: List<String>
 
         backToChatsWindow.setOnClickListener {

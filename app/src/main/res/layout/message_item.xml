@@ -5,8 +5,9 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp">
 
+<!--    Incoming-->
     <TextView
-        android:id="@+id/Message_IncomingLogin_Txt"
+        android:id="@+id/MI_IncomingLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Incoming Sender"
@@ -16,21 +17,53 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/Message_IncomingMessage_Txt"
+    <LinearLayout
+        android:id="@+id/MI_IncomingContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:background="@drawable/mi_background"
-        android:maxWidth="300dp"
-        android:padding="5dp"
-        android:text="This is incoming message"
-        android:textColor="?attr/text_color"
-        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Message_IncomingLogin_Txt" />
+        app:layout_constraintTop_toBottomOf="@id/MI_IncomingLogin">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/MI_IncomingMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="300dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="7dp"
+                android:paddingTop="5dp"
+                android:text="This is incoming message"
+                android:textColor="?attr/text_color"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/Message_IncomingTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="26.05.2022 10:56"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:paddingStart="5dp"
+                android:paddingBottom="2dp"
+                android:paddingEnd="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/MI_IncomingMessage"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+<!--    Outgoing-->
     <TextView
-        android:id="@+id/Message_OutgoingLogin_Txt"
+        android:id="@+id/MI_OutgoingLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Outgoing Sender"
@@ -40,16 +73,49 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/Message_OutgoingMessage_Txt"
+    <LinearLayout
+        android:id="@+id/MI_OutgoingContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:background="@drawable/mi_background"
-        android:maxWidth="300dp"
-        android:padding="5dp"
-        android:text="This is outgoing message"
-        android:textColor="?attr/text_color"
-        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Message_OutgoingLogin_Txt" />
+        app:layout_constraintTop_toBottomOf="@id/MI_OutgoingLogin">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/MI_OutgoingMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/mi_background"
+                android:maxWidth="300dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="7dp"
+                android:paddingTop="5dp"
+                android:text="This is outgoing message"
+                android:textColor="?attr/text_color"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/MI_OutgoingTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="26.05.2022 10:56"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingBottom="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/MI_OutgoingMessage"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
