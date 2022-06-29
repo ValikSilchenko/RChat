@@ -62,9 +62,9 @@ class ChatsWindow : AppCompatActivity() {
                     username = (el["sender"] as JSONObject)["username"].toString()
                     youTxt = ""
                 }
-                val sdf = SimpleDateFormat("dd.MM.yyyy")
-                println("Test date: ${sdf.format(Calendar.getInstance().time)}")
-                time = if (el["date"] == sdf.format(Calendar.getInstance().time))
+                val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
+                println("Test date: $sdf")
+                time = if (el["date"] == sdf)
                     el["time"].toString()
                 else
                     el["date"].toString()
