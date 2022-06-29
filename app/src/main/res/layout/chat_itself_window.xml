@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/background_color"
-    tools:context=".ChatItselfWindow">
+    tools:context=".windows.ChatItselfWindow">
 
     <LinearLayout
         android:id="@+id/CIW_TopContainer"
@@ -35,7 +35,7 @@
 
         <TextView
             android:id="@+id/CIW_ChatName"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:text="Recipient Login"
@@ -45,6 +45,21 @@
             app:layout_constraintStart_toEndOf="@+id/CIW_BackBtn"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/GCW_ActionsBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/roundcorner"
+        android:backgroundTint="?attr/button_color"
+        android:clickable="true"
+        android:visibility="gone"
+        android:focusable="true"
+        android:src="@drawable/ic_more"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/CIW_MessagesArray"

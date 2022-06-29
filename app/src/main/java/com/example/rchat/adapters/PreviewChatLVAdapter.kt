@@ -1,16 +1,16 @@
-package com.example.rchat
+package com.example.rchat.adapters
 
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.PopupMenu
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import com.example.rchat.R
+import com.example.rchat.dataclasses.PreviewChatDataClass
 import com.example.rchat.utils.ChatSingleton
+import com.example.rchat.windows.ChatItselfWindow
 
 class PreviewChatLVAdapter(
     private val context: Activity,
@@ -26,6 +26,8 @@ class PreviewChatLVAdapter(
         val previewTime: TextView = view.findViewById(R.id.PC_ReceivingTime)
         val previewMessage: TextView = view.findViewById(R.id.PC_Message)
         val previewYouTxt: TextView = view.findViewById(R.id.PC_You)
+        val previewUnreadCount: TextView = view.findViewById(R.id.PC_UnreadCount)
+        val previewRead: ImageView = view.findViewById(R.id.PC_ReadMsg)
 
         previewLogin.text = arrayList[position].previewLogin
         previewTime.text = arrayList[position].previewTime

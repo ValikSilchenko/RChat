@@ -1,4 +1,4 @@
-package com.example.rchat
+package com.example.rchat.windows
 
 import android.content.Intent
 import android.content.res.Configuration
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rchat.R
 import com.example.rchat.utils.BackgroundService
 import com.example.rchat.utils.ChatFunctions
 
@@ -28,12 +29,8 @@ class SettingsWindow : AppCompatActivity() {
         }
 
         exitAccountBtn.setOnClickListener {
-
-            if (ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext)) {
+            if (ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
                 stopService(Intent(applicationContext, BackgroundService::class.java))
-            }
-
-//            ChatSingleton.closeConnection()
             ChatFunctions().deleteData(this)
             val intent = Intent(this, AuthorizationWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

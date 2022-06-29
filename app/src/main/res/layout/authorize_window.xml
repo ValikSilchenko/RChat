@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?attr/background_color"
-    tools:context=".AuthorizationWindow">
+    tools:context=".windows.AuthorizationWindow">
 
     <TextView
         android:id="@+id/AW_TopText"

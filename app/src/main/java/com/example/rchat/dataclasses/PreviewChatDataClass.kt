@@ -1,4 +1,4 @@
-package com.example.rchat
+package com.example.rchat.dataclasses
 
 data class PreviewChatDataClass(
     var previewLogin: String,

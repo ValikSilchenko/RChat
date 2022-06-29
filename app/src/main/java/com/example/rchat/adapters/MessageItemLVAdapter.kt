@@ -1,10 +1,12 @@
-package com.example.rchat
+package com.example.rchat.adapters
 
 import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.rchat.R
+import com.example.rchat.dataclasses.MessageItemDataClass
 
 class MessageItemLVAdapter(
     private val context: Activity,

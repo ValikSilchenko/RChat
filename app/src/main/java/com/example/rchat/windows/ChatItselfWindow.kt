@@ -1,10 +1,11 @@
-package com.example.rchat
+package com.example.rchat.windows
 
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rchat.R
 import com.example.rchat.utils.ChatSingleton
 
 class ChatItselfWindow : AppCompatActivity() {
@@ -29,7 +30,6 @@ class ChatItselfWindow : AppCompatActivity() {
             this
         )
 
-        // Вывод сообщений на экран
         ChatSingleton.sendMessagesRequest()
 
         backToMainMenuBtn.setOnClickListener {
@@ -57,8 +57,5 @@ class ChatItselfWindow : AppCompatActivity() {
         ChatSingleton.isInChat = false
         super.onBackPressed()
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-//        val intent = Intent(this, ChatsWindow::class.java)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-//        startActivity(intent)
     }
 }

@@ -1,10 +1,14 @@
-package com.example.rchat
+package com.example.rchat.windows
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rchat.R
+import com.example.rchat.adapters.PreviewChatLVAdapter
+import com.example.rchat.dataclasses.PreviewChatDataClass
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
@@ -16,6 +20,12 @@ class FindUsersWindow : AppCompatActivity() {
     private lateinit var arrayAdapter: PreviewChatLVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
+            Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.find_users_window)
 

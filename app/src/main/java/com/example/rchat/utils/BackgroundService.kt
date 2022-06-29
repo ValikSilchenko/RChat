@@ -24,7 +24,7 @@ class BackgroundService : Service() {
         createNotificationChannel()
         val builder = NotificationCompat.Builder(applicationContext, "serviceID")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("R Chat")
+            .setContentTitle(R.string.app_name.toString())
             .setContentText("Приложение запущено в фоне")
             .setPriority(NotificationCompat.PRIORITY_MIN)
 

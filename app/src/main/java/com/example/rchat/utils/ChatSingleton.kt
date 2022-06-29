@@ -4,12 +4,19 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.widget.ListView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.rchat.*
+import com.example.rchat.R
+import com.example.rchat.adapters.MessageItemLVAdapter
+import com.example.rchat.adapters.PreviewChatLVAdapter
+import com.example.rchat.dataclasses.MessageItemDataClass
+import com.example.rchat.dataclasses.PreviewChatDataClass
+import com.example.rchat.windows.ChatItselfWindow
 import org.json.JSONObject
 
 @SuppressLint("StaticFieldLeak")
@@ -43,6 +50,7 @@ object ChatSingleton {
         chatArrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
         chatWindowLV.adapter = chatArrayAdapter
         createNotificationChannel()
+        clearChatList()
     }
 
     fun setChatItselfWindow(listView: ListView, username: String, incomingContext: Activity) {
@@ -53,7 +61,7 @@ object ChatSingleton {
         chatItselfLV!!.adapter = messagesArrayAdapter
     }
 
-    fun clearChatList() {
+    private fun clearChatList() {
         if (chatsArrayList.isNotEmpty())
             chatsArrayList.clear()
     }
@@ -74,7 +82,7 @@ object ChatSingleton {
     fun sendMessagesRequest() {
         if (messagesArrayList.isNotEmpty())
             messagesArrayList.clear()
-        val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
+        val response: List<JSONObject> = JasonSTATHAM().stringToJSONObj(
             Requests().get(
                 mapOf(
                     "sender" to Van,
@@ -125,7 +133,7 @@ object ChatSingleton {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(CHANNEL_ID, "notif_title", importance).apply {
                 description = "notif description"
             }
@@ -136,19 +144,21 @@ object ChatSingleton {
     }
 
     private fun sendNotification(notificationId: Int, loginTitle: String, messageText: String) {
-//        val intent = Intent(chatsWindowContext, ChatItselfWindow::class.java)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//        chatName = loginTitle
-//        val pendingIntent = PendingIntent.getActivity(chatsWindowContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-//        val contentView = RemoteViews()
+        val intent = Intent(chatsWindowContext, ChatItselfWindow::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        chatName = loginTitle
+        val pendingIntent = PendingIntent.getActivity(
+            chatsWindowContext,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
         val builder = NotificationCompat.Builder(chatsWindowContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(loginTitle)
-//            .setDefaults(Notification.DEFAULT_ALL)
-//            .setContentIntent(pendingIntent)
+            .setContentIntent(pendingIntent)
             .setContentText(messageText)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
 
         with(NotificationManagerCompat.from(chatsWindowContext)) {
             notify(notificationId, builder.build())
@@ -171,20 +181,42 @@ object ChatSingleton {
             chatsArrayList[index].previewTime = time
         } else
             chatsArrayList.add(PreviewChatDataClass(recipientLogin, time, message, youTxt))
-
         chatArrayAdapter.notifyDataSetChanged()
     }
 
     private fun updateMessageList(senderLogin: String, message: String, time: String) {
-        if (senderLogin == Van)
-            messagesArrayList.add(
-                MessageItemDataClass("", "", "", senderLogin, message, time)
-            )
-        else
-            messagesArrayList.add(
-                MessageItemDataClass(senderLogin, message, time,"", "", "")
-            )
+        var incomingLogin: String
+        var incomingMessage: String
+        var incomingTime: String
+        var outgoingLogin: String
+        var outgoingMessage: String
+        var outgoingTime: String
 
+        if (senderLogin == Van) {
+            incomingLogin = ""
+            incomingMessage = ""
+            incomingTime = ""
+            outgoingLogin = senderLogin
+            outgoingMessage = message
+            outgoingTime = time
+        } else {
+            incomingLogin = senderLogin
+            incomingMessage = message
+            incomingTime = time
+            outgoingLogin = ""
+            outgoingMessage = ""
+            outgoingTime = ""
+        }
+        messagesArrayList.add(
+            MessageItemDataClass(
+                incomingLogin,
+                incomingMessage,
+                incomingTime,
+                outgoingLogin,
+                outgoingMessage,
+                outgoingTime
+            )
+        )
         messagesArrayAdapter.notifyDataSetChanged()
         setSelection()
     }

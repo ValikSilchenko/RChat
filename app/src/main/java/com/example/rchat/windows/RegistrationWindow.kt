@@ -1,4 +1,4 @@
-package com.example.rchat
+package com.example.rchat.windows
 
 import android.content.Intent
 import android.content.res.Configuration
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rchat.R
 import com.example.rchat.utils.BackgroundService
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
@@ -24,14 +25,6 @@ class RegistrationWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_window)
 
-//        if (ChatFunctions().isAuthorized(this)) {
-//            login = ChatFunctions().getSavedLogin(this)
-//            GlobalScope.async {
-//                ChatSingleton.openConnection(login)
-//            }
-//            startIntent(ChatsWindow::class.java)
-//        }
-
         val loginText: EditText = findViewById(R.id.RW_Input)
         val emailText: EditText = findViewById(R.id.RW_Email)
         val phoneNumberText: EditText = findViewById(R.id.RW_PhoneNumber)
@@ -40,12 +33,10 @@ class RegistrationWindow : AppCompatActivity() {
         val registrationBtn: Button = findViewById(R.id.RW_RegistrationBtn)
         val authorizeBtn: Button = findViewById(R.id.RW_AuthorizeBtn)
 
-        // Нажатие кнопки RegistrationAuthorize_Btn
         authorizeBtn.setOnClickListener {
             onBackPressed()
         }
 
-        // Нажатие кнопки RegistrationRegistration_Btn
         registrationBtn.setOnClickListener {
             if (emailText.text.isNotEmpty() && loginText.text.isNotEmpty()
                 && phoneNumberText.text.isNotEmpty() && passwordText.text.isNotEmpty()
@@ -65,13 +56,8 @@ class RegistrationWindow : AppCompatActivity() {
                     )
                     try {
                         ChatFunctions().saveData(this, login, true)
-//                        GlobalScope.async {
-//                            ChatSingleton.openConnection(login)
-//                        }
-
                         if (!ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
                             startService(Intent(applicationContext, BackgroundService::class.java))
-
                         startIntent(ChatsWindow::class.java)
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)

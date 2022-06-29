@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Light">
         <activity
-            android:name=".CreateGroupChatWindow"
+            android:name=".windows.CreateGroupChatWindow"
             android:exported="false" />
 
         <service
@@ -25,7 +25,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".FindUsersWindow"
+            android:name=".windows.FindUsersWindow"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChatItselfWindow"
+            android:name=".windows.ChatItselfWindow"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegistrationWindow"
+            android:name=".windows.RegistrationWindow"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -55,7 +55,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AuthorizationWindow"
+            android:name=".windows.AuthorizationWindow"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -65,7 +65,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChatsWindow"
+            android:name=".windows.ChatsWindow"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -75,7 +75,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsWindow"
+            android:name=".windows.SettingsWindow"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

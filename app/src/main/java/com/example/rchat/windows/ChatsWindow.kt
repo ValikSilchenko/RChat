@@ -1,4 +1,4 @@
-package com.example.rchat
+package com.example.rchat.windows
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.widget.ListView
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rchat.R
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
@@ -42,10 +43,8 @@ class ChatsWindow : AppCompatActivity() {
 
         ChatSingleton.setChatsWindow(chatArray, user, this)
 
-        ChatSingleton.clearChatList()
-
         try {
-            val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
+            val response: List<JSONObject> = JasonSTATHAM().stringToJSONObj(
                 Requests().get(
                     mapOf("username" to user),
                     "${ChatSingleton.serverUrl}/chats"

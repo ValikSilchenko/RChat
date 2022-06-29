@@ -1,4 +1,4 @@
-package com.example.rchat
+package com.example.rchat.adapters
 
 import android.app.Activity
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.rchat.R
+import com.example.rchat.dataclasses.CGCDataClass
 
 class CGCLVAdapter(private val context: Activity, private val arrayList: ArrayList<CGCDataClass>) :
     ArrayAdapter<CGCDataClass>(context, R.layout.gc_user_item, arrayList) {
