@@ -117,25 +117,29 @@ class ClientController(
 //    fun delChannel(@RequestParam channelId,...): ResponseEntity<String> {}
 
     @PostMapping("/member")
-    fun addMember(@RequestParam channelId: String, @RequestParam userId: String): ResponseEntity<String> {
+    fun addMember(@RequestParam channelId: String, @RequestParam membersToAdd: String): ResponseEntity<String> {
         if (channelId.toIntOrNull() == null)
             return ResponseEntity("Неверный формат id канала", HttpStatus.BAD_REQUEST)
-        if (userId.toIntOrNull() == null)
-            return ResponseEntity("Неверный формат id пользователя", HttpStatus.BAD_REQUEST)
 
         val channel = channelRepo.getById(channelId.toInt())
-        val member = Member(
-            MemberId(channelId.toInt(), userId.toInt()),
-            channel,
-            userService.getById(userId.toInt()),
-            memberRepo.getMaxParticipatingNum(channel) + 1
-        )
+        try {
+            val ids = membersToAdd.substring(1, membersToAdd.length - 1).split(", ")
+            ids.forEach {
+                val member = Member(
+                    MemberId(channel.id, it.toInt()),
+                    channel,
+                    userService.getById(it.toInt()),
+                    memberRepo.getMaxParticipatingNum(channel) + 1
+                )
 
-        if (memberRepo.findByIdOrNull(member.id) == null) {
-            memberRepo.save(member)
-            return ResponseEntity<String>(HttpStatus.OK)
+                if (memberRepo.findByIdOrNull(member.id) == null)
+                    memberRepo.save(member)
+            }
+        } catch (error: Exception) {
+            return ResponseEntity("usersToAdd: ${error.message}", HttpStatus.BAD_REQUEST)
         }
-        return ResponseEntity("Пользователь уже состоит в чате", HttpStatus.BAD_REQUEST)
+
+        return ResponseEntity<String>(HttpStatus.OK)
     }
 
     @DeleteMapping("/member")
