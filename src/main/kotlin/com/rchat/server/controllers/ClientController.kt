@@ -73,15 +73,11 @@ class ClientController(
     fun addChannel(
         @RequestParam ownerId: String,
         @RequestParam channelName: String,
-        @RequestParam(required = false) usersToAdd: String? = null
+        @RequestParam(required = false) membersToAdd: String? = null
     ): ResponseEntity<String> {
         if (ownerId.toIntOrNull() == null)
             return ResponseEntity("Неверный формат для id", HttpStatus.BAD_REQUEST)
 
-        if (usersToAdd != null) {
-            val list = usersToAdd.substring(1, usersToAdd.length - 2).split(", ")
-            println(usersToAdd)
-        }
         val owner = userService.getById(ownerId.toInt())
         val channel = Channel(owner, channelName)
         channelRepo.save(channel)
@@ -94,7 +90,27 @@ class ClientController(
                 1
             )
         )
-        return ResponseEntity<String>(HttpStatus.OK)
+
+        if (membersToAdd != null) {
+            try {
+                val ids = membersToAdd.substring(1, membersToAdd.length - 1).split(", ")
+                ids.forEach {
+                    println(it)
+                    memberRepo.save(
+                        Member(
+                            MemberId(channel.id, it.toInt()),
+                            channel,
+                            userService.getById(it.toInt()),
+                            memberRepo.getMaxParticipatingNum(channel) + 1
+                        )
+                    )
+                }
+            } catch (error: Exception) {
+                return ResponseEntity("usersToAdd: ${error.message}", HttpStatus.BAD_REQUEST)
+            }
+        }
+
+        return ResponseEntity<String>("${channel.id}", HttpStatus.OK)
     }
 
 //    @DeleteMapping("/channel")
