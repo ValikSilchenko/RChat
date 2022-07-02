@@ -66,7 +66,8 @@ class ChatsWindow : AppCompatActivity() {
                     el["time"].toString()
                 else
                     el["date"].toString()
-                ChatSingleton.updateChatList(username, time, el["messageText"].toString(), youTxt)
+                
+                ChatSingleton.updateChatList(username, time, el["messageText"].toString(), youTxt, true)
             }
         } catch (error: Exception) {
             ChatFunctions().showMessage(

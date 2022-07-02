@@ -13,7 +13,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/round_corner"
-        android:backgroundTint="?attr/button_color"
+        android:backgroundTint="?attr/main_color"
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_back"
@@ -28,7 +28,7 @@
         android:height="48dp"
         android:backgroundTint="?attr/edit_text_color"
         android:hint="@string/enter_group_name_title"
-        android:textColor="?attr/text_color"
+        android:textColor="?attr/chat_text_color"
         android:textColorHint="?attr/edit_text_color"
         app:layout_constraintStart_toEndOf="@id/CGC_BackBtn"
         app:layout_constraintTop_toTopOf="parent" />

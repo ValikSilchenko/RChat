@@ -109,11 +109,12 @@ object ChatSingleton {
                     (parsedMessage["recipient"] as JSONObject)["username"].toString(),
                     parsedMessage["time"].toString(),
                     messageText,
-                    "Вы:"
+                    "Вы:",
+                    !isInChat
                 )
                 updateMessageList(sender, messageText, "$date $time")
             } else {
-                updateChatList(sender, parsedMessage["time"].toString(), messageText, "")
+                updateChatList(sender, parsedMessage["time"].toString(), messageText, "", !isInChat)
                 if (sender == Billy) {
                     if (!isInChat) {
                         sendNotification(userId, sender, messageText)
@@ -160,7 +161,13 @@ object ChatSingleton {
         }
     }
 
-    fun updateChatList(recipientLogin: String, time: String, message: String, youTxt: String) {
+    fun updateChatList(
+        recipientLogin: String,
+        time: String,
+        message: String,
+        youTxt: String,
+        isNew: Boolean
+    ) {
         var isInArray = false
         var index = 0
         for (el in chatsArrayList.indices) {
@@ -172,7 +179,7 @@ object ChatSingleton {
         }
         if (isInArray)
             chatsArrayList.removeAt(index)
-        chatsArrayList.add(0, PreviewChatDataClass(recipientLogin, time, message, youTxt))
+        chatsArrayList.add(0, PreviewChatDataClass(recipientLogin, time, message, youTxt, isNew))
         chatArrayAdapter.notifyDataSetChanged()
     }
 

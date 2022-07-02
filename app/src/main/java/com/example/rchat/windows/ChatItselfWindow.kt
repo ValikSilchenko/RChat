@@ -1,5 +1,6 @@
 package com.example.rchat.windows
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
@@ -15,6 +16,11 @@ import org.json.JSONObject
 class ChatItselfWindow : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
+            Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+        }
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chat_itself_window)

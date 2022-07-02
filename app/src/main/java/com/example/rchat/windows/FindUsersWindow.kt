@@ -59,7 +59,7 @@ class FindUsersWindow : AppCompatActivity() {
                     for (element in foundUsers) {
                         foundUserArrayList.add(
                             PreviewChatDataClass(
-                                element, "", "", ""
+                                element, "", "", "", false
                             )
                         )
                     }

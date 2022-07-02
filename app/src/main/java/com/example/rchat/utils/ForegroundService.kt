@@ -13,11 +13,12 @@ import com.example.rchat.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
-class BackgroundService : Service() {
+class ForegroundService : Service() {
 
     lateinit var notificationManager: NotificationManager
     lateinit var mHandler: Handler
     lateinit var mRunnable: Runnable
+    private val milliSeconds: Long = 1000
 
     override fun onBind(intent: Intent): IBinder? {
         throw UnsupportedOperationException("Not yet implemented")
@@ -39,7 +40,7 @@ class BackgroundService : Service() {
 
 //        mHandler = Handler()
 //        mRunnable = Runnable { openCloseConnection() }
-//        mHandler.postDelayed(mRunnable, 500)
+//        mHandler.postDelayed(mRunnable, milliSeconds)
 
         return START_STICKY
     }
@@ -65,8 +66,8 @@ class BackgroundService : Service() {
 
 //    private fun openCloseConnection() {
 //        Toast.makeText(applicationContext, "Connection opened", Toast.LENGTH_SHORT).show()
-//        Thread.sleep(10000)
+//        Thread.sleep(milliSeconds * 5)
 //        Toast.makeText(applicationContext, "Connection closed", Toast.LENGTH_SHORT).show()
-//        mHandler.postDelayed(mRunnable, 10000)
+//        mHandler.postDelayed(mRunnable, milliSeconds)
 //    }
 }

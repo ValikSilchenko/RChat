@@ -2,6 +2,7 @@ package com.example.rchat.adapters
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,23 +23,31 @@ class PreviewChatLVAdapter(
         val inflater: LayoutInflater = LayoutInflater.from(context)
         val view: View = inflater.inflate(R.layout.preview_chat, null)
 
-        val previewLogin: TextView = view.findViewById(R.id.PC_Login)
-        val previewTime: TextView = view.findViewById(R.id.PC_ReceivingTime)
-        val previewMessage: TextView = view.findViewById(R.id.PC_Message)
-        val previewYouTxt: TextView = view.findViewById(R.id.PC_You)
+        val login: TextView = view.findViewById(R.id.PC_Login)
+        val time: TextView = view.findViewById(R.id.PC_ReceivingTime)
+        val message: TextView = view.findViewById(R.id.PC_Message)
+        val youTxt: TextView = view.findViewById(R.id.PC_You)
         val previewUnreadCount: TextView = view.findViewById(R.id.PC_UnreadCount)
         val previewRead: ImageView = view.findViewById(R.id.PC_ReadMsg)
+        var isNewMsg = false
 
-        previewLogin.text = arrayList[position].previewLogin
-        previewTime.text = arrayList[position].previewTime
-        previewMessage.text = arrayList[position].previewMessage
-        previewYouTxt.text = arrayList[position].previewYouTxt
+        login.text = arrayList[position].previewLogin
+        time.text = arrayList[position].previewTime
+        message.text = arrayList[position].previewMessage
+        youTxt.text = arrayList[position].previewYouTxt
+        isNewMsg = arrayList[position].isNewMsg
+
+        message.typeface = if (isNewMsg)
+            Typeface.DEFAULT_BOLD
+        else
+            Typeface.DEFAULT
 
         view.setOnClickListener {
             val intent = Intent(context, ChatItselfWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            message.typeface = Typeface.DEFAULT
             ChatSingleton.isInChat = true
-            ChatSingleton.chatName = previewLogin.text.toString()
+            ChatSingleton.chatName = login.text.toString()
             context.startActivity(intent)
             context.overridePendingTransition(
                 android.R.anim.slide_in_left,
@@ -51,7 +60,7 @@ class PreviewChatLVAdapter(
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.delete_chat_item -> {
-                        showAlertMessage(context, previewLogin.text.toString())
+                        showAlertMessage(context, login.text.toString())
                         true
                     }
                     else -> false

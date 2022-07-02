@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
-import com.example.rchat.utils.BackgroundService
+import com.example.rchat.utils.ForegroundService
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.Requests
@@ -56,8 +56,8 @@ class RegistrationWindow : AppCompatActivity() {
                     )
                     try {
                         ChatFunctions().saveData(this, login, true)
-                        if (!ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
-                            startService(Intent(applicationContext, BackgroundService::class.java))
+                        if (!ChatFunctions().isServiceRunning(ForegroundService::class.java, applicationContext))
+                            startService(Intent(applicationContext, ForegroundService::class.java))
                         startIntent(ChatsWindow::class.java)
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
