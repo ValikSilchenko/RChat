@@ -62,12 +62,10 @@ class ChatsWindow : AppCompatActivity() {
                     youTxt = ""
                 }
                 val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
-                println("Test date: $sdf")
                 time = if (el["date"] == sdf)
                     el["time"].toString()
                 else
                     el["date"].toString()
-
                 ChatSingleton.updateChatList(username, time, el["messageText"].toString(), youTxt)
             }
         } catch (error: Exception) {

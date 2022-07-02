@@ -25,4 +25,6 @@
     <string name="delete_message_title">Удалить сообщение</string>
     <string name="edit_message_title">Редактировать сообщение</string>
     <string name="reply_message_title">Ответить</string>
+    <string name="create_conf_title">Создать беседу</string>
+    <string name="enter_group_name_title">Введите имя беседы</string>
 </resources>

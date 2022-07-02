@@ -6,6 +6,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.rchat.R
@@ -15,6 +16,8 @@ import kotlinx.coroutines.async
 class BackgroundService : Service() {
 
     lateinit var notificationManager: NotificationManager
+    lateinit var mHandler: Handler
+    lateinit var mRunnable: Runnable
 
     override fun onBind(intent: Intent): IBinder? {
         throw UnsupportedOperationException("Not yet implemented")
@@ -33,6 +36,11 @@ class BackgroundService : Service() {
             ChatSingleton.openConnection(ChatFunctions().getSavedLogin(applicationContext))
         }
         startForeground(-1, notification)
+
+//        mHandler = Handler()
+//        mRunnable = Runnable { openCloseConnection() }
+//        mHandler.postDelayed(mRunnable, 500)
+
         return START_STICKY
     }
 
@@ -40,17 +48,25 @@ class BackgroundService : Service() {
         super.onDestroy()
         ChatSingleton.closeConnection()
         stopForeground(true)
+//        mHandler.removeCallbacks(mRunnable)
     }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_MIN
             val channel = NotificationChannel("serviceID", "Background working", importance).apply {
-                description = "notification description"
+                description = "Notification of background working of R Chat"
             }
             notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
+
+//    private fun openCloseConnection() {
+//        Toast.makeText(applicationContext, "Connection opened", Toast.LENGTH_SHORT).show()
+//        Thread.sleep(10000)
+//        Toast.makeText(applicationContext, "Connection closed", Toast.LENGTH_SHORT).show()
+//        mHandler.postDelayed(mRunnable, 10000)
+//    }
 }

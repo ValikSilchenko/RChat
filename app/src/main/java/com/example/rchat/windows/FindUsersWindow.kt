@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
 import com.example.rchat.adapters.PreviewChatLVAdapter
@@ -35,6 +36,8 @@ class FindUsersWindow : AppCompatActivity() {
         val loginInput: EditText = findViewById(R.id.FUW_FindUserLogin)
         var foundUsers: List<String>
 
+        foundUsersLv.adapter = arrayAdapter
+
         backToChatsWindow.setOnClickListener {
             onBackPressed()
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
@@ -62,8 +65,11 @@ class FindUsersWindow : AppCompatActivity() {
                     }
                     arrayAdapter = PreviewChatLVAdapter(this, foundUserArrayList)
                     arrayAdapter.notifyDataSetChanged()
-                    foundUsersLv.adapter = arrayAdapter
                     loginInput.text = null
+
+                    if (foundUserArrayList.isEmpty())
+                        Toast.makeText(this, "Пользователи не найдены", Toast.LENGTH_SHORT).show()
+
                 } catch (exception: Exception) {
                     ChatFunctions().showMessage(
                         "Ошибка",

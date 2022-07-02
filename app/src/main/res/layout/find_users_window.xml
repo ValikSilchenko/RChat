@@ -14,7 +14,7 @@
         android:backgroundTint="?attr/button_color"
         android:clickable="true"
         android:src="@drawable/ic_back"
-        android:background="@drawable/roundcorner"
+        android:background="@drawable/round_corner"
         android:focusable="true"
         app:cornerRadius="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
             android:backgroundTint="?attr/button_color"
             android:clickable="true"
             android:src="@drawable/ic_search"
-            android:background="@drawable/roundcorner"
+            android:background="@drawable/round_corner"
             android:focusable="true" />
 
         <EditText

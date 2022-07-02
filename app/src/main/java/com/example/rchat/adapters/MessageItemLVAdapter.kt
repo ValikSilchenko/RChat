@@ -13,14 +13,16 @@ class MessageItemLVAdapter(
     private val arrayList: ArrayList<MessageItemDataClass>
 ) : ArrayAdapter<MessageItemDataClass>(context, R.layout.message_item, arrayList) {
 
-    lateinit var incomingLogin: TextView
-    lateinit var incomingMessage: TextView
-    lateinit var incomingContainer: LinearLayout
-    lateinit var incomingTime: TextView
-    lateinit var outgoingLogin: TextView
-    lateinit var outgoingMessage: TextView
-    lateinit var outgoingContainer: LinearLayout
-    lateinit var outgoingTime: TextView
+    private lateinit var incomingLogin: TextView
+    private lateinit var incomingMessage: TextView
+    private lateinit var incomingContainer: LinearLayout
+    private lateinit var incomingTime: TextView
+    private lateinit var outgoingLogin: TextView
+    private lateinit var outgoingMessage: TextView
+    private lateinit var outgoingContainer: LinearLayout
+    private lateinit var outgoingTime: TextView
+    private lateinit var message: String
+    private var isSender = false
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -50,6 +52,11 @@ class MessageItemLVAdapter(
             outgoingContainer.visibility = View.GONE
             outgoingLogin.visibility = View.GONE
         }
+
+        message = if (incomingMessage.text == "")
+            outgoingMessage.text.toString()
+        else
+            incomingMessage.text.toString()
 
         view.setOnLongClickListener {
             val popupMenu = PopupMenu(context, it)

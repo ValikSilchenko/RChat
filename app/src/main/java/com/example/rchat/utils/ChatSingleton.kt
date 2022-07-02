@@ -8,12 +8,15 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.widget.EditText
 import android.widget.ListView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.rchat.R
+import com.example.rchat.adapters.CGCLVAdapter
 import com.example.rchat.adapters.MessageItemLVAdapter
 import com.example.rchat.adapters.PreviewChatLVAdapter
+import com.example.rchat.dataclasses.CGCDataClass
 import com.example.rchat.dataclasses.MessageItemDataClass
 import com.example.rchat.dataclasses.PreviewChatDataClass
 import com.example.rchat.windows.ChatItselfWindow
@@ -21,23 +24,28 @@ import org.json.JSONObject
 
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
-    val CHANNEL_ID = "channel_id"
-    val serverUrl = "http://194.87.248.192:8080"
+    private const val CHANNEL_ID = "channel_id"
+    const val serverUrl = "http://194.87.248.192:8080"
     var isInChat = false
-    var notificationId = -2
     lateinit var chatName: String
 
-    private lateinit var chatItselfContext: Activity
-    private lateinit var chatsWindowContext: Activity
-    private lateinit var chatWindowLV: ListView
+    private lateinit var chatItselfActivity: Activity
+    private lateinit var chatsWindowActivity: Activity
+    private lateinit var cgcWindowActivity: Activity
     private lateinit var chatArrayAdapter: PreviewChatLVAdapter
     private lateinit var messagesArrayAdapter: MessageItemLVAdapter
-    private var Billy = "Herrington" // Логин собеседника
-    private var Van = "Darkholme" // Логин авторизованного пользователя
+    private lateinit var cgcArrayAdapter: CGCLVAdapter
+    private lateinit var messageEditText: EditText
+    private var notificationId = -2
+    var Billy = "Herrington" // Логин собеседника
+    var Van = "Darkholme" // Логин авторизованного пользователя
     private var webSocketClient = WebSocketClient()
+    private var chatWindowLV: ListView? = null
     private var chatItselfLV: ListView? = null
-    private var chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
-    private val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
+    private var cgcWindowLV: ListView? = null
+    val chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
+    val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
+    private val cgcArrayList: ArrayList<CGCDataClass> = ArrayList()
 
     fun setSelection() {
         chatItselfLV?.setSelection(messagesArrayList.size - 1)
@@ -46,24 +54,31 @@ object ChatSingleton {
     fun setChatsWindow(listView: ListView, username: String, incomingContext: Activity) {
         Van = username
         chatWindowLV = listView
-        chatsWindowContext = incomingContext
-        chatArrayAdapter = PreviewChatLVAdapter(chatsWindowContext, chatsArrayList)
-        chatWindowLV.adapter = chatArrayAdapter
+        chatsWindowActivity = incomingContext
+        chatArrayAdapter = PreviewChatLVAdapter(chatsWindowActivity, chatsArrayList)
+        chatWindowLV!!.adapter = chatArrayAdapter
         createNotificationChannel()
-        clearChatList()
     }
 
-    fun setChatItselfWindow(listView: ListView, username: String, incomingContext: Activity) {
+    fun setChatItselfWindow(
+        listView: ListView,
+        username: String,
+        incomingContext: Activity,
+        editText: EditText
+    ) {
         chatItselfLV = listView
         Billy = username
-        chatItselfContext = incomingContext
-        messagesArrayAdapter = MessageItemLVAdapter(chatItselfContext, messagesArrayList)
+        chatItselfActivity = incomingContext
+        messagesArrayAdapter = MessageItemLVAdapter(chatItselfActivity, messagesArrayList)
         chatItselfLV!!.adapter = messagesArrayAdapter
+        messageEditText = editText
     }
 
-    private fun clearChatList() {
-        if (chatsArrayList.isNotEmpty())
-            chatsArrayList.clear()
+    fun setCGCWindow(incomingContext: Activity, listView: ListView) {
+        cgcWindowActivity = incomingContext
+        cgcWindowLV = listView
+        cgcArrayAdapter = CGCLVAdapter(cgcWindowActivity, cgcArrayList)
+        cgcWindowLV!!.adapter = cgcArrayAdapter
     }
 
     fun openConnection(username: String) {
@@ -79,28 +94,8 @@ object ChatSingleton {
         webSocketClient.send(recipientLogin, message, Van)
     }
 
-    fun sendMessagesRequest() {
-        if (messagesArrayList.isNotEmpty())
-            messagesArrayList.clear()
-        val response: List<JSONObject> = JasonSTATHAM().stringToJSONObj(
-            Requests().get(
-                mapOf(
-                    "sender" to Van,
-                    "recipient" to Billy
-                ),
-                "$serverUrl/personal"
-            )
-        )
-        for (el in response)
-            updateMessageList(
-                (el["sender"] as JSONObject)["username"].toString(),
-                el["messageText"].toString(),
-                "${el["date"]} ${el["time"]}"
-            )
-    }
-
     fun processMessage(message: Map<*, *>) {
-        chatsWindowContext.runOnUiThread {
+        chatsWindowActivity.runOnUiThread {
             val parsedMessage = JSONObject(message)
             val sender = (parsedMessage["sender"] as JSONObject)["username"].toString()
             val messageText = parsedMessage["messageText"].toString()
@@ -134,33 +129,33 @@ object ChatSingleton {
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(CHANNEL_ID, "notif_title", importance).apply {
-                description = "notif description"
+            val channel = NotificationChannel(CHANNEL_ID, "notification_title", importance).apply {
+                description = "notification description"
             }
             val notificationManager =
-                chatsWindowContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                chatsWindowActivity.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
 
     private fun sendNotification(notificationId: Int, loginTitle: String, messageText: String) {
-        val intent = Intent(chatsWindowContext, ChatItselfWindow::class.java)
+        val intent = Intent(chatsWindowActivity, ChatItselfWindow::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         chatName = loginTitle
         val pendingIntent = PendingIntent.getActivity(
-            chatsWindowContext,
+            chatsWindowActivity,
             0,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            0
         )
-        val builder = NotificationCompat.Builder(chatsWindowContext, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(chatsWindowActivity, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(loginTitle)
             .setContentIntent(pendingIntent)
             .setContentText(messageText)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 
-        with(NotificationManagerCompat.from(chatsWindowContext)) {
+        with(NotificationManagerCompat.from(chatsWindowActivity)) {
             notify(notificationId, builder.build())
         }
     }
@@ -175,22 +170,41 @@ object ChatSingleton {
                 break
             }
         }
-        if (isInArray) {
-            chatsArrayList[index].previewMessage = message
-            chatsArrayList[index].previewYouTxt = youTxt
-            chatsArrayList[index].previewTime = time
-        } else
-            chatsArrayList.add(PreviewChatDataClass(recipientLogin, time, message, youTxt))
+        if (isInArray)
+            chatsArrayList.removeAt(index)
+        chatsArrayList.add(0, PreviewChatDataClass(recipientLogin, time, message, youTxt))
         chatArrayAdapter.notifyDataSetChanged()
     }
 
-    private fun updateMessageList(senderLogin: String, message: String, time: String) {
-        var incomingLogin: String
-        var incomingMessage: String
-        var incomingTime: String
-        var outgoingLogin: String
-        var outgoingMessage: String
-        var outgoingTime: String
+    fun updateUsersList(userLogin: String) {
+        var isInArray = false
+        for (el in cgcArrayList.indices) {
+            if (cgcArrayList[el].login == userLogin) {
+                isInArray = true
+                break
+            }
+        }
+        if (!isInArray)
+            cgcArrayList.add(CGCDataClass(userLogin))
+        cgcArrayAdapter.notifyDataSetChanged()
+    }
+
+    fun deleteUser(userLogin: String) {
+        for (el in cgcArrayList.indices) {
+            if (cgcArrayList[el].login == userLogin) {
+                cgcArrayList.removeAt(el)
+                break
+            }
+        }
+    }
+
+    fun updateMessageList(senderLogin: String, message: String, time: String) {
+        val incomingLogin: String
+        val incomingMessage: String
+        val incomingTime: String
+        val outgoingLogin: String
+        val outgoingMessage: String
+        val outgoingTime: String
 
         if (senderLogin == Van) {
             incomingLogin = ""
@@ -219,5 +233,9 @@ object ChatSingleton {
         )
         messagesArrayAdapter.notifyDataSetChanged()
         setSelection()
+    }
+
+    fun editMessage(message: String) {
+        messageEditText.setText(message)
     }
 }

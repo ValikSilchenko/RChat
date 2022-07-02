@@ -12,11 +12,52 @@
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/roundcorner"
+        android:background="@drawable/round_corner"
         android:backgroundTint="?attr/button_color"
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/CGC_GroupName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:height="48dp"
+        android:backgroundTint="?attr/edit_text_color"
+        android:hint="@string/enter_group_name_title"
+        android:textColor="?attr/text_color"
+        android:textColorHint="?attr/edit_text_color"
+        app:layout_constraintStart_toEndOf="@id/CGC_BackBtn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/CGC_UsersArray"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:divider="@null"
+        android:dividerHeight="5dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@id/CGC_CreateChatBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/CGC_BackBtn"
+        tools:listitem="@layout/gc_user_item" />
+
+    <Button
+        android:id="@+id/CGC_CreateChatBtn"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/round_corner"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/create_conf_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

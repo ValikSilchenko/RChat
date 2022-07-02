@@ -1,12 +1,16 @@
 package com.example.rchat.windows
 
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
 import com.example.rchat.utils.ChatSingleton
+import com.example.rchat.utils.JasonSTATHAM
+import com.example.rchat.utils.Requests
+import org.json.JSONObject
 
 class ChatItselfWindow : AppCompatActivity() {
 
@@ -19,7 +23,7 @@ class ChatItselfWindow : AppCompatActivity() {
         val sendMessageBtn: ImageButton = findViewById(R.id.CIW_SendMessageBtn)
         val chatName: TextView = findViewById(R.id.CIW_ChatName)
         val messagesListView: ListView = findViewById(R.id.CIW_MessagesArray)
-        val messageInput: TextView = findViewById(R.id.CIW_MessageInput)
+        val messageInput: EditText = findViewById(R.id.CIW_MessageInput)
 
         val chatLogin = ChatSingleton.chatName
         chatName.text = chatLogin
@@ -27,10 +31,29 @@ class ChatItselfWindow : AppCompatActivity() {
         ChatSingleton.setChatItselfWindow(
             messagesListView,
             chatLogin,
-            this
+            this,
+            messageInput
         )
 
-        ChatSingleton.sendMessagesRequest()
+        // Receiving messages
+        if (ChatSingleton.messagesArrayList.isNotEmpty())
+            ChatSingleton.messagesArrayList.clear()
+        val response: List<JSONObject> = JasonSTATHAM().stringToJSONObj(
+            Requests().get(
+                mapOf(
+                    "sender" to ChatSingleton.Van,
+                    "recipient" to ChatSingleton.Billy
+                ),
+                "${ChatSingleton.serverUrl}/personal"
+            )
+        )
+        for (el in response)
+            ChatSingleton.updateMessageList(
+                (el["sender"] as JSONObject)["username"].toString(),
+                el["messageText"].toString(),
+                "${el["date"]} ${el["time"]}"
+            )
+        // End of receiving messages
 
         backToMainMenuBtn.setOnClickListener {
             startIntent()
