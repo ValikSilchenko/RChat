@@ -26,7 +26,7 @@ class ChatFunctions {
         return false
     }
 
-    fun saveData(context: Context, stringToSave: String, isAuthorized: Boolean) {
+    fun saveLogin(context: Context, stringToSave: String, isAuthorized: Boolean) {
         val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.apply {

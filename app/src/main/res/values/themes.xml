@@ -12,12 +12,13 @@
         <item name="android:statusBarColor" tools:targetApi="1">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="background_color">#FFFFFF</item>
-        <item name="chat_text_color">#000000</item>
+        <item name="chat_txt_color">#000000</item>
         <item name="main_color">#FFEE8300</item>
-        <item name="edit_text_color">@android:color/darker_gray</item>
+        <item name="edit_txt_color">@android:color/darker_gray</item>
         <item name="switch_color">@android:color/darker_gray</item>
         <item name="image_color">#000</item>
         <item name="message_bubble_color">#F7A847</item>
+        <item name="pc_msg_color">#353434</item>
+        <item name="mi_txt_color">#000</item>
     </style>
-
 </resources>

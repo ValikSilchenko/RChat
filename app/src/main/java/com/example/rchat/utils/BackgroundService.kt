@@ -6,19 +6,13 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.os.Handler
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.rchat.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
-class ForegroundService : Service() {
-
-    lateinit var notificationManager: NotificationManager
-    lateinit var mHandler: Handler
-    lateinit var mRunnable: Runnable
-    private val milliSeconds: Long = 1000
+class BackgroundService : Service() {
 
     override fun onBind(intent: Intent): IBinder? {
         throw UnsupportedOperationException("Not yet implemented")
@@ -30,18 +24,11 @@ class ForegroundService : Service() {
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(R.string.app_name.toString())
             .setContentText("Приложение запущено в фоне")
-            .setPriority(NotificationCompat.PRIORITY_MIN)
-
-        val notification = builder.build()
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         GlobalScope.async {
             ChatSingleton.openConnection(ChatFunctions().getSavedLogin(applicationContext))
         }
-        startForeground(-1, notification)
-
-//        mHandler = Handler()
-//        mRunnable = Runnable { openCloseConnection() }
-//        mHandler.postDelayed(mRunnable, milliSeconds)
-
+        startForeground(-1, builder.build())
         return START_STICKY
     }
 
@@ -49,25 +36,17 @@ class ForegroundService : Service() {
         super.onDestroy()
         ChatSingleton.closeConnection()
         stopForeground(true)
-//        mHandler.removeCallbacks(mRunnable)
     }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_MIN
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel("serviceID", "Background working", importance).apply {
                 description = "Notification of background working of R Chat"
             }
-            notificationManager =
+            val notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
-
-//    private fun openCloseConnection() {
-//        Toast.makeText(applicationContext, "Connection opened", Toast.LENGTH_SHORT).show()
-//        Thread.sleep(milliSeconds * 5)
-//        Toast.makeText(applicationContext, "Connection closed", Toast.LENGTH_SHORT).show()
-//        mHandler.postDelayed(mRunnable, milliSeconds)
-//    }
 }

@@ -1,5 +1,6 @@
 package com.example.rchat.windows
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.EditText
@@ -22,9 +23,16 @@ class FindUsersWindow : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
-            Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+        val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
+        when {
+            prefs.getString("NightMode", "Day") == "Day" -> setTheme(R.style.Theme_Light)
+            prefs.getString("NightMode", "Day") == "Night" -> setTheme(R.style.Theme_Dark)
+            prefs.getString("NightMode", "Day") == "System" -> {
+                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                    Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
+                    Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+                }
+            }
         }
 
         super.onCreate(savedInstanceState)
@@ -36,6 +44,7 @@ class FindUsersWindow : AppCompatActivity() {
         val loginInput: EditText = findViewById(R.id.FUW_FindUserLogin)
         var foundUsers: List<String>
 
+        arrayAdapter = PreviewChatLVAdapter(this, foundUserArrayList)
         foundUsersLv.adapter = arrayAdapter
 
         backToChatsWindow.setOnClickListener {
@@ -63,7 +72,6 @@ class FindUsersWindow : AppCompatActivity() {
                             )
                         )
                     }
-                    arrayAdapter = PreviewChatLVAdapter(this, foundUserArrayList)
                     arrayAdapter.notifyDataSetChanged()
                     loginInput.text = null
 

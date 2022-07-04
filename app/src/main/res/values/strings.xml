@@ -27,4 +27,8 @@
     <string name="reply_message_title">Ответить</string>
     <string name="create_conf_title">Создать беседу</string>
     <string name="enter_group_name_title">Введите имя беседы</string>
+    <string name="night_theme_title">Ночная тема</string>
+    <string name="light_title">Светлая</string>
+    <string name="dark_title">Темная</string>
+    <string name="system_title">Системная</string>
 </resources>

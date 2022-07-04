@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:text="Recipient Login"
-            android:textColor="?attr/chat_text_color"
+            android:textColor="?attr/chat_txt_color"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/CIW_BackBtn"
@@ -101,12 +101,12 @@
             android:id="@+id/CIW_MessageInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="?attr/edit_text_color"
+            android:backgroundTint="?attr/edit_txt_color"
             android:hint="@string/Message_Input_Hint"
             android:inputType="textMultiLine"
             android:layoutDirection="ltr"
             android:maxHeight="150dp"
-            android:textColor="?attr/chat_text_color"
-            android:textColorHint="?attr/edit_text_color" />
+            android:textColor="?attr/chat_txt_color"
+            android:textColorHint="?attr/edit_txt_color" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

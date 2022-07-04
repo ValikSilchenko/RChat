@@ -26,10 +26,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:height="48dp"
-        android:backgroundTint="?attr/edit_text_color"
+        android:backgroundTint="?attr/edit_txt_color"
         android:hint="@string/enter_group_name_title"
-        android:textColor="?attr/chat_text_color"
-        android:textColorHint="?attr/edit_text_color"
+        android:textColor="?attr/chat_txt_color"
+        android:textColorHint="?attr/edit_txt_color"
         app:layout_constraintStart_toEndOf="@id/CGC_BackBtn"
         app:layout_constraintTop_toTopOf="parent" />
 

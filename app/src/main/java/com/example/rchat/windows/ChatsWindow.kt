@@ -23,9 +23,16 @@ class ChatsWindow : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
-            Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+        val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
+        when {
+            prefs.getString("NightMode", "Day") == "Day" -> setTheme(R.style.Theme_Light)
+            prefs.getString("NightMode", "Day") == "Night" -> setTheme(R.style.Theme_Dark)
+            prefs.getString("NightMode", "Day") == "System" -> {
+                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                    Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
+                    Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+                }
+            }
         }
 
         super.onCreate(savedInstanceState)

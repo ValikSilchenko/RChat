@@ -17,11 +17,11 @@ class PreviewChatLVAdapter(
     private val context: Activity,
     private val arrayList: ArrayList<PreviewChatDataClass>
 ) :
-    ArrayAdapter<PreviewChatDataClass>(context, R.layout.preview_chat, arrayList) {
+    ArrayAdapter<PreviewChatDataClass>(context, R.layout.preview_chat_item, arrayList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater: LayoutInflater = LayoutInflater.from(context)
-        val view: View = inflater.inflate(R.layout.preview_chat, null)
+        val view: View = inflater.inflate(R.layout.preview_chat_item, null)
 
         val login: TextView = view.findViewById(R.id.PC_Login)
         val time: TextView = view.findViewById(R.id.PC_ReceivingTime)
