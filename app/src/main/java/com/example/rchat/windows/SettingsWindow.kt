@@ -10,8 +10,8 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.rchat.R
-import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.BackgroundService
+import com.example.rchat.utils.ChatFunctions
 
 class SettingsWindow : AppCompatActivity() {
 

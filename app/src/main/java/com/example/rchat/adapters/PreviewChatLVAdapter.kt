@@ -3,6 +3,7 @@ package com.example.rchat.adapters
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,7 +68,18 @@ class PreviewChatLVAdapter(
                 }
             }
             popupMenu.inflate(R.menu.more_pc_menu)
-            popupMenu.show()
+            try {
+                val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")
+                fieldMPopup.isAccessible = true
+                val mPopup = fieldMPopup.get(popupMenu)
+                mPopup.javaClass
+                    .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                    .invoke(mPopup, true)
+            } catch (e: Exception) {
+                Log.e("Main", "Error of showing popup menu icons")
+            } finally {
+                popupMenu.show()
+            }
             true
         }
 
