@@ -31,4 +31,5 @@
     <string name="light_title">Светлая</string>
     <string name="dark_title">Темная</string>
     <string name="system_title">Системная</string>
+    <string name="wip_title">В разработке...</string>
 </resources>

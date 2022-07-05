@@ -10,7 +10,7 @@ import com.example.rchat.R
 import com.example.rchat.utils.BackgroundService
 import com.example.rchat.utils.ChatFunctions
 
-class SplashScreen : AppCompatActivity() {
+class SplashScreenWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)

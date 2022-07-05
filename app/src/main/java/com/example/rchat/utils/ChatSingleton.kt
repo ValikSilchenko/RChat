@@ -1,12 +1,10 @@
 package com.example.rchat.utils
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.widget.EditText
 import android.widget.ListView
@@ -24,11 +22,14 @@ import org.json.JSONObject
 
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
-    private const val CHANNEL_ID = "channel_id"
     const val serverUrl = "http://194.87.248.192:8080"
+    const val ImgRequestCode = 100
     var isInChat = false
+    var Billy = "Herrington" // Логин собеседника
+    var Van = "Darkholme" // Логин авторизованного пользователя
     lateinit var chatName: String
-
+    private lateinit var notificationManager: NotificationManager
+    private lateinit var notificationChannel: NotificationChannel
     private lateinit var chatItselfActivity: Activity
     private lateinit var chatsWindowActivity: Activity
     private lateinit var cgcWindowActivity: Activity
@@ -36,16 +37,16 @@ object ChatSingleton {
     private lateinit var messagesArrayAdapter: MessageItemLVAdapter
     private lateinit var cgcArrayAdapter: CGCLVAdapter
     private lateinit var messageEditText: EditText
+    private const val channel_ID = "new_messages"
+    private const val description = "Messages Notifications"
+    private val cgcArrayList: ArrayList<CGCDataClass> = ArrayList()
+    private val chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
     private var notificationId = -2
-    var Billy = "Herrington" // Логин собеседника
-    var Van = "Darkholme" // Логин авторизованного пользователя
     private var webSocketClient = WebSocketClient()
     private var chatWindowLV: ListView? = null
     private var chatItselfLV: ListView? = null
     private var cgcWindowLV: ListView? = null
-    val chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
     val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
-    private val cgcArrayList: ArrayList<CGCDataClass> = ArrayList()
 
     fun setSelection() {
         chatItselfLV?.setSelection(messagesArrayList.size - 1)
@@ -129,19 +130,20 @@ object ChatSingleton {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(CHANNEL_ID, "notification_title", importance).apply {
-                description = "notification description"
-            }
-            val notificationManager =
+            notificationManager =
                 chatsWindowActivity.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+            notificationChannel = NotificationChannel(channel_ID, description, NotificationManager.IMPORTANCE_DEFAULT)
+            notificationChannel.apply {
+                enableLights(true)
+                lightColor = Color.WHITE
+                enableVibration(true)
+            }
+            notificationManager.createNotificationChannel(notificationChannel)
         }
     }
 
     private fun sendNotification(notificationId: Int, loginTitle: String, messageText: String) {
         val intent = Intent(chatsWindowActivity, ChatItselfWindow::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         chatName = loginTitle
         val pendingIntent = PendingIntent.getActivity(
             chatsWindowActivity,
@@ -149,14 +151,15 @@ object ChatSingleton {
             intent,
             0
         )
-        val builder = NotificationCompat.Builder(chatsWindowActivity, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(chatsWindowActivity, channel_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(loginTitle)
             .setContentIntent(pendingIntent)
             .setContentText(messageText)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
 
         with(NotificationManagerCompat.from(chatsWindowActivity)) {
+            builder.notification.flags = Notification.FLAG_AUTO_CANCEL
             notify(notificationId, builder.build())
         }
     }
@@ -240,9 +243,5 @@ object ChatSingleton {
         )
         messagesArrayAdapter.notifyDataSetChanged()
         setSelection()
-    }
-
-    fun editMessage(message: String) {
-        messageEditText.setText(message)
     }
 }

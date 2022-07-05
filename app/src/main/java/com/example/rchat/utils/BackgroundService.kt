@@ -22,7 +22,7 @@ class BackgroundService : Service() {
         createNotificationChannel()
         val builder = NotificationCompat.Builder(applicationContext, "serviceID")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(R.string.app_name.toString())
+            .setContentTitle(getString(R.string.app_name))
             .setContentText("Приложение запущено в фоне")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         GlobalScope.async {

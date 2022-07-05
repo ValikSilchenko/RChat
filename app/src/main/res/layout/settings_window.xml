@@ -21,15 +21,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--Avatar-->
+    <LinearLayout
+        android:id="@+id/SW_AvatarContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/SW_AvatarImg"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_avatar" />
+
+        <Button
+            android:id="@+id/SW_AvatarBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Сменить аватар"
+            android:textSize="20sp"
+            android:background="@drawable/round_corner"
+            android:layout_marginTop="10dp"/>
+
+    </LinearLayout>
+
+    <!--Night Mode-->
     <LinearLayout
         android:id="@+id/SW_NightModeContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/SW_ToChatsBtn">
+        app:layout_constraintTop_toBottomOf="@id/SW_AvatarContainer">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
