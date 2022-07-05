@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FindUsersWindow">
+    tools:context=".windows.FindUsersWindow">
 
     <ImageButton
         android:id="@+id/FUW_BackBtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:backgroundTint="?attr/button_color"
+        android:backgroundTint="?attr/main_color"
         android:clickable="true"
         android:src="@drawable/ic_back"
-        android:background="@drawable/roundcorner"
+        android:background="@drawable/round_corner"
         android:focusable="true"
         app:cornerRadius="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,10 +34,10 @@
             android:id="@+id/FUW_FindUserBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:backgroundTint="?attr/button_color"
+            android:backgroundTint="?attr/main_color"
             android:clickable="true"
             android:src="@drawable/ic_search"
-            android:background="@drawable/roundcorner"
+            android:background="@drawable/round_corner"
             android:focusable="true" />
 
         <EditText
@@ -46,11 +46,11 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="5dp"
-            android:backgroundTint="?attr/edit_text_color"
+            android:backgroundTint="?attr/edit_txt_color"
             android:hint="@string/userlogin_title"
             android:layoutDirection="ltr"
-            android:textColor="?attr/text_color"
-            android:textColorHint="?attr/edit_text_color" />
+            android:textColor="?attr/chat_txt_color"
+            android:textColorHint="?attr/edit_txt_color" />
     </LinearLayout>
 
     <ListView
@@ -65,5 +65,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/FUW_Container"
-        tools:listitem="@layout/preview_chat" />
+        tools:listitem="@layout/preview_chat_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>

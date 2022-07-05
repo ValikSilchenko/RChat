@@ -1,10 +1,16 @@
-package com.example.rchat
+package com.example.rchat.windows
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rchat.R
+import com.example.rchat.adapters.PreviewChatLVAdapter
+import com.example.rchat.dataclasses.PreviewChatDataClass
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
@@ -16,6 +22,19 @@ class FindUsersWindow : AppCompatActivity() {
     private lateinit var arrayAdapter: PreviewChatLVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
+        when {
+            prefs.getString("NightMode", "Day") == "Day" -> setTheme(R.style.Theme_Light)
+            prefs.getString("NightMode", "Day") == "Night" -> setTheme(R.style.Theme_Dark)
+            prefs.getString("NightMode", "Day") == "System" -> {
+                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                    Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
+                    Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+                }
+            }
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.find_users_window)
 
@@ -24,6 +43,9 @@ class FindUsersWindow : AppCompatActivity() {
         val findBtn: ImageButton = findViewById(R.id.FUW_FindUserBtn)
         val loginInput: EditText = findViewById(R.id.FUW_FindUserLogin)
         var foundUsers: List<String>
+
+        arrayAdapter = PreviewChatLVAdapter(this, foundUserArrayList)
+        foundUsersLv.adapter = arrayAdapter
 
         backToChatsWindow.setOnClickListener {
             onBackPressed()
@@ -46,14 +68,16 @@ class FindUsersWindow : AppCompatActivity() {
                     for (element in foundUsers) {
                         foundUserArrayList.add(
                             PreviewChatDataClass(
-                                element, "", "", ""
+                                element, "", "", "", false
                             )
                         )
                     }
-                    arrayAdapter = PreviewChatLVAdapter(this, foundUserArrayList)
                     arrayAdapter.notifyDataSetChanged()
-                    foundUsersLv.adapter = arrayAdapter
                     loginInput.text = null
+
+                    if (foundUserArrayList.isEmpty())
+                        Toast.makeText(this, "Пользователи не найдены", Toast.LENGTH_SHORT).show()
+
                 } catch (exception: Exception) {
                     ChatFunctions().showMessage(
                         "Ошибка",

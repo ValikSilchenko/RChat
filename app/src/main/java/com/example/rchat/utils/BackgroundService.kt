@@ -14,8 +14,6 @@ import kotlinx.coroutines.async
 
 class BackgroundService : Service() {
 
-    lateinit var notificationManager: NotificationManager
-
     override fun onBind(intent: Intent): IBinder? {
         throw UnsupportedOperationException("Not yet implemented")
     }
@@ -24,15 +22,13 @@ class BackgroundService : Service() {
         createNotificationChannel()
         val builder = NotificationCompat.Builder(applicationContext, "serviceID")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("R Chat")
+            .setContentTitle(getString(R.string.app_name))
             .setContentText("Приложение запущено в фоне")
-            .setPriority(NotificationCompat.PRIORITY_MIN)
-
-        val notification = builder.build()
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         GlobalScope.async {
             ChatSingleton.openConnection(ChatFunctions().getSavedLogin(applicationContext))
         }
-        startForeground(-1, notification)
+        startForeground(-1, builder.build())
         return START_STICKY
     }
 
@@ -44,11 +40,11 @@ class BackgroundService : Service() {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_MIN
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel("serviceID", "Background working", importance).apply {
-                description = "notification description"
+                description = "Notification of background working of R Chat"
             }
-            notificationManager =
+            val notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }

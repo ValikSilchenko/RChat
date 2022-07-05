@@ -24,7 +24,7 @@
         android:text="Sender Name"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="?attr/text_color"
+        android:textColor="?attr/chat_txt_color"
         app:layout_constraintStart_toEndOf="@id/GCU_Avatar"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="10dp" />

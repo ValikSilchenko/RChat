@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.rchat">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -14,48 +13,10 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.Light">
         <activity
-            android:name=".CreateGroupChatWindow"
-            android:exported="false" />
-
-        <service
-            android:name=".utils.BackgroundService"
-            android:enabled="true"
-            android:exported="true" />
-
-        <activity
-            android:name=".FindUsersWindow"
-            android:exported="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ChatItselfWindow"
-            android:exported="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".RegistrationWindow"
-            android:exported="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".AuthorizationWindow"
+            android:name=".windows.SplashScreenWindow"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -65,7 +26,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChatsWindow"
+            android:name=".windows.CreateGroupChatWindow"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".utils.BackgroundService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="false" />
+
+        <activity
+            android:name=".windows.FindUsersWindow"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -75,7 +53,47 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsWindow"
+            android:name=".windows.ChatItselfWindow"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".windows.RegistrationWindow"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".windows.AuthorizationWindow"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".windows.ChatsWindow"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".windows.SettingsWindow"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

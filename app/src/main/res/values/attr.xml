@@ -2,12 +2,13 @@
 <resources>
     <declare-styleable name="DarkTheme">
         <attr name="background_color" format="color"/>
-        <attr name="text_color" format="color"/>
-        <attr name="button_color" format="color"/>
-        <attr name="edit_text_color" format="color"/>
+        <attr name="chat_txt_color" format="color"/>
+        <attr name="main_color" format="color"/>
+        <attr name="edit_txt_color" format="color"/>
         <attr name="switch_color" format="color"/>
         <attr name="image_color" format="color"/>
-        <attr name="previewchat_color" format="color"/>
-        <attr name="previewchat_msg_color" format="color"/>
+        <attr name="message_bubble_color" format="color"/>
+        <attr name="pc_msg_color" format="color"/>
+        <attr name="mi_txt_color" format="color"/>
     </declare-styleable>
 </resources>

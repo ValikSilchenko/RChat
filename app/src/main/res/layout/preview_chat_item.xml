@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="Sender Name"
-        android:textColor="?attr/text_color"
+        android:textColor="?attr/chat_txt_color"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/PC_Avatar"
@@ -37,36 +37,37 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="10:21"
-        android:textColor="?attr/previewchat_msg_color"
+        android:textColor="?attr/pc_msg_color"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <ImageView-->
-<!--        android:id="@+id/PC_ReadMsg"-->
-<!--        android:layout_width="18dp"-->
-<!--        android:layout_height="18dp"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:layout_marginTop="2dp"-->
-<!--        android:src="@drawable/ic_done"-->
-<!--        android:visibility="invisible"-->
-<!--        app:layout_constraintStart_toEndOf="@id/PC_Avatar"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/PC_Login"-->
-<!--        app:tint="@color/black" />-->
+    <ImageView
+        android:id="@+id/PC_ReadMsg"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/ic_done"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@id/PC_Avatar"
+        app:layout_constraintTop_toBottomOf="@id/PC_Login"
+        app:tint="@color/black" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/PC_UnreadCount"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:layout_marginTop="2dp"-->
-<!--        android:gravity="center"-->
-<!--        android:text="500"-->
-<!--        android:maxWidth="18dp"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textSize="15sp"-->
-<!--        app:layout_constraintStart_toEndOf="@id/PC_Avatar"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/PC_Login" />-->
+    <TextView
+        android:id="@+id/PC_UnreadCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:text="50"
+        android:maxWidth="18dp"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@id/PC_Avatar"
+        app:layout_constraintTop_toBottomOf="@id/PC_Login" />
 
     <TextView
         android:id="@+id/PC_You"
@@ -75,7 +76,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="2dp"
         android:text="Вы:"
-        android:textColor="?attr/text_color"
+        android:textColor="?attr/chat_txt_color"
         android:textSize="15sp"
         android:textStyle="italic"
         app:layout_constraintStart_toEndOf="@id/PC_Avatar"
@@ -90,7 +91,7 @@
         android:maxLength="45"
         android:maxLines="1"
         android:text="This is the message that gonna be displayed in chatswindow"
-        android:textColor="?attr/previewchat_msg_color"
+        android:textColor="?attr/pc_msg_color"
         android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@id/PC_You"
         app:layout_constraintTop_toBottomOf="@id/PC_Login" />

@@ -1,14 +1,16 @@
-package com.example.rchat
+package com.example.rchat.windows
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import com.example.rchat.utils.BackgroundService
+import com.example.rchat.R
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
+import com.example.rchat.utils.BackgroundService
 import com.example.rchat.utils.Requests
 
 
@@ -16,21 +18,20 @@ class RegistrationWindow : AppCompatActivity() {
     private lateinit var login: String
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
-            Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+        val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
+        when {
+            prefs.getString("NightMode", "Day") == "Day" -> setTheme(R.style.Theme_Light)
+            prefs.getString("NightMode", "Day") == "Night" -> setTheme(R.style.Theme_Dark)
+            prefs.getString("NightMode", "Day") == "System" -> {
+                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                    Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
+                    Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+                }
+            }
         }
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_window)
-
-//        if (ChatFunctions().isAuthorized(this)) {
-//            login = ChatFunctions().getSavedLogin(this)
-//            GlobalScope.async {
-//                ChatSingleton.openConnection(login)
-//            }
-//            startIntent(ChatsWindow::class.java)
-//        }
 
         val loginText: EditText = findViewById(R.id.RW_Input)
         val emailText: EditText = findViewById(R.id.RW_Email)
@@ -40,12 +41,10 @@ class RegistrationWindow : AppCompatActivity() {
         val registrationBtn: Button = findViewById(R.id.RW_RegistrationBtn)
         val authorizeBtn: Button = findViewById(R.id.RW_AuthorizeBtn)
 
-        // Нажатие кнопки RegistrationAuthorize_Btn
         authorizeBtn.setOnClickListener {
             onBackPressed()
         }
 
-        // Нажатие кнопки RegistrationRegistration_Btn
         registrationBtn.setOnClickListener {
             if (emailText.text.isNotEmpty() && loginText.text.isNotEmpty()
                 && phoneNumberText.text.isNotEmpty() && passwordText.text.isNotEmpty()
@@ -64,14 +63,9 @@ class RegistrationWindow : AppCompatActivity() {
                         "${ChatSingleton.serverUrl}/user"
                     )
                     try {
-                        ChatFunctions().saveData(this, login, true)
-//                        GlobalScope.async {
-//                            ChatSingleton.openConnection(login)
-//                        }
-
+                        ChatFunctions().saveLogin(this, login, true)
                         if (!ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
                             startService(Intent(applicationContext, BackgroundService::class.java))
-
                         startIntent(ChatsWindow::class.java)
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)

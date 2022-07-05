@@ -1,4 +1,4 @@
-package com.example.rchat
+package com.example.rchat.windows
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.widget.ListView
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rchat.R
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
@@ -22,9 +23,16 @@ class ChatsWindow : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
-            Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+        val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
+        when {
+            prefs.getString("NightMode", "Day") == "Day" -> setTheme(R.style.Theme_Light)
+            prefs.getString("NightMode", "Day") == "Night" -> setTheme(R.style.Theme_Dark)
+            prefs.getString("NightMode", "Day") == "System" -> {
+                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                    Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
+                    Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+                }
+            }
         }
 
         super.onCreate(savedInstanceState)
@@ -42,10 +50,8 @@ class ChatsWindow : AppCompatActivity() {
 
         ChatSingleton.setChatsWindow(chatArray, user, this)
 
-        ChatSingleton.clearChatList()
-
         try {
-            val response: List<JSONObject> = JasonSTATHAM().zapretParsinga(
+            val response: List<JSONObject> = JasonSTATHAM().stringToJSONObj(
                 Requests().get(
                     mapOf("username" to user),
                     "${ChatSingleton.serverUrl}/chats"
@@ -63,13 +69,12 @@ class ChatsWindow : AppCompatActivity() {
                     youTxt = ""
                 }
                 val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
-                println("Test date: $sdf")
                 time = if (el["date"] == sdf)
                     el["time"].toString()
                 else
                     el["date"].toString()
-
-                ChatSingleton.updateChatList(username, time, el["messageText"].toString(), youTxt)
+                
+                ChatSingleton.updateChatList(username, time, el["messageText"].toString(), youTxt, true)
             }
         } catch (error: Exception) {
             ChatFunctions().showMessage(
