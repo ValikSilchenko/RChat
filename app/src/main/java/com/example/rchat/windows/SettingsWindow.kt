@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -118,18 +119,23 @@ class SettingsWindow : AppCompatActivity() {
         }
 
         avatarBtn.setOnClickListener {
-//            pickAndSetImage()
+//            takePicFromAlbum()
             Toast.makeText(this, getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
         }
 
         exitAccountBtn.setOnClickListener {
-            if (ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
-                stopService(Intent(applicationContext, BackgroundService::class.java))
-            ChatFunctions().deleteData(this)
-            val intent = Intent(this, AuthorizationWindow::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            try {
+                if (ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
+                    stopService(Intent(applicationContext, BackgroundService::class.java))
+                ChatFunctions().deleteData(this)
+                val intent = Intent(this, AuthorizationWindow::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            }
+            catch (exception: Exception) {
+                ChatFunctions().showMessage("Ошибка", "Ошибка выхода из аккаунта. Код ошибки ${exception.message}", this)
+            }
         }
     }
 
@@ -150,6 +156,16 @@ class SettingsWindow : AppCompatActivity() {
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 
-    private fun pickAndSetImage() {
+    fun takePicFromAlbum() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        if (intent.resolveActivity(packageManager) != null)
+            startActivityForResult(intent, 1)
+    }
+
+    fun takePhoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null)
+            startActivityForResult(intent, 0)
     }
 }

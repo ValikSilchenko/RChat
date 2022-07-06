@@ -8,9 +8,9 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
+import com.example.rchat.utils.BackgroundService
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
-import com.example.rchat.utils.BackgroundService
 import com.example.rchat.utils.Requests
 
 
@@ -57,7 +57,7 @@ class RegistrationWindow : AppCompatActivity() {
                         mapOf(
                             "username" to login,
                             "email" to emailText.text.toString(),
-                            "phone" to phoneNumberText.text.toString(),
+                            "phone" to ChatFunctions().transformPhoneNumber(phoneNumberText.text.toString()),
                             "password" to passwordText.text.toString()
                         ),
                         "${ChatSingleton.serverUrl}/user"

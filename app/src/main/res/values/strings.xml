@@ -32,4 +32,6 @@
     <string name="dark_title">Темная</string>
     <string name="system_title">Системная</string>
     <string name="wip_title">В разработке...</string>
+    <string name="no_chats_title">Тут пока ничего нет...</string>
+    <string name="you_title">Вы:</string>
 </resources>

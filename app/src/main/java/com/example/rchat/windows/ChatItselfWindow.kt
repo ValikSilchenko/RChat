@@ -50,8 +50,6 @@ class ChatItselfWindow : AppCompatActivity() {
         )
 
         // Receiving messages
-        if (ChatSingleton.messagesArrayList.isNotEmpty())
-            ChatSingleton.messagesArrayList.clear()
         val response: List<JSONObject> = JasonSTATHAM().stringToJSONObj(
             Requests().get(
                 mapOf(
@@ -74,14 +72,12 @@ class ChatItselfWindow : AppCompatActivity() {
         }
 
         sendMessageBtn.setOnClickListener {
-            if (messageInput.text.isNotEmpty()) {
+            if (messageInput.text.isNotEmpty())
                 ChatSingleton.sendMessage(
                     chatLogin,
-                    messageInput.text.toString()
+                    messageInput.text.toString(),
+                    messageInput
                 )
-                messageInput.text = null
-                ChatSingleton.setSelection()
-            }
         }
     }
 

@@ -29,26 +29,26 @@ object ChatSingleton {
     private lateinit var notificationChannel: NotificationChannel
     private lateinit var chatItselfActivity: Activity
     private lateinit var chatsWindowActivity: Activity
-    private lateinit var cgcWindowActivity: Activity
+    private lateinit var createGroupChatWindowActivity: Activity
     private lateinit var chatArrayAdapter: PreviewChatLVAdapter
     private lateinit var messagesArrayAdapter: MessageItemLVAdapter
-    private lateinit var cgcArrayAdapter: CGCLVAdapter
+    private lateinit var createGroupChatArrayAdapter: CGCLVAdapter
     private lateinit var messageEditText: EditText
     private const val channel_ID = "new_messages"
     private const val description = "Messages Notifications"
-    private val cgcArrayList: ArrayList<CGCDataClass> = ArrayList()
+    private val usersForGroupChatArrayList: ArrayList<CGCDataClass> = ArrayList()
     private val chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
+    private val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
     private var notificationId = -2
     private var webSocketClient = WebSocketClient()
     private var chatWindowLV: ListView? = null
     private var chatItselfLV: ListView? = null
-    private var cgcWindowLV: ListView? = null
-    val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
+    private var createGroupChatLV: ListView? = null
     var isInChat = false
     var Billy = "Herrington" // Логин собеседника
     var Van = "Darkholme" // Логин авторизованного пользователя
 
-    fun setSelection() {
+    private fun setSelection() {
         chatItselfLV?.setSelection(messagesArrayList.size - 1)
     }
 
@@ -59,6 +59,8 @@ object ChatSingleton {
         chatArrayAdapter = PreviewChatLVAdapter(chatsWindowActivity, chatsArrayList)
         chatWindowLV!!.adapter = chatArrayAdapter
         createNotificationChannel()
+        if (chatsArrayList.isNotEmpty())
+            chatsArrayList.clear()
     }
 
     fun setChatItselfWindow(
@@ -73,13 +75,15 @@ object ChatSingleton {
         messagesArrayAdapter = MessageItemLVAdapter(chatItselfActivity, messagesArrayList)
         chatItselfLV!!.adapter = messagesArrayAdapter
         messageEditText = editText
+        if (messagesArrayList.isNotEmpty())
+            messagesArrayList.clear()
     }
 
     fun setCGCWindow(incomingContext: Activity, listView: ListView) {
-        cgcWindowActivity = incomingContext
-        cgcWindowLV = listView
-        cgcArrayAdapter = CGCLVAdapter(cgcWindowActivity, cgcArrayList)
-        cgcWindowLV!!.adapter = cgcArrayAdapter
+        createGroupChatWindowActivity = incomingContext
+        createGroupChatLV = listView
+        createGroupChatArrayAdapter = CGCLVAdapter(createGroupChatWindowActivity, usersForGroupChatArrayList)
+        createGroupChatLV!!.adapter = createGroupChatArrayAdapter
     }
 
     fun openConnection(username: String) {
@@ -90,15 +94,17 @@ object ChatSingleton {
         webSocketClient.disconnect()
     }
 
-    fun sendMessage(recipientLogin: String, message: String) {
-        try {
-            webSocketClient.send(recipientLogin, message, Van)
-        } catch (exception: Exception) {
-            ChatFunctions().showMessage(
-                "Ошибка",
-                "Ошибка отправки данных. Код: ${exception.message}", chatItselfActivity
-            )
-        }
+    fun sendMessage(recipientLogin: String, message: String, messageField: EditText) {
+            try {
+                webSocketClient.send(recipientLogin, message, Van)
+                messageField.text = null
+                setSelection()
+            } catch (exception: Exception) {
+                ChatFunctions().showMessage(
+                    "Ошибка",
+                    "Ошибка отправки сообщения. Код: ${exception.message}", chatItselfActivity
+                )
+            }
     }
 
     fun processMessage(message: Map<*, *>) {
@@ -195,21 +201,21 @@ object ChatSingleton {
 
     fun updateUsersList(userLogin: String) {
         var isInArray = false
-        for (el in cgcArrayList.indices) {
-            if (cgcArrayList[el].login == userLogin) {
+        for (el in usersForGroupChatArrayList.indices) {
+            if (usersForGroupChatArrayList[el].login == userLogin) {
                 isInArray = true
                 break
             }
         }
         if (!isInArray)
-            cgcArrayList.add(CGCDataClass(userLogin))
-        cgcArrayAdapter.notifyDataSetChanged()
+            usersForGroupChatArrayList.add(CGCDataClass(userLogin))
+        createGroupChatArrayAdapter.notifyDataSetChanged()
     }
 
     fun deleteUser(userLogin: String) {
-        for (el in cgcArrayList.indices) {
-            if (cgcArrayList[el].login == userLogin) {
-                cgcArrayList.removeAt(el)
+        for (el in usersForGroupChatArrayList.indices) {
+            if (usersForGroupChatArrayList[el].login == userLogin) {
+                usersForGroupChatArrayList.removeAt(el)
                 break
             }
         }

@@ -23,7 +23,6 @@ class MessageItemLVAdapter(
     private lateinit var outgoingContainer: LinearLayout
     private lateinit var outgoingTime: TextView
     private lateinit var message: String
-    private var isSender = false
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -108,7 +107,6 @@ class MessageItemLVAdapter(
             }
             true
         }
-
         return view
     }
 }

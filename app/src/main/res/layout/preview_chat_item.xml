@@ -42,40 +42,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/PC_ReadMsg"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="2dp"
-        android:src="@drawable/ic_done"
-        android:visibility="invisible"
-        app:layout_constraintStart_toEndOf="@id/PC_Avatar"
-        app:layout_constraintTop_toBottomOf="@id/PC_Login"
-        app:tint="@color/black" />
-
     <TextView
-        android:id="@+id/PC_UnreadCount"
+        android:id="@+id/PC_ShownMessageInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="2dp"
-        android:gravity="center"
-        android:visibility="invisible"
-        android:text="50"
-        android:maxWidth="18dp"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@id/PC_Avatar"
-        app:layout_constraintTop_toBottomOf="@id/PC_Login" />
-
-    <TextView
-        android:id="@+id/PC_You"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="2dp"
-        android:text="Вы:"
+        android:text="@string/you_title"
         android:textColor="?attr/chat_txt_color"
         android:textSize="15sp"
         android:textStyle="italic"
@@ -93,6 +66,6 @@
         android:text="This is the message that gonna be displayed in chatswindow"
         android:textColor="?attr/pc_msg_color"
         android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@id/PC_You"
+        app:layout_constraintStart_toEndOf="@id/PC_ShownMessageInfo"
         app:layout_constraintTop_toBottomOf="@id/PC_Login" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.PopupMenu
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.rchat.R
 import com.example.rchat.dataclasses.PreviewChatDataClass
@@ -27,18 +30,15 @@ class PreviewChatLVAdapter(
         val login: TextView = view.findViewById(R.id.PC_Login)
         val time: TextView = view.findViewById(R.id.PC_ReceivingTime)
         val message: TextView = view.findViewById(R.id.PC_Message)
-        val youTxt: TextView = view.findViewById(R.id.PC_You)
-        val previewUnreadCount: TextView = view.findViewById(R.id.PC_UnreadCount)
-        val previewRead: ImageView = view.findViewById(R.id.PC_ReadMsg)
-        var isNewMsg = false
+        val youTxt: TextView = view.findViewById(R.id.PC_ShownMessageInfo)
 
+        val isNewMsg = arrayList[position].isNewMsg
         login.text = arrayList[position].previewLogin
         time.text = arrayList[position].previewTime
         message.text = arrayList[position].previewMessage
         youTxt.text = arrayList[position].previewYouTxt
-        isNewMsg = arrayList[position].isNewMsg
 
-        message.typeface = if (isNewMsg)
+        message.typeface = if (isNewMsg && youTxt.text == "")
             Typeface.DEFAULT_BOLD
         else
             Typeface.DEFAULT

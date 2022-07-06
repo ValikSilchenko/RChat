@@ -58,4 +58,18 @@ class ChatFunctions {
         }
         return false
     }
+
+    fun transformPhoneNumber(number: String): String {
+        var result = ""
+        if (number.length > 10) {
+            val filteredNumber = number.filter { it.isDigit() }
+            if (filteredNumber.length == 11)
+                result = filteredNumber.dropWhile {
+                    it == '7' || it == '8'
+                }
+        }
+        else if (number.length == 10)
+            return number
+        return result
+    }
 }

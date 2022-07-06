@@ -16,6 +16,7 @@ import kotlinx.coroutines.async
 class BackgroundService : Service() {
 
     private var flag = 0
+    private val mSeconds: Long = 600000
 
     override fun onBind(intent: Intent): IBinder? {
         throw UnsupportedOperationException("Not yet implemented")
@@ -28,9 +29,7 @@ class BackgroundService : Service() {
             .setContentTitle(getString(R.string.app_name))
             .setContentText("Приложение запущено в фоне")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
         openCloseConnection()
-
         startForeground(-1, builder.build())
         return START_STICKY
     }
@@ -60,12 +59,9 @@ class BackgroundService : Service() {
                 GlobalScope.async {
                     ChatSingleton.openConnection(ChatFunctions().getSavedLogin(applicationContext))
                 }
-                println("Thread: Connection opened")
-                SystemClock.sleep(5000)
+                SystemClock.sleep(mSeconds)
                 ChatSingleton.closeConnection()
-                println("Thread: Connection closed")
             }
-            println("Thread: function over")
         }
     }
 }

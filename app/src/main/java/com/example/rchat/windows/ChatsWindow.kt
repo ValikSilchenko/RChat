@@ -42,10 +42,7 @@ class ChatsWindow : AppCompatActivity() {
         val chatArray: ListView = findViewById(R.id.CW_ChatsArray)
         val moreBtn: ImageButton = findViewById(R.id.CW_MoreBtn)
 
-        val user = getSharedPreferences("Authorization", Context.MODE_PRIVATE).getString(
-            "LOGIN_KEY",
-            "NaN"
-        ).toString()
+        val user = ChatFunctions().getSavedLogin(this)
         userLogin.text = user
 
         ChatSingleton.setChatsWindow(chatArray, user, this)

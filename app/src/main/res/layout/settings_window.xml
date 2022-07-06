@@ -37,7 +37,9 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_avatar" />
+            android:src="@drawable/ic_avatar"
+            android:background="@drawable/round_corner"
+            android:backgroundTint="?attr/chat_txt_color"/>
 
         <Button
             android:id="@+id/SW_AvatarBtn"
