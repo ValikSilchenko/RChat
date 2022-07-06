@@ -7,12 +7,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 import com.example.rchat.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
 class BackgroundService : Service() {
+
+    private var flag = 0
 
     override fun onBind(intent: Intent): IBinder? {
         throw UnsupportedOperationException("Not yet implemented")
@@ -25,15 +28,16 @@ class BackgroundService : Service() {
             .setContentTitle(getString(R.string.app_name))
             .setContentText("Приложение запущено в фоне")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        GlobalScope.async {
-            ChatSingleton.openConnection(ChatFunctions().getSavedLogin(applicationContext))
-        }
+
+        openCloseConnection()
+
         startForeground(-1, builder.build())
         return START_STICKY
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        flag = 1
         ChatSingleton.closeConnection()
         stopForeground(true)
     }
@@ -47,6 +51,21 @@ class BackgroundService : Service() {
             val notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun openCloseConnection() {
+        GlobalScope.async {
+            while (flag == 0) {
+                GlobalScope.async {
+                    ChatSingleton.openConnection(ChatFunctions().getSavedLogin(applicationContext))
+                }
+                println("Thread: Connection opened")
+                SystemClock.sleep(5000)
+                ChatSingleton.closeConnection()
+                println("Thread: Connection closed")
+            }
+            println("Thread: function over")
         }
     }
 }

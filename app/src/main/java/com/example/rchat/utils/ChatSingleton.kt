@@ -24,9 +24,6 @@ import org.json.JSONObject
 object ChatSingleton {
     const val serverUrl = "http://194.87.248.192:8080"
     const val ImgRequestCode = 100
-    var isInChat = false
-    var Billy = "Herrington" // Логин собеседника
-    var Van = "Darkholme" // Логин авторизованного пользователя
     lateinit var chatName: String
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationChannel: NotificationChannel
@@ -47,6 +44,9 @@ object ChatSingleton {
     private var chatItselfLV: ListView? = null
     private var cgcWindowLV: ListView? = null
     val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
+    var isInChat = false
+    var Billy = "Herrington" // Логин собеседника
+    var Van = "Darkholme" // Логин авторизованного пользователя
 
     fun setSelection() {
         chatItselfLV?.setSelection(messagesArrayList.size - 1)
@@ -91,8 +91,14 @@ object ChatSingleton {
     }
 
     fun sendMessage(recipientLogin: String, message: String) {
-        //TODO("Обработка ошибки отправки сообщения")
-        webSocketClient.send(recipientLogin, message, Van)
+        try {
+            webSocketClient.send(recipientLogin, message, Van)
+        } catch (exception: Exception) {
+            ChatFunctions().showMessage(
+                "Ошибка",
+                "Ошибка отправки данных. Код: ${exception.message}", chatItselfActivity
+            )
+        }
     }
 
     fun processMessage(message: Map<*, *>) {
@@ -132,7 +138,8 @@ object ChatSingleton {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager =
                 chatsWindowActivity.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationChannel = NotificationChannel(channel_ID, description, NotificationManager.IMPORTANCE_DEFAULT)
+            notificationChannel =
+                NotificationChannel(channel_ID, description, NotificationManager.IMPORTANCE_DEFAULT)
             notificationChannel.apply {
                 enableLights(true)
                 lightColor = Color.WHITE
