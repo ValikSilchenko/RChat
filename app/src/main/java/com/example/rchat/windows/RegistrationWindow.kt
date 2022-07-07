@@ -66,7 +66,12 @@ class RegistrationWindow : AppCompatActivity() {
                         ChatFunctions().saveLogin(this, login, true)
                         if (!ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
                             startService(Intent(applicationContext, BackgroundService::class.java))
-                        startIntent(ChatsWindow::class.java)
+                        val mIntent = Intent(this, SplashScreenWindow::class.java)
+                        mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        startActivity(mIntent)
+                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        finish()
+
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
                         //TODO("Обработка ошибки при отсутствии интернетов")
@@ -92,11 +97,5 @@ class RegistrationWindow : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivity(intent)
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-    }
-
-    private fun startIntent(Window: Class<*>?) {
-        startActivity(Intent(this, Window))
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-        finish()
     }
 }

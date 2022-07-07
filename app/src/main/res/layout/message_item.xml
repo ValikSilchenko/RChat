@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp">
 
-<!--    Incoming-->
+    <!--    Incoming-->
     <TextView
         android:id="@+id/MI_IncomingLogin"
         android:layout_width="wrap_content"
@@ -21,8 +21,8 @@
         android:id="@+id/MI_IncomingContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@drawable/mi_background"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/MI_IncomingLogin">
 
@@ -36,33 +36,33 @@
                 android:layout_height="wrap_content"
                 android:maxWidth="300dp"
                 android:paddingStart="5dp"
-                android:paddingEnd="7dp"
                 android:paddingTop="5dp"
+                android:paddingEnd="7dp"
                 android:text="This is incoming message"
                 android:textColor="?attr/mi_txt_color"
                 android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@id/MI_IncomingTime"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/Message_IncomingTime"
+                android:id="@+id/MI_IncomingTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="2dp"
                 android:text="26.05.2022 10:56"
+                android:textColor="?attr/mi_txt_color"
                 android:textSize="12sp"
                 android:textStyle="italic"
-                android:textColor="?attr/mi_txt_color"
-                android:paddingStart="5dp"
-                android:paddingBottom="2dp"
-                android:paddingEnd="5dp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/MI_IncomingMessage"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
-<!--    Outgoing-->
+    <!--    Outgoing-->
     <TextView
         android:id="@+id/MI_OutgoingLogin"
         android:layout_width="wrap_content"
@@ -78,8 +78,8 @@
         android:id="@+id/MI_OutgoingContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@drawable/mi_background"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/MI_OutgoingLogin">
 
@@ -94,11 +94,12 @@
                 android:background="@drawable/mi_background"
                 android:maxWidth="300dp"
                 android:paddingStart="5dp"
-                android:paddingEnd="7dp"
                 android:paddingTop="5dp"
+                android:paddingEnd="7dp"
                 android:text="This is outgoing message"
                 android:textColor="?attr/mi_txt_color"
                 android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@id/MI_OutgoingTime"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -106,16 +107,15 @@
                 android:id="@+id/MI_OutgoingTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="2dp"
                 android:text="26.05.2022 10:56"
+                android:textColor="?attr/mi_txt_color"
                 android:textSize="12sp"
                 android:textStyle="italic"
-                android:textColor="?attr/mi_txt_color"
-                android:paddingEnd="5dp"
-                android:paddingStart="5dp"
-                android:paddingBottom="2dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/MI_OutgoingMessage"/>
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
 import com.example.rchat.utils.BackgroundService
@@ -28,6 +30,18 @@ class SplashScreenWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen_window)
 
+        val welcomeTxt: TextView = findViewById(R.id.SSW_WelcomeText)
+        val loginText: TextView = findViewById(R.id.SSW_LoginText)
+
+        if (!ChatFunctions().isAuthorized(this)) {
+            welcomeTxt.text = getString(R.string.welcome_rchat_title)
+            loginText.visibility = View.GONE
+        }
+        else {
+            welcomeTxt.text = getString(R.string.hello_title)
+            loginText.text = ChatFunctions().getSavedLogin(this)
+        }
+
         val handler = Handler()
         handler.postDelayed({
             if (ChatFunctions().isAuthorized(this)) {
@@ -45,5 +59,7 @@ class SplashScreenWindow : AppCompatActivity() {
         val mIntent = Intent(this, window)
         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(mIntent)
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        this.finish()
     }
 }

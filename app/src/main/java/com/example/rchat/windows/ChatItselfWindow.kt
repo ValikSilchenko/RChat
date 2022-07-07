@@ -3,10 +3,7 @@ package com.example.rchat.windows
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
 import com.example.rchat.utils.ChatSingleton
@@ -35,6 +32,8 @@ class ChatItselfWindow : AppCompatActivity() {
 
         val backToMainMenuBtn: ImageButton = findViewById(R.id.CIW_BackBtn)
         val sendMessageBtn: ImageButton = findViewById(R.id.CIW_SendMessageBtn)
+        val attachBtn: ImageButton = findViewById(R.id.CIW_AttachBtn)
+        val actionsBtn: ImageButton = findViewById(R.id.CIW_ActionsBtn)
         val chatName: TextView = findViewById(R.id.CIW_ChatName)
         val messagesListView: ListView = findViewById(R.id.CIW_MessagesArray)
         val messageInput: EditText = findViewById(R.id.CIW_MessageInput)
@@ -69,6 +68,10 @@ class ChatItselfWindow : AppCompatActivity() {
 
         backToMainMenuBtn.setOnClickListener {
             startIntent()
+        }
+
+        attachBtn.setOnClickListener {
+            Toast.makeText(applicationContext, "В разработке...", Toast.LENGTH_SHORT).show()
         }
 
         sendMessageBtn.setOnClickListener {

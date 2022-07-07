@@ -34,4 +34,6 @@
     <string name="wip_title">В разработке...</string>
     <string name="no_chats_title">Тут пока ничего нет...</string>
     <string name="you_title">Вы:</string>
+    <string name="welcome_rchat_title">Добро пожаловать в R Chat!</string>
+    <string name="hello_title">Здравствуйте,</string>
 </resources>

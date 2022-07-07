@@ -21,6 +21,7 @@ import java.util.*
 
 class ChatsWindow : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
@@ -41,7 +42,6 @@ class ChatsWindow : AppCompatActivity() {
         val userLogin: TextView = findViewById(R.id.CW_AppName)
         val chatArray: ListView = findViewById(R.id.CW_ChatsArray)
         val moreBtn: ImageButton = findViewById(R.id.CW_MoreBtn)
-
         val user = ChatFunctions().getSavedLogin(this)
         userLogin.text = user
 

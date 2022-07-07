@@ -31,7 +31,7 @@ class MessageItemLVAdapter(
         incomingLogin = view.findViewById(R.id.MI_IncomingLogin)
         incomingMessage = view.findViewById(R.id.MI_IncomingMessage)
         incomingContainer = view.findViewById(R.id.MI_IncomingContainer)
-        incomingTime = view.findViewById(R.id.Message_IncomingTime)
+        incomingTime = view.findViewById(R.id.MI_IncomingTime)
         outgoingLogin = view.findViewById(R.id.MI_OutgoingLogin)
         outgoingMessage = view.findViewById(R.id.MI_OutgoingMessage)
         outgoingContainer = view.findViewById(R.id.MI_OutgoingContainer)

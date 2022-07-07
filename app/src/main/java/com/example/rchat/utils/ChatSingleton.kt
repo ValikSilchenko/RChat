@@ -28,7 +28,7 @@ object ChatSingleton {
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationChannel: NotificationChannel
     private lateinit var chatItselfActivity: Activity
-    private lateinit var chatsWindowActivity: Activity
+    lateinit var chatsWindowActivity: Activity
     private lateinit var createGroupChatWindowActivity: Activity
     private lateinit var chatArrayAdapter: PreviewChatLVAdapter
     private lateinit var messagesArrayAdapter: MessageItemLVAdapter

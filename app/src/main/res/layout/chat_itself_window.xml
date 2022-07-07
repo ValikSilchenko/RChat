@@ -47,7 +47,7 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/GCW_ActionsBtn"
+        android:id="@+id/CIW_ActionsBtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
@@ -55,8 +55,8 @@
         android:background="@drawable/round_corner"
         android:backgroundTint="?attr/main_color"
         android:clickable="true"
-        android:visibility="gone"
         android:focusable="true"
+        android:visibility="gone"
         android:src="@drawable/ic_more"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -96,6 +96,17 @@
             android:focusable="true"
             android:rotation="180"
             android:src="@drawable/ic_send" />
+
+        <ImageButton
+            android:id="@+id/CIW_AttachBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/round_corner"
+            android:src="@drawable/ic_attach"
+            android:clickable="true"
+            android:focusable="true"
+            android:rotation="45" />
 
         <EditText
             android:id="@+id/CIW_MessageInput"

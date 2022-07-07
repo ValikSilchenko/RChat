@@ -48,6 +48,7 @@ class AuthorizationWindow : AppCompatActivity() {
             val intent = Intent(this, RegistrationWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             startActivity(intent)
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
 
         enterAccountBtn.setOnClickListener {
@@ -65,7 +66,13 @@ class AuthorizationWindow : AppCompatActivity() {
                         ChatFunctions().saveLogin(this, login, true)
                         if (!ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
                             startService(Intent(applicationContext, BackgroundService::class.java))
-                        startIntent(ChatsWindow::class.java)
+//                        startIntent(ChatsWindow::class.java)
+                        val mIntent = Intent(this, SplashScreenWindow::class.java)
+                        mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        startActivity(mIntent)
+                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        finish()
+
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
                         //TODO("Обработка ошибки при отсутствии интернетов")
