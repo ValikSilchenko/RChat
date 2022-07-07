@@ -1,6 +1,7 @@
 package com.example.rchat.windows
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.*
@@ -67,7 +68,15 @@ class ChatItselfWindow : AppCompatActivity() {
         // End of receiving messages
 
         backToMainMenuBtn.setOnClickListener {
+            ChatSingleton.clearMessagesList()
             startIntent()
+        }
+
+        actionsBtn.setOnClickListener {
+            val mIntent = Intent(this, MediaChatWindow::class.java)
+            mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            startActivity(mIntent)
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
 
         attachBtn.setOnClickListener {
@@ -93,5 +102,6 @@ class ChatItselfWindow : AppCompatActivity() {
         ChatSingleton.isInChat = false
         super.onBackPressed()
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        finish()
     }
 }

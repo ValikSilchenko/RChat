@@ -45,7 +45,7 @@ class PreviewChatLVAdapter(
 
         view.setOnClickListener {
             val intent = Intent(context, ChatItselfWindow::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             message.typeface = Typeface.DEFAULT
             ChatSingleton.isInChat = true
             ChatSingleton.chatName = login.text.toString()

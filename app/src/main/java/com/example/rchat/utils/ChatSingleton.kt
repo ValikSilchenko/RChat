@@ -75,8 +75,6 @@ object ChatSingleton {
         messagesArrayAdapter = MessageItemLVAdapter(chatItselfActivity, messagesArrayList)
         chatItselfLV!!.adapter = messagesArrayAdapter
         messageEditText = editText
-        if (messagesArrayList.isNotEmpty())
-            messagesArrayList.clear()
     }
 
     fun setCGCWindow(incomingContext: Activity, listView: ListView) {
@@ -256,5 +254,10 @@ object ChatSingleton {
         )
         messagesArrayAdapter.notifyDataSetChanged()
         setSelection()
+    }
+
+    fun clearMessagesList() {
+        if (messagesArrayList.isNotEmpty())
+            messagesArrayList.clear()
     }
 }

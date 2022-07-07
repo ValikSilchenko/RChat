@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
 import com.example.rchat.utils.ChatFunctions
@@ -122,7 +123,20 @@ class ChatsWindow : AppCompatActivity() {
 
     @Override
     override fun onBackPressed() {
-        super.onBackPressed()
+//        super.onBackPressed()
+        val message: AlertDialog.Builder = AlertDialog.Builder(this)
+        message
+            .setTitle(getString(R.string.attention_title))
+            .setMessage(getString(R.string.really_wanna_exit_app_title))
+            .setCancelable(true)
+            .setPositiveButton(
+                getString(R.string.yes_title)
+            ) { _, _ -> finish() }
+            .setNegativeButton(getString(R.string.no_title)) {dialog, _ -> dialog.cancel()}
+        val messageWindow = message.create()
+        messageWindow.show()
+
+
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 }

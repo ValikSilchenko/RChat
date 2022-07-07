@@ -36,4 +36,8 @@
     <string name="you_title">Вы:</string>
     <string name="welcome_rchat_title">Добро пожаловать в R Chat!</string>
     <string name="hello_title">Здравствуйте,</string>
+    <string name="attention_title">Внимание</string>
+    <string name="really_wanna_exit_app_title">Вы действительно хотите выйти?</string>
+    <string name="yes_title">Да</string>
+    <string name="no_title">Нет</string>
 </resources>
