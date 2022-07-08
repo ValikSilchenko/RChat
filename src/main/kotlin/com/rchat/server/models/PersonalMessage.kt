@@ -48,6 +48,7 @@ open class PersonalMessage {
     @Column(name = "message_text", nullable = false)
     open var messageText: String? = null
 
+    @JsonView(View.Message::class)
     @Column(name = "read")
     open var read: Boolean? = false
 

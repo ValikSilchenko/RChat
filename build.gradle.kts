@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.rchat"
-version = "0.0.1"
+version = "0.1.2"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {

@@ -74,7 +74,7 @@ class ClientController(
         @RequestParam ownerId: String,
         @RequestParam channelName: String,
         @RequestParam(required = false) membersToAdd: String? = null
-    ): ResponseEntity<String> {
+    ): ResponseEntity<String> { // TODO error handling
         if (ownerId.toIntOrNull() == null)
             return ResponseEntity("Неверный формат для id", HttpStatus.BAD_REQUEST)
 
@@ -143,16 +143,18 @@ class ClientController(
     }
 
     @DeleteMapping("/member")
-    fun delMember(@RequestParam channelId: String, @RequestParam userId: String): ResponseEntity<String> {
+    fun delMember(@RequestParam channelId: String, @RequestParam memberId: String): ResponseEntity<String> {
         if (channelId.toIntOrNull() == null)
             return ResponseEntity("Неверный формат id канала", HttpStatus.BAD_REQUEST)
-        if (userId.toIntOrNull() == null)
+        if (memberId.toIntOrNull() == null)
             return ResponseEntity("Неверный формат id пользователя", HttpStatus.BAD_REQUEST)
 
         val channel = channelRepo.getById(channelId.toInt())
-        memberRepo.deleteById(MemberId(channelId.toInt(), userId.toInt()))
+        if (!memberRepo.existsById(MemberId(channelId.toInt(), memberId.toInt())))
+            return ResponseEntity("Неверные данные", HttpStatus.BAD_REQUEST)
+        memberRepo.deleteById(MemberId(channelId.toInt(), memberId.toInt()))
 
-        if (channel.owner?.id == userId.toInt()) {
+        if (channel.owner?.id == memberId.toInt()) {
             val newOwner = memberRepo.getFirstParticipated(channel)
             if (newOwner != null) {
                 channel.owner = newOwner
