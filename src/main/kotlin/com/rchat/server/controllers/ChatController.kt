@@ -11,6 +11,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.stereotype.Controller
 import com.fasterxml.jackson.annotation.JsonView
+import org.springframework.messaging.handler.annotation.Header
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -48,6 +49,20 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
         personalMessageRepo.save(message)
         return message
     }
+
+//    @JsonView(View.AllWithId::class)
+//    @MessageMapping("/user/{recipient}/{sender}/{msgId}/")
+//    @SendTo("/chatTopic/{recipient}/", "/chatTopic/{sender}/")
+//    fun updateRead(
+//        @DestinationVariable recipient: String,
+//        @DestinationVariable sender: String,
+//        @DestinationVariable msgId: String
+//    ): PersonalMessage {
+//        val message = personalMessageRepo.getById(msgId.toInt())
+//        message.read = true
+//        personalMessageRepo.save(message)
+//        return message
+//    }
 
 //    @MessageMapping("/channel")
 //    @SendTo("/channelTopic")

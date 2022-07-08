@@ -17,7 +17,7 @@ interface PersonalMessageRepository: JpaRepository<PersonalMessage, Int> {
             "and msg1.recipient in (msg.sender, msg.recipient)) and msg.time = (" +
             "select max(msg1.time) from PersonalMessage msg1 where msg1.sender in (msg.sender, msg.recipient)" +
             "and msg1.recipient in (msg.sender, msg.recipient) and msg1.date = msg.date)" +
-            " order by msg.date desc, msg.time desc")
+            " order by msg.date, msg.time")
     fun getChats(forUser: Users): List<PersonalMessage?>
 
     @Query("select count(msg) - 0 as count from PersonalMessage msg" +
