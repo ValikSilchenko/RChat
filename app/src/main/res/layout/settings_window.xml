@@ -97,7 +97,7 @@
                     android:paddingEnd="5dp">
 
                     <CheckBox
-                        android:id="@+id/SW_DayMode_CheckBox"
+                        android:id="@+id/SW_DayModeCB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />
@@ -117,7 +117,7 @@
                     android:paddingEnd="5dp">
 
                     <CheckBox
-                        android:id="@+id/SW_NightMode_CheckBox"
+                        android:id="@+id/SW_NightModeCB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />
@@ -137,7 +137,7 @@
                     android:paddingEnd="5dp">
 
                     <CheckBox
-                        android:id="@+id/SW_SystemMode_CheckBox"
+                        android:id="@+id/SW_SystemModeCB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />

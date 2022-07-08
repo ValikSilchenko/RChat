@@ -51,6 +51,5 @@ class WebSocketClient {
 
     fun disconnect() {
         session?.disconnect()
-        println("Disconnected")
     }
 }

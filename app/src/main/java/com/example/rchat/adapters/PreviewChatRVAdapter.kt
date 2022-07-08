@@ -16,10 +16,10 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
     RecyclerView.Adapter<PreviewChatRVAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val mLogin: TextView = itemView.findViewById(R.id.PC_Login)
-        val mTime: TextView = itemView.findViewById(R.id.PC_ReceivingTime)
-        val mMessage: TextView = itemView.findViewById(R.id.PC_Message)
-        val mInfoTxt: TextView = itemView.findViewById(R.id.PC_ShownMessageInfo)
+        val mLogin: TextView = itemView.findViewById(R.id.PC_LoginTV)
+        val mTime: TextView = itemView.findViewById(R.id.PC_ReceivingTimeTV)
+        val mMessage: TextView = itemView.findViewById(R.id.PC_MessageTV)
+        val mInfoTxt: TextView = itemView.findViewById(R.id.PC_ShownMessageInfoTV)
         var isNewMsg = false
 
         init {
@@ -43,11 +43,10 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.apply {
-            mLogin.text = arrayList[position].previewLogin
-            mTime.text = arrayList[position].previewTime
-            mMessage.text = arrayList[position].previewMessage
-            mInfoTxt.text = arrayList[position].previewYouTxt
-            isNewMsg = arrayList[position].isNewMsg
+            mLogin.text = arrayList[position].login
+            mTime.text = arrayList[position].time
+            mMessage.text = arrayList[position].message
+            mInfoTxt.text = arrayList[position].infoTxt
 
             mMessage.typeface = if (isNewMsg && mInfoTxt.text == "")
                 Typeface.DEFAULT_BOLD

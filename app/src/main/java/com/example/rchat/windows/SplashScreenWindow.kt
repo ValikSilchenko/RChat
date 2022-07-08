@@ -16,10 +16,10 @@ class SplashScreenWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
-        when {
-            prefs.getString("NightMode", "Day") == "Day" -> setTheme(R.style.Theme_Light)
-            prefs.getString("NightMode", "Day") == "Night" -> setTheme(R.style.Theme_Dark)
-            prefs.getString("NightMode", "Day") == "System" -> {
+        when (prefs.getString("NightMode", "Day")) {
+            "Day" -> setTheme(R.style.Theme_Light)
+            "Night" -> setTheme(R.style.Theme_Dark)
+            "System" -> {
                 when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
                     Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
                     Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
@@ -30,8 +30,8 @@ class SplashScreenWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen_window)
 
-        val welcomeTxt: TextView = findViewById(R.id.SSW_WelcomeText)
-        val loginText: TextView = findViewById(R.id.SSW_LoginText)
+        val welcomeTxt: TextView = findViewById(R.id.SSW_WelcomeTV)
+        val loginText: TextView = findViewById(R.id.SSW_LoginTV)
 
         if (!ChatFunctions().isAuthorized(this)) {
             welcomeTxt.text = getString(R.string.welcome_rchat_title)

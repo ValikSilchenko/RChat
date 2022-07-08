@@ -10,7 +10,7 @@
     android:longClickable="true">
 
     <ImageView
-        android:id="@+id/PC_Avatar"
+        android:id="@+id/PC_AvatarImg"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_avatar"
@@ -20,7 +20,7 @@
         app:tint="?attr/image_color" />
 
     <TextView
-        android:id="@+id/PC_Login"
+        android:id="@+id/PC_LoginTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -28,11 +28,11 @@
         android:textColor="?attr/chat_txt_color"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/PC_Avatar"
+        app:layout_constraintStart_toEndOf="@id/PC_AvatarImg"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/PC_ReceivingTime"
+        android:id="@+id/PC_ReceivingTimeTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/PC_ShownMessageInfo"
+        android:id="@+id/PC_ShownMessageInfoTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -52,11 +52,11 @@
         android:textColor="?attr/chat_txt_color"
         android:textSize="15sp"
         android:textStyle="italic"
-        app:layout_constraintStart_toEndOf="@id/PC_Avatar"
-        app:layout_constraintTop_toBottomOf="@id/PC_Login" />
+        app:layout_constraintStart_toEndOf="@id/PC_AvatarImg"
+        app:layout_constraintTop_toBottomOf="@id/PC_LoginTV" />
 
     <TextView
-        android:id="@+id/PC_Message"
+        android:id="@+id/PC_MessageTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -66,6 +66,6 @@
         android:text="This is the message that gonna be displayed in chatswindow"
         android:textColor="?attr/pc_msg_color"
         android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@id/PC_ShownMessageInfo"
-        app:layout_constraintTop_toBottomOf="@id/PC_Login" />
+        app:layout_constraintStart_toEndOf="@id/PC_ShownMessageInfoTV"
+        app:layout_constraintTop_toBottomOf="@id/PC_LoginTV" />
 </androidx.constraintlayout.widget.ConstraintLayout>

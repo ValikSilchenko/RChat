@@ -40,4 +40,6 @@
     <string name="really_wanna_exit_app_title">Вы действительно хотите выйти?</string>
     <string name="yes_title">Да</string>
     <string name="no_title">Нет</string>
+    <string name="app_running_in_background_title">Приложение запущено в фоне</string>
+    <string name="ok_title">Ок</string>
 </resources>

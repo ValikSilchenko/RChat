@@ -8,7 +8,7 @@
     tools:context=".windows.RegistrationWindow">
 
     <TextView
-        android:id="@+id/RW_TopText"
+        android:id="@+id/RW_TopTextTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/RW_Input"
+        android:id="@+id/RW_LoginET"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
@@ -36,10 +36,10 @@
         android:textColorHint="?attr/edit_txt_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RW_TopText" />
+        app:layout_constraintTop_toBottomOf="@id/RW_TopTextTV" />
 
     <EditText
-        android:id="@+id/RW_Email"
+        android:id="@+id/RW_EmailET"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
@@ -51,10 +51,10 @@
         android:textColorHint="?attr/edit_txt_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RW_Input" />
+        app:layout_constraintTop_toBottomOf="@id/RW_LoginET" />
 
     <EditText
-        android:id="@+id/RW_PhoneNumber"
+        android:id="@+id/RW_PhoneNumberET"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
@@ -68,10 +68,10 @@
         android:textColorHint="?attr/edit_txt_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RW_Email" />
+        app:layout_constraintTop_toBottomOf="@id/RW_EmailET" />
 
     <EditText
-        android:id="@+id/RW_Password"
+        android:id="@+id/RW_PasswordET"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
@@ -84,10 +84,10 @@
         android:textColorHint="?attr/edit_txt_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RW_PhoneNumber" />
+        app:layout_constraintTop_toBottomOf="@id/RW_PhoneNumberET" />
 
     <EditText
-        android:id="@+id/RW_RepeatPassword"
+        android:id="@+id/RW_RepeatPasswordET"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
@@ -100,7 +100,7 @@
         android:textColorHint="?attr/edit_txt_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RW_Password" />
+        app:layout_constraintTop_toBottomOf="@id/RW_PasswordET" />
 
     <Button
         android:id="@+id/RW_RegistrationBtn"
@@ -117,7 +117,7 @@
         android:background="@drawable/round_corner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RW_RepeatPassword" />
+        app:layout_constraintTop_toBottomOf="@id/RW_RepeatPasswordET" />
 
     <Button
         android:id="@+id/RW_AuthorizeBtn"

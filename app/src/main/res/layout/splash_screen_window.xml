@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@id/SSW_Image">
 
         <TextView
-            android:id="@+id/SSW_WelcomeText"
+            android:id="@+id/SSW_WelcomeTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -36,7 +36,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/SSW_LoginText"
+            android:id="@+id/SSW_LoginTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

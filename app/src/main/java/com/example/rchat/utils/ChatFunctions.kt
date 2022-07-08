@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.appcompat.app.AlertDialog
+import com.example.rchat.R
 
 class ChatFunctions {
     fun showMessage(titleText: CharSequence, messageText: CharSequence, context: Context) {
@@ -15,7 +16,7 @@ class ChatFunctions {
             .setMessage(messageText)
             .setCancelable(true)
             .setPositiveButton(
-                "Ок"
+                context.getString(R.string.ok_title)
             ) { dialog, _ -> dialog.cancel() }
         val messageWindow = message.create()
         messageWindow.show()

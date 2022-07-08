@@ -16,15 +16,15 @@ class CreateGroupChatWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
-        when {
-            prefs.getString("NightMode", "Day") == "Day" -> setTheme(R.style.Theme_Light)
-            prefs.getString("NightMode", "Day") == "Night" -> setTheme(R.style.Theme_Dark)
-            prefs.getString("NightMode", "Day") == "System" -> {
-            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
-                Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+        when (prefs.getString("NightMode", "Day")) {
+            "Day" -> setTheme(R.style.Theme_Light)
+            "Night" -> setTheme(R.style.Theme_Dark)
+            "System" -> {
+                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                    Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
+                    Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
+                }
             }
-        }
         }
 
         super.onCreate(savedInstanceState)
@@ -32,8 +32,8 @@ class CreateGroupChatWindow : AppCompatActivity() {
 
         val backBtn: ImageButton = findViewById(R.id.CGC_BackBtn)
         val createBtn: Button = findViewById(R.id.CGC_CreateChatBtn)
-        val usersArray: ListView = findViewById(R.id.CGC_UsersArray)
-        val groupName: EditText = findViewById(R.id.CGC_GroupName)
+        val usersArray: ListView = findViewById(R.id.CGC_UsersLV)
+        val groupName: EditText = findViewById(R.id.CGC_GroupNameET)
 
         ChatSingleton.setCGCWindow(this, usersArray)
 

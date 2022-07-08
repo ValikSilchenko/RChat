@@ -11,7 +11,6 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.R
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
@@ -27,10 +26,10 @@ class ChatsWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
-        when {
-            prefs.getString("NightMode", "Day") == "Day" -> setTheme(R.style.Theme_Light)
-            prefs.getString("NightMode", "Day") == "Night" -> setTheme(R.style.Theme_Dark)
-            prefs.getString("NightMode", "Day") == "System" -> {
+        when (prefs.getString("NightMode", "Day")) {
+            "Day" -> setTheme(R.style.Theme_Light)
+            "Night" -> setTheme(R.style.Theme_Dark)
+            "System" -> {
                 when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
                     Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
                     Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
@@ -41,16 +40,25 @@ class ChatsWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chats_window)
 
-        val userLogin: TextView = findViewById(R.id.CW_AppName)
-        val chatArray: ListView = findViewById(R.id.CW_ChatsArray)
+//        val networkConnection = NetworkConnectionLiveData(applicationContext)   //!
+
+        val userLogin: TextView = findViewById(R.id.CW_AppNameTV)
+        val chatArray: ListView = findViewById(R.id.CW_ChatsLV)
         val moreBtn: ImageButton = findViewById(R.id.CW_MoreBtn)
         val user = ChatFunctions().getSavedLogin(this)
         userLogin.text = user
 
         ChatSingleton.setChatsWindow(chatArray, user, this)
 
+//        networkConnection.observe(this) { isConnected ->
+//            if (isConnected)
+//                Toast.makeText(applicationContext, "Internet connected", Toast.LENGTH_SHORT).show()
+//            else
+//                Toast.makeText(applicationContext, "Internet disconnected", Toast.LENGTH_SHORT).show()
+//        }
+
         try {
-            val response: List<JSONObject> = JasonSTATHAM().stringToJSONObj(
+            val response: List<JSONObject> = JasonSTATHAM().stringToListOfJSONObj(
                 Requests().get(
                     mapOf("username" to user),
                     "${ChatSingleton.serverUrl}/chats"
@@ -72,8 +80,13 @@ class ChatsWindow : AppCompatActivity() {
                     el["time"].toString()
                 else
                     el["date"].toString()
-                
-                ChatSingleton.updateChatList(username, time, el["messageText"].toString(), youTxt, true)
+                ChatSingleton.updateChatList(
+                    username,
+                    time,
+                    el["messageText"].toString(),
+                    youTxt,
+                    el["read"] as Boolean
+                )
             }
         } catch (error: Exception) {
             ChatFunctions().showMessage(
@@ -99,7 +112,10 @@ class ChatsWindow : AppCompatActivity() {
                         val intent = Intent(this, SettingsWindow::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                         startActivity(intent)
-                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        overridePendingTransition(
+                            android.R.anim.slide_in_left,
+                            android.R.anim.slide_out_right
+                        )
                         true
                     }
                     else -> false
@@ -115,8 +131,7 @@ class ChatsWindow : AppCompatActivity() {
                     .invoke(mPopup, true)
             } catch (e: Exception) {
                 Log.e("Main", "Error of showing popup menu icons")
-            }
-            finally {
+            } finally {
                 popupMenu.show()
             }
         }
@@ -124,7 +139,6 @@ class ChatsWindow : AppCompatActivity() {
 
     @Override
     override fun onBackPressed() {
-//        super.onBackPressed()
         val message: AlertDialog.Builder = AlertDialog.Builder(this)
         message
             .setTitle(getString(R.string.attention_title))
@@ -133,11 +147,8 @@ class ChatsWindow : AppCompatActivity() {
             .setPositiveButton(
                 getString(R.string.yes_title)
             ) { _, _ -> finish() }
-            .setNegativeButton(getString(R.string.no_title)) {dialog, _ -> dialog.cancel()}
+            .setNegativeButton(getString(R.string.no_title)) { dialog, _ -> dialog.cancel() }
         val messageWindow = message.create()
         messageWindow.show()
-
-
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 }

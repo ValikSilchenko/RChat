@@ -70,7 +70,7 @@ class NetworkConnectionLiveData(private val context: Context) : LiveData<Boolean
 
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
-
+                    postValue(true)
                 }
             }
             return networkCallback
@@ -89,5 +89,4 @@ class NetworkConnectionLiveData(private val context: Context) : LiveData<Boolean
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
         postValue(activeNetwork?.isConnected == true)
     }
-
 }

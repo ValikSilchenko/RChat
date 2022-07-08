@@ -28,7 +28,7 @@ object ChatSingleton {
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationChannel: NotificationChannel
     private lateinit var chatItselfActivity: Activity
-    lateinit var chatsWindowActivity: Activity
+    private lateinit var chatsWindowActivity: Activity
     private lateinit var createGroupChatWindowActivity: Activity
     private lateinit var chatsArrayAdapter: PreviewChatLVAdapter
     private lateinit var messagesArrayAdapter: MessageItemLVAdapter
@@ -45,12 +45,8 @@ object ChatSingleton {
     private var chatItselfLV: ListView? = null
     private var createGroupChatRV: ListView? = null
     var isInChat = false
-    var Billy = "Herrington" // Логин собеседника
-    var Van = "Darkholme" // Логин авторизованного пользователя
-
-    private fun setSelection() {
-        chatItselfLV?.setSelection(messagesArrayList.size - 1)
-    }
+    var Billy = "Herrington"
+    var Van = "Darkholme"
 
     fun setChatsWindow(listView: ListView, username: String, incomingContext: Activity) {
         Van = username
@@ -80,7 +76,8 @@ object ChatSingleton {
     fun setCGCWindow(incomingContext: Activity, listView: ListView) {
         createGroupChatWindowActivity = incomingContext
         createGroupChatRV = listView
-        createGroupChatArrayAdapter = CGCLVAdapter(createGroupChatWindowActivity, usersForGroupChatArrayList)
+        createGroupChatArrayAdapter =
+            CGCLVAdapter(createGroupChatWindowActivity, usersForGroupChatArrayList)
         createGroupChatRV!!.adapter = createGroupChatArrayAdapter
     }
 
@@ -93,16 +90,16 @@ object ChatSingleton {
     }
 
     fun sendMessage(recipientLogin: String, message: String, messageField: EditText) {
-            try {
-                webSocketClient.send(recipientLogin, message, Van)
-                messageField.text = null
-                setSelection()
-            } catch (exception: Exception) {
-                ChatFunctions().showMessage(
-                    "Ошибка",
-                    "Ошибка отправки сообщения. Код: ${exception.message}", chatItselfActivity
-                )
-            }
+        try {
+            webSocketClient.send(recipientLogin, message, Van)
+            messageField.text = null
+            focusOnLastItem()
+        } catch (exception: Exception) {
+            ChatFunctions().showMessage(
+                "Ошибка",
+                "Ошибка отправки сообщения. Код: ${exception.message}", chatItselfActivity
+            )
+        }
     }
 
     fun processMessage(message: Map<*, *>) {
@@ -114,25 +111,29 @@ object ChatSingleton {
             val time = parsedMessage["time"].toString()
             val date = parsedMessage["date"].toString()
             notificationId = userId
-
             if (sender == Van) {
                 updateChatList(
                     (parsedMessage["recipient"] as JSONObject)["username"].toString(),
                     parsedMessage["time"].toString(),
                     messageText,
                     "Вы:",
-                    !isInChat
+                    parsedMessage["read"] as Boolean
                 )
                 updateMessageList(sender, messageText, "$date $time")
             } else {
-                updateChatList(sender, parsedMessage["time"].toString(), messageText, "", !isInChat)
+                updateChatList(
+                    sender,
+                    parsedMessage["time"].toString(),
+                    messageText,
+                    "",
+                    parsedMessage["read"] as Boolean
+                )
                 if (sender == Billy) {
                     if (!isInChat) {
                         sendNotification(userId, sender, messageText)
                     }
                     updateMessageList(sender, messageText, "$date $time")
-//                    setSelection()
-                    chatItselfLV?.smoothScrollToPosition(messagesArrayList.size - 1)
+                    focusOnLastItem()
                 } else
                     sendNotification(userId, sender, messageText)
             }
@@ -176,41 +177,6 @@ object ChatSingleton {
         }
     }
 
-    fun updateChatList(
-        recipientLogin: String,
-        time: String,
-        message: String,
-        youTxt: String,
-        isNew: Boolean
-    ) {
-        var isInArray = false
-        var index = 0
-        for (el in chatsArrayList.indices) {
-            if (chatsArrayList[el].previewLogin == recipientLogin) {
-                isInArray = true
-                index = el
-                break
-            }
-        }
-        if (isInArray)
-            chatsArrayList.removeAt(index)
-        chatsArrayList.add(0, PreviewChatDataClass(recipientLogin, time, message, youTxt, isNew))
-        chatsArrayAdapter.notifyDataSetChanged()
-    }
-
-    fun updateUsersList(userLogin: String) {
-        var isInArray = false
-        for (el in usersForGroupChatArrayList.indices) {
-            if (usersForGroupChatArrayList[el].login == userLogin) {
-                isInArray = true
-                break
-            }
-        }
-        if (!isInArray)
-            usersForGroupChatArrayList.add(CGCDataClass(userLogin))
-        createGroupChatArrayAdapter.notifyDataSetChanged()
-    }
-
     fun deleteUser(userLogin: String) {
         for (el in usersForGroupChatArrayList.indices) {
             if (usersForGroupChatArrayList[el].login == userLogin) {
@@ -218,6 +184,40 @@ object ChatSingleton {
                 break
             }
         }
+    }
+
+    fun updateChatList(
+        lastMessageRecipient: String,
+        time: String,
+        message: String,
+        youTxt: String,
+        isRead: Boolean
+    ) {
+        var isInArray = false
+        var index = 0
+        var unreadMsg = 0
+        for (el in chatsArrayList.indices) {
+            if (chatsArrayList[el].login == lastMessageRecipient) {
+                isInArray = true
+                index = el
+                break
+            }
+        }
+        if (isInArray)
+            chatsArrayList.removeAt(index)
+        unreadMsg = if (isRead && lastMessageRecipient != Van)
+            0
+        else
+            Requests().get(
+                mapOf("sender" to lastMessageRecipient, "recipient" to Van),
+                "$serverUrl/count"
+            ).toInt()
+
+        chatsArrayList.add(
+            0,
+            PreviewChatDataClass(lastMessageRecipient, time, message, youTxt, unreadMsg)
+        )
+        chatsArrayAdapter.notifyDataSetChanged()
     }
 
     fun updateMessageList(senderLogin: String, message: String, time: String) {
@@ -254,12 +254,28 @@ object ChatSingleton {
             )
         )
         messagesArrayAdapter.notifyDataSetChanged()
-//        setSelection()
-        chatItselfLV?.smoothScrollToPosition(messagesArrayList.size - 1)
+        focusOnLastItem()
+    }
+
+    fun updateUsersList(userLogin: String) {
+        var isInArray = false
+        for (el in usersForGroupChatArrayList.indices) {
+            if (usersForGroupChatArrayList[el].login == userLogin) {
+                isInArray = true
+                break
+            }
+        }
+        if (!isInArray)
+            usersForGroupChatArrayList.add(CGCDataClass(userLogin))
+        createGroupChatArrayAdapter.notifyDataSetChanged()
     }
 
     fun clearMessagesList() {
         if (messagesArrayList.isNotEmpty())
             messagesArrayList.clear()
+    }
+
+    private fun focusOnLastItem() {
+        chatItselfLV?.setSelection(messagesArrayList.size - 1)
     }
 }

@@ -16,14 +16,14 @@ class MessageItemRVAdapter(private val arrayList: ArrayList<MessageItemDataClass
     RecyclerView.Adapter<MessageItemRVAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val incomingLogin: TextView = itemView.findViewById(R.id.MI_IncomingLogin)
-        val incomingMessage: TextView = itemView.findViewById(R.id.MI_IncomingMessage)
+        val incomingLogin: TextView = itemView.findViewById(R.id.MI_IncomingLoginTV)
+        val incomingMessage: TextView = itemView.findViewById(R.id.MI_IncomingMessageTV)
         val incomingContainer: LinearLayout = itemView.findViewById(R.id.MI_IncomingContainer)
-        val incomingTime: TextView = itemView.findViewById(R.id.MI_IncomingTime)
-        val outgoingLogin: TextView = itemView.findViewById(R.id.MI_OutgoingLogin)
-        val outgoingMessage: TextView = itemView.findViewById(R.id.MI_OutgoingMessage)
+        val incomingTime: TextView = itemView.findViewById(R.id.MI_IncomingTimeTV)
+        val outgoingLogin: TextView = itemView.findViewById(R.id.MI_OutgoingLoginTV)
+        val outgoingMessage: TextView = itemView.findViewById(R.id.MI_OutgoingMessageTV)
         val outgoingContainer: LinearLayout = itemView.findViewById(R.id.MI_OutgoingContainer)
-        val outgoingTime: TextView = itemView.findViewById(R.id.MI_OutgoingTime)
+        val outgoingTime: TextView = itemView.findViewById(R.id.MI_OutgoingTimeTV)
 
         init {
             itemView.setOnLongClickListener {

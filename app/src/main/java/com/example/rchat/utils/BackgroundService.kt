@@ -27,7 +27,7 @@ class BackgroundService : Service() {
         val builder = NotificationCompat.Builder(applicationContext, "serviceID")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(getString(R.string.app_name))
-            .setContentText("Приложение запущено в фоне")
+            .setContentText(getString(R.string.app_running_in_background_title))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         openCloseConnection()
         startForeground(-1, builder.build())

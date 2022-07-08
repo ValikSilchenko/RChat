@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
-import com.example.rchat.utils.BackgroundService
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.Requests
@@ -19,10 +18,10 @@ class RegistrationWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
-        when {
-            prefs.getString("NightMode", "Day") == "Day" -> setTheme(R.style.Theme_Light)
-            prefs.getString("NightMode", "Day") == "Night" -> setTheme(R.style.Theme_Dark)
-            prefs.getString("NightMode", "Day") == "System" -> {
+        when (prefs.getString("NightMode", "Day")) {
+            "Day" -> setTheme(R.style.Theme_Light)
+            "Night" -> setTheme(R.style.Theme_Dark)
+            "System" -> {
                 when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
                     Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
                     Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
@@ -33,11 +32,11 @@ class RegistrationWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_window)
 
-        val loginText: EditText = findViewById(R.id.RW_Input)
-        val emailText: EditText = findViewById(R.id.RW_Email)
-        val phoneNumberText: EditText = findViewById(R.id.RW_PhoneNumber)
-        val passwordText: EditText = findViewById(R.id.RW_Password)
-        val repeatPasswordText: EditText = findViewById(R.id.RW_RepeatPassword)
+        val loginText: EditText = findViewById(R.id.RW_LoginET)
+        val emailText: EditText = findViewById(R.id.RW_EmailET)
+        val phoneNumberText: EditText = findViewById(R.id.RW_PhoneNumberET)
+        val passwordText: EditText = findViewById(R.id.RW_PasswordET)
+        val repeatPasswordText: EditText = findViewById(R.id.RW_RepeatPasswordET)
         val registrationBtn: Button = findViewById(R.id.RW_RegistrationBtn)
         val authorizeBtn: Button = findViewById(R.id.RW_AuthorizeBtn)
 
@@ -64,17 +63,28 @@ class RegistrationWindow : AppCompatActivity() {
                     )
                     try {
                         ChatFunctions().saveLogin(this, login, true)
-                        if (!ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
-                            startService(Intent(applicationContext, BackgroundService::class.java))
                         val mIntent = Intent(this, SplashScreenWindow::class.java)
                         mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                         startActivity(mIntent)
-                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        overridePendingTransition(
+                            android.R.anim.slide_in_left,
+                            android.R.anim.slide_out_right
+                        )
                         finish()
 
                     } catch (exception: Exception) {
-                        ChatFunctions().showMessage("Ошибка", "Ошибка установки соединения", this)
-                        //TODO("Обработка ошибки при отсутствии интернетов")
+                        if (ChatFunctions().isInternetAvailable(applicationContext)) {
+                            ChatFunctions().showMessage(
+                                "Ошибка",
+                                "Ошибка установки соединения. Код: ${exception.message}",
+                                this
+                            )
+                        } else
+                            ChatFunctions().showMessage(
+                                "Ошибка",
+                                "Ошибка отправки данных. Код: ${exception.message}",
+                                applicationContext
+                            )
                     }
                 } catch (exception: Exception) {
                     ChatFunctions().showMessage(
