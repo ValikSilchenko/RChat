@@ -23,20 +23,19 @@ class MessageItemLVAdapter(
     private lateinit var outgoingContainer: LinearLayout
     private lateinit var outgoingTime: TextView
     private lateinit var message: String
-    private var isSender = false
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater: LayoutInflater = LayoutInflater.from(context)
         val view: View = inflater.inflate(R.layout.message_item, null)
 
-        incomingLogin = view.findViewById(R.id.MI_IncomingLogin)
-        incomingMessage = view.findViewById(R.id.MI_IncomingMessage)
+        incomingLogin = view.findViewById(R.id.MI_IncomingLoginTV)
+        incomingMessage = view.findViewById(R.id.MI_IncomingMessageTV)
         incomingContainer = view.findViewById(R.id.MI_IncomingContainer)
-        incomingTime = view.findViewById(R.id.Message_IncomingTime)
-        outgoingLogin = view.findViewById(R.id.MI_OutgoingLogin)
-        outgoingMessage = view.findViewById(R.id.MI_OutgoingMessage)
+        incomingTime = view.findViewById(R.id.MI_IncomingTimeTV)
+        outgoingLogin = view.findViewById(R.id.MI_OutgoingLoginTV)
+        outgoingMessage = view.findViewById(R.id.MI_OutgoingMessageTV)
         outgoingContainer = view.findViewById(R.id.MI_OutgoingContainer)
-        outgoingTime = view.findViewById(R.id.MI_OutgoingTime)
+        outgoingTime = view.findViewById(R.id.MI_OutgoingTimeTV)
 
         incomingLogin.text = arrayList[position].incomingLogin
         incomingMessage.text = arrayList[position].incomingMessage
@@ -74,11 +73,6 @@ class MessageItemLVAdapter(
                     }
                     R.id.edit_message_item -> {
                         // Редактирование сообщения
-                        Toast.makeText(
-                            context,
-                            "Edit message",
-                            Toast.LENGTH_SHORT
-                        ).show()
                         true
                     }
                     R.id.reply_message_item -> {
@@ -108,7 +102,6 @@ class MessageItemLVAdapter(
             }
             true
         }
-
         return view
     }
 }

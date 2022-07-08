@@ -7,7 +7,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.PopupMenu
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.rchat.R
 import com.example.rchat.dataclasses.PreviewChatDataClass
@@ -24,29 +27,33 @@ class PreviewChatLVAdapter(
         val inflater: LayoutInflater = LayoutInflater.from(context)
         val view: View = inflater.inflate(R.layout.preview_chat_item, null)
 
-        val login: TextView = view.findViewById(R.id.PC_Login)
-        val time: TextView = view.findViewById(R.id.PC_ReceivingTime)
-        val message: TextView = view.findViewById(R.id.PC_Message)
-        val youTxt: TextView = view.findViewById(R.id.PC_You)
-        val previewUnreadCount: TextView = view.findViewById(R.id.PC_UnreadCount)
-        val previewRead: ImageView = view.findViewById(R.id.PC_ReadMsg)
-        var isNewMsg = false
+        val login: TextView = view.findViewById(R.id.PC_LoginTV)
+        val time: TextView = view.findViewById(R.id.PC_ReceivingTimeTV)
+        val message: TextView = view.findViewById(R.id.PC_MessageTV)
+        val infoTxt: TextView = view.findViewById(R.id.PC_ShownMessageInfoTV)
 
-        login.text = arrayList[position].previewLogin
-        time.text = arrayList[position].previewTime
-        message.text = arrayList[position].previewMessage
-        youTxt.text = arrayList[position].previewYouTxt
-        isNewMsg = arrayList[position].isNewMsg
+        login.text = arrayList[position].login
+        time.text = arrayList[position].time
+        message.text = arrayList[position].message
 
-        message.typeface = if (isNewMsg)
-            Typeface.DEFAULT_BOLD
-        else
-            Typeface.DEFAULT
+        if (arrayList[position].unreadMsgCount == 0) {
+            infoTxt.apply {
+                text = arrayList[position].infoTxt
+                typeface = Typeface.DEFAULT
+            }
+        } else {
+            infoTxt.apply {
+                text = if (arrayList[position].unreadMsgCount >= 100)
+                    "99+"
+                else
+                    arrayList[position].unreadMsgCount.toString()
+                typeface = Typeface.DEFAULT_BOLD
+            }
+        }
 
         view.setOnClickListener {
             val intent = Intent(context, ChatItselfWindow::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-            message.typeface = Typeface.DEFAULT
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             ChatSingleton.isInChat = true
             ChatSingleton.chatName = login.text.toString()
             context.startActivity(intent)

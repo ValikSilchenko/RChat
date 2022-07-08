@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -22,16 +23,16 @@ class SettingsWindow : AppCompatActivity() {
         val editor = prefs.edit()
         var uiMode = 0
 
-        when {
-            prefs.getString("NightMode", "Day") == "Day" -> {
+        when (prefs.getString("NightMode", "Day")) {
+            "Day" -> {
                 setTheme(R.style.Theme_Light)
                 uiMode = 0
             }
-            prefs.getString("NightMode", "Day") == "Night" -> {
+            "Night" -> {
                 setTheme(R.style.Theme_Dark)
                 uiMode = 1
             }
-            prefs.getString("NightMode", "Day") == "System" -> {
+            "System" -> {
                 when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
                     Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
                     Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
@@ -46,9 +47,9 @@ class SettingsWindow : AppCompatActivity() {
         val avatarBtn: Button = findViewById(R.id.SW_AvatarBtn)
         val backBtn: ImageButton = findViewById(R.id.SW_ToChatsBtn)
         val exitAccountBtn: Button = findViewById(R.id.SW_ExitAccountBtn)
-        val dayModeCBox: CheckBox = findViewById(R.id.SW_DayMode_CheckBox)
-        val nightModeCBox: CheckBox = findViewById(R.id.SW_NightMode_CheckBox)
-        val systemModeCBox: CheckBox = findViewById(R.id.SW_SystemMode_CheckBox)
+        val dayModeCBox: CheckBox = findViewById(R.id.SW_DayModeCB)
+        val nightModeCBox: CheckBox = findViewById(R.id.SW_NightModeCB)
+        val systemModeCBox: CheckBox = findViewById(R.id.SW_SystemModeCB)
 
         when (uiMode) {
             0 -> {
@@ -76,8 +77,7 @@ class SettingsWindow : AppCompatActivity() {
                     putString("NightMode", "Day")
                 }.apply()
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-            else
+            } else
                 editor.apply {
                     putString("NightMode", "Day")
                 }.apply()
@@ -91,8 +91,7 @@ class SettingsWindow : AppCompatActivity() {
                     putString("NightMode", "Night")
                 }.apply()
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            }
-            else
+            } else
                 editor.apply {
                     putString("NightMode", "Day")
                 }.apply()
@@ -106,8 +105,7 @@ class SettingsWindow : AppCompatActivity() {
                     putString("NightMode", "System")
                 }.apply()
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            }
-            else
+            } else
                 editor.apply {
                     putString("NightMode", "Day")
                 }.apply()
@@ -118,18 +116,33 @@ class SettingsWindow : AppCompatActivity() {
         }
 
         avatarBtn.setOnClickListener {
-//            pickAndSetImage()
+//            takePicFromAlbum()
             Toast.makeText(this, getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
         }
 
         exitAccountBtn.setOnClickListener {
-            if (ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
-                stopService(Intent(applicationContext, BackgroundService::class.java))
-            ChatFunctions().deleteData(this)
-            val intent = Intent(this, AuthorizationWindow::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            try {
+                if (ChatFunctions().isServiceRunning(
+                        BackgroundService::class.java,
+                        applicationContext
+                    )
+                )
+                    stopService(Intent(applicationContext, BackgroundService::class.java))
+                ChatFunctions().deleteData(this)
+                val intent = Intent(this, AuthorizationWindow::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                overridePendingTransition(
+                    android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right
+                )
+            } catch (exception: Exception) {
+                ChatFunctions().showMessage(
+                    "Ошибка",
+                    "Ошибка выхода из аккаунта. Код ошибки: ${exception.message}",
+                    this
+                )
+            }
         }
     }
 
@@ -150,6 +163,16 @@ class SettingsWindow : AppCompatActivity() {
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 
-    private fun pickAndSetImage() {
+    fun takePicFromAlbum() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        if (intent.resolveActivity(packageManager) != null)
+            startActivityForResult(intent, 1)
+    }
+
+    fun takePhoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null)
+            startActivityForResult(intent, 0)
     }
 }

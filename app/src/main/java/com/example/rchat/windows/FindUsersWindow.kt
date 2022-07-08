@@ -24,10 +24,10 @@ class FindUsersWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
-        when {
-            prefs.getString("NightMode", "Day") == "Day" -> setTheme(R.style.Theme_Light)
-            prefs.getString("NightMode", "Day") == "Night" -> setTheme(R.style.Theme_Dark)
-            prefs.getString("NightMode", "Day") == "System" -> {
+        when (prefs.getString("NightMode", "Day")) {
+            "Day" -> setTheme(R.style.Theme_Light)
+            "Night" -> setTheme(R.style.Theme_Dark)
+            "System" -> {
                 when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
                     Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
                     Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
@@ -38,10 +38,10 @@ class FindUsersWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.find_users_window)
 
-        val foundUsersLv: ListView = findViewById(R.id.FUW_FoundUsersArray)
+        val foundUsersLv: ListView = findViewById(R.id.FUW_FoundUsersLV)
         val backToChatsWindow: ImageButton = findViewById(R.id.FUW_BackBtn)
         val findBtn: ImageButton = findViewById(R.id.FUW_FindUserBtn)
-        val loginInput: EditText = findViewById(R.id.FUW_FindUserLogin)
+        val loginInput: EditText = findViewById(R.id.FUW_FindUserLoginET)
         var foundUsers: List<String>
 
         arrayAdapter = PreviewChatLVAdapter(this, foundUserArrayList)
@@ -50,6 +50,7 @@ class FindUsersWindow : AppCompatActivity() {
         backToChatsWindow.setOnClickListener {
             onBackPressed()
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            finish()
         }
 
         findBtn.setOnClickListener {
@@ -68,8 +69,7 @@ class FindUsersWindow : AppCompatActivity() {
                     for (element in foundUsers) {
                         foundUserArrayList.add(
                             PreviewChatDataClass(
-                                element, "", "", "", false
-                            )
+                                element, "", "", "", 0)
                         )
                     }
                     arrayAdapter.notifyDataSetChanged()
@@ -97,5 +97,6 @@ class FindUsersWindow : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        finish()
     }
 }

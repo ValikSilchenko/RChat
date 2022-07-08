@@ -23,9 +23,9 @@ class CGCLVAdapter(private val context: Activity, private val arrayList: ArrayLi
         val inflater: LayoutInflater = LayoutInflater.from(context)
         val view: View = inflater.inflate(R.layout.gc_user_item, null)
 
-        avatar = view.findViewById(R.id.GCU_Avatar)
-        login = view.findViewById(R.id.GCU_Login)
-        checkBox = view.findViewById(R.id.GCU_IsSelected)
+        avatar = view.findViewById(R.id.GCU_AvatarImg)
+        login = view.findViewById(R.id.GCU_LoginTV)
+        checkBox = view.findViewById(R.id.GCU_IsSelectedCB)
 
         login.text = arrayList[position].login
 

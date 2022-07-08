@@ -41,7 +41,7 @@
             android:focusable="true" />
 
         <EditText
-            android:id="@+id/FUW_FindUserLogin"
+            android:id="@+id/FUW_FindUserLoginET"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
@@ -54,7 +54,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/FUW_FoundUsersArray"
+        android:id="@+id/FUW_FoundUsersLV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"

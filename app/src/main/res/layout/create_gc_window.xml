@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/CGC_GroupName"
+        android:id="@+id/CGC_GroupNameET"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/CGC_UsersArray"
+        android:id="@+id/CGC_UsersLV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"

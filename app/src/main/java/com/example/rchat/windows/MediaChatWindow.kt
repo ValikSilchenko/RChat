@@ -1,18 +1,15 @@
 package com.example.rchat.windows
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.ListView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
 import com.example.rchat.utils.ChatSingleton
 
-class CreateGroupChatWindow : AppCompatActivity() {
+class MediaChatWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
@@ -28,23 +25,21 @@ class CreateGroupChatWindow : AppCompatActivity() {
         }
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.create_gc_window)
+        setContentView(R.layout.media_chat_window)
 
-        val backBtn: ImageButton = findViewById(R.id.CGC_BackBtn)
-        val createBtn: Button = findViewById(R.id.CGC_CreateChatBtn)
-        val usersArray: ListView = findViewById(R.id.CGC_UsersLV)
-        val groupName: EditText = findViewById(R.id.CGC_GroupNameET)
+        val backBtn: ImageButton = findViewById(R.id.MCW_BackBtn)
+        val testTxt: TextView = findViewById(R.id.MCW_ChatNameTV)
 
-        ChatSingleton.setCGCWindow(this, usersArray)
-
-        createBtn.setOnClickListener {
-
-        }
+        testTxt.text = ChatSingleton.chatName
 
         backBtn.setOnClickListener {
-            val intent = Intent(this, ChatsWindow::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            startActivity(intent)
+            super.onBackPressed()
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
+    }
+
+    @Override
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 }

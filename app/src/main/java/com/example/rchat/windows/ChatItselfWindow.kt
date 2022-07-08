@@ -1,12 +1,10 @@
 package com.example.rchat.windows
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
 import com.example.rchat.utils.ChatSingleton
@@ -19,10 +17,10 @@ class ChatItselfWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
-        when {
-            prefs.getString("NightMode", "Day") == "Day" -> setTheme(R.style.Theme_Light)
-            prefs.getString("NightMode", "Day") == "Night" -> setTheme(R.style.Theme_Dark)
-            prefs.getString("NightMode", "Day") == "System" -> {
+        when (prefs.getString("NightMode", "Day")) {
+            "Day" -> setTheme(R.style.Theme_Light)
+            "Night" -> setTheme(R.style.Theme_Dark)
+            "System" -> {
                 when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
                     Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
                     Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
@@ -35,24 +33,22 @@ class ChatItselfWindow : AppCompatActivity() {
 
         val backToMainMenuBtn: ImageButton = findViewById(R.id.CIW_BackBtn)
         val sendMessageBtn: ImageButton = findViewById(R.id.CIW_SendMessageBtn)
-        val chatName: TextView = findViewById(R.id.CIW_ChatName)
-        val messagesListView: ListView = findViewById(R.id.CIW_MessagesArray)
-        val messageInput: EditText = findViewById(R.id.CIW_MessageInput)
+        val attachBtn: ImageButton = findViewById(R.id.CIW_AttachBtn)
+        val chatNameTV: TextView = findViewById(R.id.CIW_ChatNameTV)
+        val messagesLV: ListView = findViewById(R.id.CIW_MessagesLV)
+        val messageInputET: EditText = findViewById(R.id.CIW_MessageInputET)
 
         val chatLogin = ChatSingleton.chatName
-        chatName.text = chatLogin
+        chatNameTV.text = chatLogin
 
         ChatSingleton.setChatItselfWindow(
-            messagesListView,
+            messagesLV,
             chatLogin,
             this,
-            messageInput
+            messageInputET
         )
 
-        // Receiving messages
-        if (ChatSingleton.messagesArrayList.isNotEmpty())
-            ChatSingleton.messagesArrayList.clear()
-        val response: List<JSONObject> = JasonSTATHAM().stringToJSONObj(
+        val response: List<JSONObject> = JasonSTATHAM().stringToListOfJSONObj(
             Requests().get(
                 mapOf(
                     "sender" to ChatSingleton.Van,
@@ -67,21 +63,30 @@ class ChatItselfWindow : AppCompatActivity() {
                 el["messageText"].toString(),
                 "${el["date"]} ${el["time"]}"
             )
-        // End of receiving messages
 
         backToMainMenuBtn.setOnClickListener {
+            ChatSingleton.clearMessagesList()
             startIntent()
         }
 
+        chatNameTV.setOnClickListener {
+            val mIntent = Intent(this, MediaChatWindow::class.java)
+            mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            startActivity(mIntent)
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        }
+
+        attachBtn.setOnClickListener {
+            Toast.makeText(applicationContext, "В разработке...", Toast.LENGTH_SHORT).show()
+        }
+
         sendMessageBtn.setOnClickListener {
-            if (messageInput.text.isNotEmpty()) {
+            if (messageInputET.text.isNotEmpty())
                 ChatSingleton.sendMessage(
                     chatLogin,
-                    messageInput.text.toString()
+                    messageInputET.text.toString(),
+                    messageInputET
                 )
-                messageInput.text = null
-                ChatSingleton.setSelection()
-            }
         }
     }
 
@@ -94,5 +99,6 @@ class ChatItselfWindow : AppCompatActivity() {
         ChatSingleton.isInChat = false
         super.onBackPressed()
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        finish()
     }
 }

@@ -3,7 +3,7 @@ package com.example.rchat.utils
 import org.json.JSONObject
 
 class JasonSTATHAM {
-    fun stringToJSONObj(data: String): List<JSONObject> {
+    fun stringToListOfJSONObj(data: String): List<JSONObject> {
         val indexMsg = mutableListOf<JSONObject>()
         var json = data.drop(1)
         json = json.dropLast(1)
