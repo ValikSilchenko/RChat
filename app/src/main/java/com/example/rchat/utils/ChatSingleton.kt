@@ -30,7 +30,7 @@ object ChatSingleton {
     private lateinit var chatItselfActivity: Activity
     lateinit var chatsWindowActivity: Activity
     private lateinit var createGroupChatWindowActivity: Activity
-    private lateinit var chatArrayAdapter: PreviewChatLVAdapter
+    private lateinit var chatsArrayAdapter: PreviewChatLVAdapter
     private lateinit var messagesArrayAdapter: MessageItemLVAdapter
     private lateinit var createGroupChatArrayAdapter: CGCLVAdapter
     private lateinit var messageEditText: EditText
@@ -41,9 +41,9 @@ object ChatSingleton {
     private val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
     private var notificationId = -2
     private var webSocketClient = WebSocketClient()
-    private var chatWindowLV: ListView? = null
+    private var chatsWindowLV: ListView? = null
     private var chatItselfLV: ListView? = null
-    private var createGroupChatLV: ListView? = null
+    private var createGroupChatRV: ListView? = null
     var isInChat = false
     var Billy = "Herrington" // Логин собеседника
     var Van = "Darkholme" // Логин авторизованного пользователя
@@ -54,10 +54,10 @@ object ChatSingleton {
 
     fun setChatsWindow(listView: ListView, username: String, incomingContext: Activity) {
         Van = username
-        chatWindowLV = listView
+        chatsWindowLV = listView
         chatsWindowActivity = incomingContext
-        chatArrayAdapter = PreviewChatLVAdapter(chatsWindowActivity, chatsArrayList)
-        chatWindowLV!!.adapter = chatArrayAdapter
+        chatsArrayAdapter = PreviewChatLVAdapter(chatsWindowActivity, chatsArrayList)
+        chatsWindowLV!!.adapter = chatsArrayAdapter
         createNotificationChannel()
         if (chatsArrayList.isNotEmpty())
             chatsArrayList.clear()
@@ -79,9 +79,9 @@ object ChatSingleton {
 
     fun setCGCWindow(incomingContext: Activity, listView: ListView) {
         createGroupChatWindowActivity = incomingContext
-        createGroupChatLV = listView
+        createGroupChatRV = listView
         createGroupChatArrayAdapter = CGCLVAdapter(createGroupChatWindowActivity, usersForGroupChatArrayList)
-        createGroupChatLV!!.adapter = createGroupChatArrayAdapter
+        createGroupChatRV!!.adapter = createGroupChatArrayAdapter
     }
 
     fun openConnection(username: String) {
@@ -131,7 +131,8 @@ object ChatSingleton {
                         sendNotification(userId, sender, messageText)
                     }
                     updateMessageList(sender, messageText, "$date $time")
-                    setSelection()
+//                    setSelection()
+                    chatItselfLV?.smoothScrollToPosition(messagesArrayList.size - 1)
                 } else
                     sendNotification(userId, sender, messageText)
             }
@@ -194,7 +195,7 @@ object ChatSingleton {
         if (isInArray)
             chatsArrayList.removeAt(index)
         chatsArrayList.add(0, PreviewChatDataClass(recipientLogin, time, message, youTxt, isNew))
-        chatArrayAdapter.notifyDataSetChanged()
+        chatsArrayAdapter.notifyDataSetChanged()
     }
 
     fun updateUsersList(userLogin: String) {
@@ -253,7 +254,8 @@ object ChatSingleton {
             )
         )
         messagesArrayAdapter.notifyDataSetChanged()
-        setSelection()
+//        setSelection()
+        chatItselfLV?.smoothScrollToPosition(messagesArrayList.size - 1)
     }
 
     fun clearMessagesList() {

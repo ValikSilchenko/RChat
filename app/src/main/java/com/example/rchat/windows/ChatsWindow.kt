@@ -11,6 +11,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.R
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton

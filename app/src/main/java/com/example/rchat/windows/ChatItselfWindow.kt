@@ -36,14 +36,14 @@ class ChatItselfWindow : AppCompatActivity() {
         val attachBtn: ImageButton = findViewById(R.id.CIW_AttachBtn)
         val actionsBtn: ImageButton = findViewById(R.id.CIW_ActionsBtn)
         val chatName: TextView = findViewById(R.id.CIW_ChatName)
-        val messagesListView: ListView = findViewById(R.id.CIW_MessagesArray)
+        val messagesRecView: ListView = findViewById(R.id.CIW_MessagesArray)
         val messageInput: EditText = findViewById(R.id.CIW_MessageInput)
 
         val chatLogin = ChatSingleton.chatName
         chatName.text = chatLogin
 
         ChatSingleton.setChatItselfWindow(
-            messagesListView,
+            messagesRecView,
             chatLogin,
             this,
             messageInput
