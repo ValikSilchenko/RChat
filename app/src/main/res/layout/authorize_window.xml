@@ -67,7 +67,6 @@
         android:text="@string/enteracc_title"
         android:textColor="@color/white"
         android:backgroundTint="?attr/main_color"
-        android:background="@drawable/round_corner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/AW_PasswordET" />
@@ -83,7 +82,6 @@
         android:focusable="true"
         android:text="@string/dont_have_acc_title"
         android:textColor="@color/white"
-        android:background="@drawable/round_corner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:backgroundTint="?attr/main_color"
@@ -100,7 +98,6 @@
         android:focusable="true"
         android:text="@string/forgot_password_title"
         android:textColor="@color/white"
-        android:background="@drawable/round_corner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:backgroundTint="?attr/main_color"

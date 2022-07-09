@@ -2,7 +2,6 @@ package com.example.rchat.adapters
 
 import android.app.Activity
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -40,8 +39,7 @@ class PreviewChatLVAdapter(
             infoTxt.apply {
                 if (arrayList[position].infoTxt != "") {
                     text = arrayList[position].infoTxt
-                    setPadding(0, 0, 0, 0)
-                    backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.white))
+//                    setPadding(0, 0, 0, 0)
                 } else
                     visibility = View.GONE
             }

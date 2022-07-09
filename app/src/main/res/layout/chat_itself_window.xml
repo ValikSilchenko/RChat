@@ -27,7 +27,6 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_back"
-            app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/CIW_ChatNameTV"
             app:layout_constraintStart_toStartOf="parent"
