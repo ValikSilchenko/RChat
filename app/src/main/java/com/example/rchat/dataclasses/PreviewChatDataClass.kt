@@ -5,5 +5,6 @@ data class PreviewChatDataClass(
     var time: String,
     var message: String,
     var infoTxt: String,
-    var unreadMsgCount: Int
+    var unreadMsgCount: Int,
+    var chatId: Int
 )

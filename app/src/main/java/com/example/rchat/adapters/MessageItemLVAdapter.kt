@@ -43,6 +43,7 @@ class MessageItemLVAdapter(
         outgoingLogin.text = arrayList[position].outgoingLogin
         outgoingMessage.text = arrayList[position].outgoingMessage
         outgoingTime.text = arrayList[position].outgoingTime
+        val msgId = arrayList[position].msgId
 
         if (incomingMessage.text == "") {
             incomingContainer.visibility = View.GONE

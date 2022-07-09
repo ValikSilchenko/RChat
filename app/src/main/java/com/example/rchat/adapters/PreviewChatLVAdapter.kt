@@ -34,6 +34,7 @@ class PreviewChatLVAdapter(
         login.text = arrayList[position].login
         time.text = arrayList[position].time
         message.text = arrayList[position].message
+        val chatId = arrayList[position].chatId
 
         if (arrayList[position].unreadMsgCount == 0) {
             infoTxt.apply {

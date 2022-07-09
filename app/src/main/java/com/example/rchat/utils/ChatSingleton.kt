@@ -111,28 +111,31 @@ object ChatSingleton {
             val userId = (parsedMessage["sender"] as JSONObject)["id"] as Int
             val time = parsedMessage["time"].toString()
             val date = parsedMessage["date"].toString()
+            val msgId = parsedMessage["id"] as Int
             if (sender == Van) {
                 updateChatList(
                     (parsedMessage["recipient"] as JSONObject)["username"].toString(),
                     parsedMessage["time"].toString(),
                     messageText,
                     "Вы:",
-                    parsedMessage["read"] as Boolean
+                    parsedMessage["read"] as Boolean,
+                    userId
                 )
-                updateMessageList(sender, messageText, "$date $time")
+                updateMessageList(sender, messageText, "$date $time", msgId)
             } else {
                 updateChatList(
                     sender,
                     parsedMessage["time"].toString(),
                     messageText,
                     "",
-                    parsedMessage["read"] as Boolean
+                    parsedMessage["read"] as Boolean,
+                    userId
                 )
                 if (sender == Billy) {
                     if (!isInChat) {
                         sendNotification(userId, sender, messageText)
                     }
-                    updateMessageList(sender, messageText, "$date $time")
+                    updateMessageList(sender, messageText, "$date $time", msgId)
                     focusOnLastItem()
                 } else
                     sendNotification(userId, sender, messageText)
@@ -170,11 +173,6 @@ object ChatSingleton {
             .setContentIntent(pendingIntent)
             .setContentText(messageText)
             .setAutoCancel(true)
-
-//        with(NotificationManagerCompat.from(chatsWindowActivity)) {
-//            builder.notification.flags = Notification.FLAG_AUTO_CANCEL
-//            notify(notificationId, builder.build())
-//        }
         notificationManager.notify(notificationId, builder.build())
     }
 
@@ -200,7 +198,8 @@ object ChatSingleton {
         time: String,
         message: String,
         youTxt: String,
-        isRead: Boolean
+        isRead: Boolean,
+        chatId: Int
     ) {
         var isInArray = false
         var index = 0
@@ -224,12 +223,12 @@ object ChatSingleton {
 
         chatsArrayList.add(
             0,
-            PreviewChatDataClass(lastMessageRecipient, time, message, youTxt, unreadMsg)
+            PreviewChatDataClass(lastMessageRecipient, time, message, youTxt, unreadMsg, chatId)
         )
         chatsArrayAdapter.notifyDataSetChanged()
     }
 
-    fun updateMessageList(senderLogin: String, message: String, time: String) {
+    fun updateMessageList(senderLogin: String, message: String, time: String, msgId: Int) {
         val incomingLogin: String
         val incomingMessage: String
         val incomingTime: String
@@ -259,7 +258,8 @@ object ChatSingleton {
                 incomingTime,
                 outgoingLogin,
                 outgoingMessage,
-                outgoingTime
+                outgoingTime,
+                msgId
             )
         )
         messagesArrayAdapter.notifyDataSetChanged()
