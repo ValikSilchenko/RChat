@@ -20,19 +20,19 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
         val mTime: TextView = itemView.findViewById(R.id.PC_ReceivingTimeTV)
         val mMessage: TextView = itemView.findViewById(R.id.PC_MessageTV)
         val mInfoTxt: TextView = itemView.findViewById(R.id.PC_ShownMessageInfoTV)
-        var isNewMsg = false
 
         init {
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ChatItselfWindow::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 mMessage.typeface = Typeface.DEFAULT
-                ChatSingleton.isInChat = true
-                ChatSingleton.chatName = mLogin.text.toString()
+                ChatSingleton.apply {
+                    isInChat = true
+                    chatName = mLogin.text.toString()
+                }
                 itemView.context.startActivity(intent)
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

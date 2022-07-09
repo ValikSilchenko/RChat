@@ -1,7 +1,10 @@
 package com.example.rchat.utils
 
 import android.annotation.SuppressLint
-import android.app.*
+import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -9,7 +12,6 @@ import android.os.Build
 import android.widget.EditText
 import android.widget.ListView
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.example.rchat.R
 import com.example.rchat.adapters.CGCLVAdapter
 import com.example.rchat.adapters.MessageItemLVAdapter
@@ -39,7 +41,6 @@ object ChatSingleton {
     private val usersForGroupChatArrayList: ArrayList<CGCDataClass> = ArrayList()
     private val chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
     private val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
-    private var notificationId = -2
     private var webSocketClient = WebSocketClient()
     private var chatsWindowLV: ListView? = null
     private var chatItselfLV: ListView? = null
@@ -110,7 +111,6 @@ object ChatSingleton {
             val userId = (parsedMessage["sender"] as JSONObject)["id"] as Int
             val time = parsedMessage["time"].toString()
             val date = parsedMessage["date"].toString()
-            notificationId = userId
             if (sender == Van) {
                 updateChatList(
                     (parsedMessage["recipient"] as JSONObject)["username"].toString(),
@@ -171,10 +171,19 @@ object ChatSingleton {
             .setContentText(messageText)
             .setAutoCancel(true)
 
-        with(NotificationManagerCompat.from(chatsWindowActivity)) {
-            builder.notification.flags = Notification.FLAG_AUTO_CANCEL
-            notify(notificationId, builder.build())
-        }
+//        with(NotificationManagerCompat.from(chatsWindowActivity)) {
+//            builder.notification.flags = Notification.FLAG_AUTO_CANCEL
+//            notify(notificationId, builder.build())
+//        }
+        notificationManager.notify(notificationId, builder.build())
+    }
+
+    fun deleteNotification() {
+        notificationManager.cancelAll()
+    }
+
+    fun deleteNotification(id: Int) {
+        notificationManager.cancel(id)
     }
 
     fun deleteUser(userLogin: String) {

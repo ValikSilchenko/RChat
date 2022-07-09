@@ -55,8 +55,10 @@ class PreviewChatLVAdapter(
         view.setOnClickListener {
             val intent = Intent(context, ChatItselfWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            ChatSingleton.isInChat = true
-            ChatSingleton.chatName = login.text.toString()
+            ChatSingleton.apply {
+                isInChat = true
+                chatName = login.text.toString()
+            }
             context.startActivity(intent)
             context.overridePendingTransition(
                 android.R.anim.slide_in_left,

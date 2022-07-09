@@ -45,9 +45,10 @@
             android:id="@+id/SW_AvatarBtn"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:text="Сменить аватар"
+            android:text="@string/change_avatar_title"
             android:textSize="20sp"
-            android:backgroundTint="?attr/main_color"
+            android:textColor="@color/white"
+            android:background="@drawable/button_round_corner"
             android:layout_marginTop="10dp"/>
 
     </LinearLayout>
@@ -157,11 +158,11 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"
-
-        android:backgroundTint="?attr/main_color"
         android:clickable="true"
         android:focusable="true"
         android:text="@string/exitacc_title"
+        android:textColor="@color/white"
+        android:background="@drawable/button_round_corner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
