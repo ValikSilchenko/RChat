@@ -1,6 +1,7 @@
 package com.example.rchat.adapters
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
@@ -48,10 +49,23 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
             mMessage.text = arrayList[position].message
             mInfoTxt.text = arrayList[position].infoTxt
 
-            mMessage.typeface = if (isNewMsg && mInfoTxt.text == "")
-                Typeface.DEFAULT_BOLD
-            else
-                Typeface.DEFAULT
+            if (arrayList[position].unreadMsgCount == 0) {
+                mInfoTxt.apply {
+                    if (arrayList[position].infoTxt != "") {
+                        text = arrayList[position].infoTxt
+                        setPadding(0, 0, 0, 0)
+                        backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.white))
+                    } else
+                        visibility = View.GONE
+                }
+            } else {
+                mInfoTxt.apply {
+                    text = if (arrayList[position].unreadMsgCount >= 100)
+                        "99+"
+                    else
+                        arrayList[position].unreadMsgCount.toString()
+                }
+            }
         }
     }
 

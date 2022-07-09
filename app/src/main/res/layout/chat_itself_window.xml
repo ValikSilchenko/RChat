@@ -104,6 +104,7 @@
             android:layout_height="50dp"
             android:layout_marginStart="5dp"
             android:background="@drawable/round_corner"
+            android:backgroundTint="?attr/background_color"
             android:src="@drawable/ic_attach"
             android:clickable="true"
             android:focusable="true"
