@@ -85,7 +85,8 @@ class ChatsWindow : AppCompatActivity() {
                     time,
                     el["messageText"].toString(),
                     youTxt,
-                    el["read"] as Boolean
+                    el["read"] as Boolean,
+                    (el["sender"] as JSONObject)["id"] as Int   //!
                 )
             }
         } catch (error: Exception) {

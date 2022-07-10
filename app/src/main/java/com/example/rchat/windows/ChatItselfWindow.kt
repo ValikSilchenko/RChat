@@ -61,7 +61,8 @@ class ChatItselfWindow : AppCompatActivity() {
             ChatSingleton.updateMessageList(
                 (el["sender"] as JSONObject)["username"].toString(),
                 el["messageText"].toString(),
-                "${el["date"]} ${el["time"]}"
+                "${el["date"]} ${el["time"]}",
+                (el["sender"] as JSONObject)["id"] as Int   //!
             )
 
         backToMainMenuBtn.setOnClickListener {

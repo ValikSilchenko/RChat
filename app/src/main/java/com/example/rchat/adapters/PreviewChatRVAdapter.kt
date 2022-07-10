@@ -20,6 +20,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
         val mTime: TextView = itemView.findViewById(R.id.PC_ReceivingTimeTV)
         val mMessage: TextView = itemView.findViewById(R.id.PC_MessageTV)
         val mInfoTxt: TextView = itemView.findViewById(R.id.PC_ShownMessageInfoTV)
+        var chatId = 0
 
         init {
             itemView.setOnClickListener {
@@ -47,6 +48,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
             mTime.text = arrayList[position].time
             mMessage.text = arrayList[position].message
             mInfoTxt.text = arrayList[position].infoTxt
+            chatId = arrayList[position].chatId
 
             if (arrayList[position].unreadMsgCount == 0) {
                 mInfoTxt.apply {
