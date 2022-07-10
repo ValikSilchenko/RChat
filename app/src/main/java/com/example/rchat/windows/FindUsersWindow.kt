@@ -77,7 +77,7 @@ class FindUsersWindow : AppCompatActivity() {
                         )
                     }
 //                    arrayAdapter.notifyDataSetChanged()
-                    arrayAdapter.notifyItemInserted(foundUserArrayList.size)
+                    arrayAdapter.notifyItemInserted(foundUserArrayList.size)    //!
                     loginInput.text = null
                     if (foundUserArrayList.isEmpty())
                         Toast.makeText(this, "Пользователи не найдены", Toast.LENGTH_SHORT).show()

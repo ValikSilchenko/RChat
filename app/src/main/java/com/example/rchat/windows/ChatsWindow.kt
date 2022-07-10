@@ -6,11 +6,11 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
-import android.widget.ListView
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.R
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
@@ -43,7 +43,7 @@ class ChatsWindow : AppCompatActivity() {
 //        val networkConnection = NetworkConnectionLiveData(applicationContext)   //!
 
         val userLogin: TextView = findViewById(R.id.CW_AppNameTV)
-        val chatArray: ListView = findViewById(R.id.CW_ChatsRV)
+        val chatArray: RecyclerView = findViewById(R.id.CW_ChatsRV)
         val moreBtn: ImageButton = findViewById(R.id.CW_MoreBtn)
         val user = ChatFunctions().getSavedLogin(this)
         userLogin.text = user

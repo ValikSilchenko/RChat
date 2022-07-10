@@ -4,8 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.R
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
@@ -35,7 +39,7 @@ class ChatItselfWindow : AppCompatActivity() {
         val sendMessageBtn: ImageButton = findViewById(R.id.CIW_SendMessageBtn)
         val attachBtn: ImageButton = findViewById(R.id.CIW_AttachBtn)
         val chatNameTV: TextView = findViewById(R.id.CIW_ChatNameTV)
-        val messagesLV: ListView = findViewById(R.id.CIW_MessagesRV)
+        val messagesLV: RecyclerView = findViewById(R.id.CIW_MessagesRV)
         val messageInputET: EditText = findViewById(R.id.CIW_MessageInputET)
 
         val chatLogin = ChatSingleton.chatName
