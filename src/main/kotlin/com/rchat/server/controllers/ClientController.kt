@@ -28,7 +28,7 @@ class ClientController(
     private var memberRepo: MemberRepository,
     private var personalMessageRepo: PersonalMessageRepository
 ) {
-    @JsonView(View.Message::class)
+    @JsonView(View.UserWithId::class)
     @GetMapping("/chats")
     fun getListOfChats(@RequestParam username: String): List<PersonalMessage?> {
         return personalMessageRepo.getChats(userService.getByName(username))
@@ -44,7 +44,7 @@ class ClientController(
         return userService.getMatchUsers(username)
     }
 
-    @JsonView(View.AllWithId::class)
+    @JsonView(View.MessageWithId::class)
     @GetMapping("/personal")
     fun getPersonalMessages(@RequestParam sender: String, @RequestParam recipient: String): List<PersonalMessage?> {
         return personalMessageRepo.getChatMessages(

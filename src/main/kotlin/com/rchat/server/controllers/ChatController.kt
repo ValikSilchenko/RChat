@@ -50,19 +50,19 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
         return message
     }
 
-//    @JsonView(View.AllWithId::class)
-//    @MessageMapping("/user/{recipient}/{sender}/{msgId}/")
-//    @SendTo("/chatTopic/{recipient}/", "/chatTopic/{sender}/")
-//    fun updateRead(
-//        @DestinationVariable recipient: String,
-//        @DestinationVariable sender: String,
-//        @DestinationVariable msgId: String
-//    ): PersonalMessage {
-//        val message = personalMessageRepo.getById(msgId.toInt())
-//        message.read = true
-//        personalMessageRepo.save(message)
-//        return message
-//    }
+    @JsonView(View.AllWithId::class)
+    @MessageMapping("/message/{recipient}/{sender}/{msgId}/")
+    @SendTo("/chatTopic/{recipient}/", "/chatTopic/{sender}/")
+    fun updateRead(
+        @DestinationVariable recipient: String,
+        @DestinationVariable sender: String,
+        @DestinationVariable msgId: String
+    ): PersonalMessage {
+        val message = personalMessageRepo.getById(msgId.toInt())
+        message.read = true
+        personalMessageRepo.save(message)
+        return message
+    }
 
 //    @MessageMapping("/channel")
 //    @SendTo("/channelTopic")

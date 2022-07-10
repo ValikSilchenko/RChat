@@ -16,7 +16,7 @@ import javax.persistence.*
 open class PersonalMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(View.AllWithId::class)
+    @JsonView(View.MessageWithId::class)
     @Column(name = "msg_id", nullable = false)
     open var id: Int? = null
 
@@ -49,7 +49,7 @@ open class PersonalMessage {
     open var messageText: String? = null
 
     @JsonView(View.Message::class)
-    @Column(name = "read")
+    @Column(name = "read", nullable = false)
     open var read: Boolean? = false
 
     constructor() {}
