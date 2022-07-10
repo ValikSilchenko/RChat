@@ -1,11 +1,15 @@
 package com.example.rchat.adapters
 
+import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.R
 import com.example.rchat.dataclasses.PreviewChatDataClass
@@ -26,12 +30,42 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ChatItselfWindow::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                mMessage.typeface = Typeface.DEFAULT
                 ChatSingleton.apply {
                     isInChat = true
                     chatName = mLogin.text.toString()
                 }
                 itemView.context.startActivity(intent)
+//                itemView.context.overridePendingTransition(
+//                    android.R.anim.slide_in_left,
+//                    android.R.anim.slide_out_right
+//                )
+            }
+
+            itemView.setOnLongClickListener {
+                val popupMenu = PopupMenu(itemView.context, it)
+                popupMenu.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.delete_chat_item -> {
+                            showAlertMessage(itemView.context, mLogin.text.toString())
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popupMenu.inflate(R.menu.more_pc_menu)
+                try {
+                    val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")
+                    fieldMPopup.isAccessible = true
+                    val mPopup = fieldMPopup.get(popupMenu)
+                    mPopup.javaClass
+                        .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                        .invoke(mPopup, true)
+                } catch (e: Exception) {
+                    Log.e("Main", "Error of showing popup menu icons")
+                } finally {
+                    popupMenu.show()
+                }
+                true
             }
         }
     }
@@ -54,7 +88,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
                 mInfoTxt.apply {
                     if (arrayList[position].infoTxt != "") {
                         text = arrayList[position].infoTxt
-                        setPadding(0, 0, 0, 0)
+//                    setPadding(0, 0, 0, 0)
                     } else
                         visibility = View.GONE
                 }
@@ -71,5 +105,27 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
 
     override fun getItemCount(): Int {
         return arrayList.size
+    }
+
+    private fun showAlertMessage(context: Context, chatName: String) {
+        val message: AlertDialog.Builder = AlertDialog.Builder(context)
+        message
+            .setTitle("Внимание")
+            .setMessage("Вы действительно хотите удалить данный чат?")
+            .setCancelable(true)
+            .setPositiveButton(
+                "Да"
+            ) { _, _ ->
+                Toast.makeText(
+                    context,
+                    "Delete chat $chatName",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .setNegativeButton("Нет") { dialog, _ ->
+                dialog.cancel()
+            }
+        val messageWindow = message.create()
+        messageWindow.show()
     }
 }

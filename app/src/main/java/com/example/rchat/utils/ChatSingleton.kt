@@ -211,8 +211,11 @@ object ChatSingleton {
                 break
             }
         }
-        if (isInArray)
+        if (isInArray) {
             chatsArrayList.removeAt(index)
+//            chatsArrayAdapter.notify
+        }
+
         unreadMsg = if (isRead && lastMessageRecipient != Van)
             0
         else

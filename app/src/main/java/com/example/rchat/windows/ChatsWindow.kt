@@ -43,7 +43,7 @@ class ChatsWindow : AppCompatActivity() {
 //        val networkConnection = NetworkConnectionLiveData(applicationContext)   //!
 
         val userLogin: TextView = findViewById(R.id.CW_AppNameTV)
-        val chatArray: ListView = findViewById(R.id.CW_ChatsLV)
+        val chatArray: ListView = findViewById(R.id.CW_ChatsRV)
         val moreBtn: ImageButton = findViewById(R.id.CW_MoreBtn)
         val user = ChatFunctions().getSavedLogin(this)
         userLogin.text = user
