@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.rchat.R
@@ -121,28 +122,27 @@ class SettingsWindow : AppCompatActivity() {
         }
 
         exitAccountBtn.setOnClickListener {
-            try {
-                if (ChatFunctions().isServiceRunning(
-                        BackgroundService::class.java,
-                        applicationContext
-                    )
-                )
-                    stopService(Intent(applicationContext, BackgroundService::class.java))
-                ChatFunctions().deleteData(this)
-                val intent = Intent(this, AuthorizationWindow::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(intent)
-                overridePendingTransition(
-                    android.R.anim.slide_in_left,
-                    android.R.anim.slide_out_right
-                )
-            } catch (exception: Exception) {
-                ChatFunctions().showMessage(
-                    "Ошибка",
-                    "Ошибка выхода из аккаунта. Код ошибки: ${exception.message}",
-                    this
-                )
-            }
+            val message: AlertDialog.Builder = AlertDialog.Builder(this)
+            message
+                .setTitle(getString(R.string.attention_title))
+                .setMessage(getString(R.string.really_waana_exit_account_title))
+                .setCancelable(true)
+                .setPositiveButton(
+                    getString(R.string.yes_title)
+                ) { _, _ ->
+                    try {
+                        exitAccount()
+                    } catch (exception: Exception) {
+                        ChatFunctions().showMessage(
+                            "Ошибка",
+                            "Ошибка выхода из аккаунта. Код ошибки: ${exception.message}",
+                            this
+                        )
+                    }
+                }
+                .setNegativeButton(getString(R.string.no_title)) { dialog, _ -> dialog.cancel() }
+            val messageWindow = message.create()
+            messageWindow.show()
         }
     }
 
@@ -174,5 +174,23 @@ class SettingsWindow : AppCompatActivity() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (intent.resolveActivity(packageManager) != null)
             startActivityForResult(intent, 0)
+    }
+
+    fun exitAccount() {
+        if (ChatFunctions().isServiceRunning(
+                BackgroundService::class.java,
+                applicationContext
+            )
+        )
+            stopService(Intent(applicationContext, BackgroundService::class.java))
+        ChatFunctions().deleteData(this)
+        ChatSingleton.deleteNotification()
+        val intent = Intent(this, AuthorizationWindow::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+        overridePendingTransition(
+            android.R.anim.slide_in_left,
+            android.R.anim.slide_out_right
+        )
     }
 }

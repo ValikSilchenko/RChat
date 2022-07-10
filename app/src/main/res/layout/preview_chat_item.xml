@@ -42,30 +42,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/PC_ShownMessageInfoTV"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="2dp"
-        android:text="@string/you_title"
-        android:textColor="?attr/chat_txt_color"
-        android:textSize="15sp"
-        android:textStyle="italic"
+        android:orientation="horizontal"
         app:layout_constraintStart_toEndOf="@id/PC_AvatarImg"
-        app:layout_constraintTop_toBottomOf="@id/PC_LoginTV" />
+        app:layout_constraintTop_toBottomOf="@id/PC_LoginTV">
 
-    <TextView
-        android:id="@+id/PC_MessageTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="2dp"
-        android:maxLength="45"
-        android:maxLines="1"
-        android:text="This is the message that gonna be displayed in chatswindow"
-        android:textColor="?attr/pc_msg_color"
-        android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@id/PC_ShownMessageInfoTV"
-        app:layout_constraintTop_toBottomOf="@id/PC_LoginTV" />
+        <TextView
+            android:id="@+id/PC_ShownMessageInfoTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/round_corner"
+            android:backgroundTint="?attr/main_color"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="99+"
+            android:textColor="?attr/chat_txt_color"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/PC_MessageTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="45"
+            android:maxLines="1"
+            android:text="This is the message that gonna be displayed in chatswindow"
+            android:textColor="?attr/pc_msg_color"
+            android:textSize="15sp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

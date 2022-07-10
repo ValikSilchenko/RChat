@@ -53,8 +53,8 @@
             android:textColorHint="?attr/edit_txt_color" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/FUW_FoundUsersLV"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/FUW_FoundUsersRV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"

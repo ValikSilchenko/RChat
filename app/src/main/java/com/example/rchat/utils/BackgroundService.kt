@@ -17,6 +17,7 @@ class BackgroundService : Service() {
 
     private var flag = 0
     private val mSeconds: Long = 600000
+    private lateinit var notificationManager: NotificationManager
 
     override fun onBind(intent: Intent): IBinder? {
         throw UnsupportedOperationException("Not yet implemented")
@@ -47,7 +48,7 @@ class BackgroundService : Service() {
             val channel = NotificationChannel("serviceID", "Background working", importance).apply {
                 description = "Notification of background working of R Chat"
             }
-            val notificationManager =
+            notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }

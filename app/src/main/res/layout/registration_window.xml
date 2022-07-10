@@ -114,7 +114,6 @@
         android:focusable="true"
         android:text="@string/finish_registration_title"
         android:textColor="@color/white"
-        android:background="@drawable/round_corner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/RW_RepeatPasswordET" />
@@ -131,7 +130,6 @@
         android:focusable="true"
         android:text="@string/already_have_acc_title"
         android:textColor="@color/white"
-        android:background="@drawable/round_corner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/RW_RegistrationBtn" />

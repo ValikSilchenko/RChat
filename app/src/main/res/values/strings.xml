@@ -42,4 +42,6 @@
     <string name="no_title">Нет</string>
     <string name="app_running_in_background_title">Приложение запущено в фоне</string>
     <string name="ok_title">Ок</string>
+    <string name="really_waana_exit_account_title">Вы действительно хотите выйти из аккаунта?</string>
+    <string name="change_avatar_title">Сменить аватар</string>
 </resources>

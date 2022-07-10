@@ -19,7 +19,14 @@
         android:theme="@style/Theme.Light">
         <activity
             android:name=".windows.MediaChatWindow"
-            android:exported="false" />
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".windows.SplashScreenWindow"
             android:exported="true"

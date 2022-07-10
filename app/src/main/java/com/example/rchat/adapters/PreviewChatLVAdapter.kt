@@ -2,7 +2,6 @@ package com.example.rchat.adapters
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -35,11 +34,15 @@ class PreviewChatLVAdapter(
         login.text = arrayList[position].login
         time.text = arrayList[position].time
         message.text = arrayList[position].message
+        val chatId = arrayList[position].chatId
 
         if (arrayList[position].unreadMsgCount == 0) {
             infoTxt.apply {
-                text = arrayList[position].infoTxt
-                typeface = Typeface.DEFAULT
+                if (arrayList[position].infoTxt != "") {
+                    text = arrayList[position].infoTxt
+//                    setPadding(0, 0, 0, 0)
+                } else
+                    visibility = View.GONE
             }
         } else {
             infoTxt.apply {
@@ -47,15 +50,16 @@ class PreviewChatLVAdapter(
                     "99+"
                 else
                     arrayList[position].unreadMsgCount.toString()
-                typeface = Typeface.DEFAULT_BOLD
             }
         }
 
         view.setOnClickListener {
             val intent = Intent(context, ChatItselfWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            ChatSingleton.isInChat = true
-            ChatSingleton.chatName = login.text.toString()
+            ChatSingleton.apply {
+                isInChat = true
+                chatName = login.text.toString()
+            }
             context.startActivity(intent)
             context.overridePendingTransition(
                 android.R.anim.slide_in_left,
