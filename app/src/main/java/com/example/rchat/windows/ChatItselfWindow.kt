@@ -4,12 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.R
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
@@ -20,6 +16,7 @@ class ChatItselfWindow : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        val idArray: ArrayList<Int> = ArrayList()
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
         when (prefs.getString("NightMode", "Day")) {
             "Day" -> setTheme(R.style.Theme_Light)
@@ -39,7 +36,7 @@ class ChatItselfWindow : AppCompatActivity() {
         val sendMessageBtn: ImageButton = findViewById(R.id.CIW_SendMessageBtn)
         val attachBtn: ImageButton = findViewById(R.id.CIW_AttachBtn)
         val chatNameTV: TextView = findViewById(R.id.CIW_ChatNameTV)
-        val messagesLV: RecyclerView = findViewById(R.id.CIW_MessagesRV)
+        val messagesLV: ListView = findViewById(R.id.CIW_MessagesRV)
         val messageInputET: EditText = findViewById(R.id.CIW_MessageInputET)
 
         val chatLogin = ChatSingleton.chatName
@@ -52,6 +49,10 @@ class ChatItselfWindow : AppCompatActivity() {
             messageInputET
         )
 
+        var unreadCount = Requests().get(
+            mapOf("sender" to chatLogin, "recipient" to ChatSingleton.Van),
+            "${ChatSingleton.serverUrl}/count"
+        ).toInt()
         val response: List<JSONObject> = JasonSTATHAM().stringToListOfJSONObj(
             Requests().get(
                 mapOf(
@@ -61,13 +62,22 @@ class ChatItselfWindow : AppCompatActivity() {
                 "${ChatSingleton.serverUrl}/personal"
             )
         )
-        for (el in response)
+        for (el in response) {
+            if (!(el["read"] as Boolean))
+                idArray.add(el["id"] as Int)
             ChatSingleton.updateMessageList(
                 (el["sender"] as JSONObject)["username"].toString(),
                 el["messageText"].toString(),
                 "${el["date"]} ${el["time"]}",
-                (el["sender"] as JSONObject)["id"] as Int   //!
+                el["id"] as Int
             )
+        }
+        ChatSingleton.focusOnLastItem(unreadCount)
+
+        // Отправка запроса на прочтение сообщений
+        idArray.forEach {
+            ChatSingleton.sendRequestForReading(chatLogin, it)
+        }
 
         backToMainMenuBtn.setOnClickListener {
             ChatSingleton.clearMessagesList()

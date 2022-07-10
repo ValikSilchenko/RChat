@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -68,15 +69,21 @@ class ChatsWindow : AppCompatActivity() {
             var youTxt: String
             var time: String
             var id: Int
+            var unreadMsg: Int
             for (el in response) {
                 if ((el["sender"] as JSONObject)["username"].toString() == user) {
                     username = (el["recipient"] as JSONObject)["username"].toString()
                     youTxt = "Вы:"
                     id = (el["recipient"] as JSONObject)["id"] as Int
+                    unreadMsg = 0
                 } else {
                     username = (el["sender"] as JSONObject)["username"].toString()
                     youTxt = ""
                     id = (el["sender"] as JSONObject)["id"] as Int
+                    unreadMsg = Requests().get(
+                        mapOf("sender" to username, "recipient" to user),
+                        "${ChatSingleton.serverUrl}/count"
+                    ).toInt()
                 }
 
                 val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
@@ -84,14 +91,14 @@ class ChatsWindow : AppCompatActivity() {
                     el["time"].toString()
                 else
                     el["date"].toString()
-
                 ChatSingleton.updateChatList(
                     username,
                     time,
                     el["messageText"].toString(),
                     youTxt,
                     el["read"] as Boolean,
-                    id
+                    id,
+                    unreadMsg
                 )
             }
         } catch (error: Exception) {
@@ -106,12 +113,16 @@ class ChatsWindow : AppCompatActivity() {
             val popupMenu = PopupMenu(this, it)
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.newchat_item -> {
+                    R.id.new_chat_item -> {
                         startActivity(Intent(this, FindUsersWindow::class.java))
                         overridePendingTransition(
                             android.R.anim.slide_in_left,
                             android.R.anim.slide_out_right
                         )
+                        true
+                    }
+                    R.id.new_group_chat_item -> {
+                        Toast.makeText(this, "В разработке...", Toast.LENGTH_SHORT).show()
                         true
                     }
                     R.id.settings_item -> {

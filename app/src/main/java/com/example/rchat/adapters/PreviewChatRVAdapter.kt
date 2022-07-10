@@ -34,11 +34,9 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
                     isInChat = true
                     chatName = mLogin.text.toString()
                 }
+                if (mInfoTxt.text != itemView.context.getString(R.string.you_title))
+                    mInfoTxt.visibility = View.GONE
                 itemView.context.startActivity(intent)
-//                itemView.context.overridePendingTransition(
-//                    android.R.anim.slide_in_left,
-//                    android.R.anim.slide_out_right
-//                )
             }
 
             itemView.setOnLongClickListener {
@@ -88,7 +86,6 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
                 mInfoTxt.apply {
                     if (arrayList[position].infoTxt != "") {
                         text = arrayList[position].infoTxt
-//                    setPadding(0, 0, 0, 0)
                     } else
                         visibility = View.GONE
                 }

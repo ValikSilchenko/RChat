@@ -44,4 +44,6 @@
     <string name="ok_title">Ок</string>
     <string name="really_waana_exit_account_title">Вы действительно хотите выйти из аккаунта?</string>
     <string name="change_avatar_title">Сменить аватар</string>
+    <string name="new_group_chat_title">Новая беседа</string>
+    <string name="create_title">Создать...</string>
 </resources>

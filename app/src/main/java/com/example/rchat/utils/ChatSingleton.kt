@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.R
 import com.example.rchat.adapters.CGCLVAdapter
-import com.example.rchat.adapters.MessageItemRVAdapter
+import com.example.rchat.adapters.MessageItemLVAdapter
 import com.example.rchat.adapters.PreviewChatRVAdapter
 import com.example.rchat.dataclasses.CGCDataClass
 import com.example.rchat.dataclasses.MessageItemDataClass
@@ -35,7 +35,7 @@ object ChatSingleton {
     private lateinit var chatsWindowActivity: Activity
     private lateinit var createGroupChatWindowActivity: Activity
     private lateinit var chatsArrayAdapter: PreviewChatRVAdapter
-    private lateinit var messagesArrayAdapter: MessageItemRVAdapter
+    private lateinit var messagesArrayAdapter: MessageItemLVAdapter
     private lateinit var createGroupChatArrayAdapter: CGCLVAdapter
     private lateinit var messageEditText: EditText
     private const val channel_ID = "new_messages"
@@ -45,7 +45,7 @@ object ChatSingleton {
     private val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
     private var webSocketClient = WebSocketClient()
     private var chatsWindowRV: RecyclerView? = null
-    private var chatItselfRV: RecyclerView? = null
+    private var chatItselfRV: ListView? = null
     private var createGroupChatRV: ListView? = null
     var isInChat = false
     var Billy = "Herrington"
@@ -62,7 +62,7 @@ object ChatSingleton {
     }
 
     fun setChatItselfWindow(
-        recView: RecyclerView,
+        recView: ListView,
         username: String,
         incomingContext: Activity,
         editText: EditText
@@ -70,8 +70,7 @@ object ChatSingleton {
         chatItselfRV = recView
         Billy = username
         chatItselfActivity = incomingContext
-        messagesArrayAdapter = MessageItemRVAdapter(messagesArrayList)
-        chatItselfRV!!.layoutManager = LinearLayoutManager(chatItselfActivity)
+        messagesArrayAdapter = MessageItemLVAdapter(chatItselfActivity, messagesArrayList)
         chatItselfRV!!.adapter = messagesArrayAdapter
         messageEditText = editText
     }
@@ -96,7 +95,7 @@ object ChatSingleton {
         try {
             webSocketClient.send(recipientLogin, message, Van)
             messageField.text = null
-            focusOnLastItem()
+//            focusOnLastItem(0)
         } catch (exception: Exception) {
             ChatFunctions().showMessage(
                 "Ошибка",
@@ -114,6 +113,10 @@ object ChatSingleton {
             val time = parsedMessage["time"].toString()
             val date = parsedMessage["date"].toString()
             val msgId = parsedMessage["id"] as Int
+            var unreadMsg: Int
+
+            if (parsedMessage["read"] as Boolean)
+                return@runOnUiThread
             if (sender == Van) {
                 updateChatList(
                     (parsedMessage["recipient"] as JSONObject)["username"].toString(),
@@ -121,24 +124,31 @@ object ChatSingleton {
                     messageText,
                     "Вы:",
                     parsedMessage["read"] as Boolean,
-                    userId
+                    userId,
+                    0
                 )
                 updateMessageList(sender, messageText, "$date $time", msgId)
+                focusOnLastItem(0)
             } else {
+                unreadMsg = Requests().get(
+                    mapOf("sender" to sender, "recipient" to Van),
+                    "$serverUrl/count"
+                ).toInt()
                 updateChatList(
                     sender,
                     parsedMessage["time"].toString(),
                     messageText,
                     "",
                     parsedMessage["read"] as Boolean,
-                    userId
+                    userId,
+                    unreadMsg
                 )
                 if (sender == Billy) {
                     if (!isInChat) {
                         sendNotification(userId, sender, messageText)
                     }
                     updateMessageList(sender, messageText, "$date $time", msgId)
-                    focusOnLastItem()
+                    focusOnLastItem(unreadMsg)
                 } else
                     sendNotification(userId, sender, messageText)
             }
@@ -201,39 +211,21 @@ object ChatSingleton {
         message: String,
         youTxt: String,
         isRead: Boolean,
-        chatId: Int
+        chatId: Int,
+        unreadMsg: Int
     ) {
-        var isInArray = false
-        var index = 0
-        var unreadMsg = 0
         for (el in chatsArrayList.indices) {
             if (chatsArrayList[el].login == lastMessageRecipient) {
                 chatsArrayList.removeAt(el)
-                chatsArrayAdapter.notifyItemRemoved(el)  //!
-//                isInArray = true
-//                index = el
+                chatsArrayAdapter.notifyItemRemoved(el)
                 break
             }
         }
-//        if (isInArray) {
-//            chatsArrayList.removeAt(index)
-//            chatsArrayAdapter.notifyItemRemoved(index)  //!
-//        }
-
-        unreadMsg = if (isRead && lastMessageRecipient != Van)
-            0
-        else
-            Requests().get(
-                mapOf("sender" to lastMessageRecipient, "recipient" to Van),
-                "$serverUrl/count"
-            ).toInt()
-
         chatsArrayList.add(
             0,
             PreviewChatDataClass(lastMessageRecipient, time, message, youTxt, unreadMsg, chatId)
         )
-//        chatsArrayAdapter.notifyDataSetChanged()
-        chatsArrayAdapter.notifyItemInserted(0) //!
+        chatsArrayAdapter.notifyItemInserted(0)
     }
 
     fun updateMessageList(senderLogin: String, message: String, time: String, msgId: Int) {
@@ -270,9 +262,7 @@ object ChatSingleton {
                 msgId
             )
         )
-//        messagesArrayAdapter.notifyDataSetChanged()
-        messagesArrayAdapter.notifyItemInserted(messagesArrayList.size) //!
-        focusOnLastItem()
+        messagesArrayAdapter.notifyDataSetChanged()
     }
 
     fun updateUsersList(userLogin: String) {
@@ -295,8 +285,11 @@ object ChatSingleton {
         }
     }
 
-    private fun focusOnLastItem() {
-//        chatItselfRV?.setSelection(messagesArrayList.size - 1)
-        chatItselfRV?.scrollToPosition(messagesArrayList.size - 1)  //!
+    fun focusOnLastItem(unreadCount: Int) {
+        chatItselfRV?.setSelection(messagesArrayList.size - 1 - unreadCount)
+    }
+
+    fun sendRequestForReading(sender: String, msgId: Int) {
+        webSocketClient.send(Van, sender, msgId)
     }
 }
