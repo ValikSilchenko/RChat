@@ -67,26 +67,31 @@ class ChatsWindow : AppCompatActivity() {
             var username: String
             var youTxt: String
             var time: String
+            var id: Int
             for (el in response) {
                 if ((el["sender"] as JSONObject)["username"].toString() == user) {
                     username = (el["recipient"] as JSONObject)["username"].toString()
                     youTxt = "Вы:"
+                    id = (el["recipient"] as JSONObject)["id"] as Int
                 } else {
                     username = (el["sender"] as JSONObject)["username"].toString()
                     youTxt = ""
+                    id = (el["sender"] as JSONObject)["id"] as Int
                 }
+
                 val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
                 time = if (el["date"] == sdf)
                     el["time"].toString()
                 else
                     el["date"].toString()
+
                 ChatSingleton.updateChatList(
                     username,
                     time,
                     el["messageText"].toString(),
                     youTxt,
                     el["read"] as Boolean,
-                    (el["sender"] as JSONObject)["id"] as Int   //!
+                    id
                 )
             }
         } catch (error: Exception) {
