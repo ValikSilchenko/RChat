@@ -8,7 +8,6 @@ import android.util.Log
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -96,7 +95,6 @@ class ChatsWindow : AppCompatActivity() {
                     time,
                     el["messageText"].toString(),
                     youTxt,
-                    el["read"] as Boolean,
                     id,
                     unreadMsg
                 )
@@ -122,7 +120,7 @@ class ChatsWindow : AppCompatActivity() {
                         true
                     }
                     R.id.new_group_chat_item -> {
-                        Toast.makeText(this, "В разработке...", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, CreateGroupChatWindow::class.java))
                         true
                     }
                     R.id.settings_item -> {

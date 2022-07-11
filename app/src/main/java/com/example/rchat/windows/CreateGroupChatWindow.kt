@@ -7,9 +7,12 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.R
+import com.example.rchat.adapters.CreateGroupChatRVAdapter
 import com.example.rchat.utils.ChatSingleton
 
 class CreateGroupChatWindow : AppCompatActivity() {
@@ -32,19 +35,23 @@ class CreateGroupChatWindow : AppCompatActivity() {
 
         val backBtn: ImageButton = findViewById(R.id.CGC_BackBtn)
         val createBtn: Button = findViewById(R.id.CGC_CreateChatBtn)
-        val usersArray: ListView = findViewById(R.id.CGC_UsersLV)
+        val usersArray: RecyclerView = findViewById(R.id.CGC_UsersRV)
         val groupName: EditText = findViewById(R.id.CGC_GroupNameET)
 
-        ChatSingleton.setCGCWindow(this, usersArray)
-
-        createBtn.setOnClickListener {
-
-        }
+        val usersArrayList = ChatSingleton.chatsArrayList
+        val recViewAdapter = CreateGroupChatRVAdapter(usersArrayList)
+        usersArray.layoutManager = LinearLayoutManager(this)
+        usersArray.adapter = recViewAdapter
 
         backBtn.setOnClickListener {
             val intent = Intent(this, ChatsWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             startActivity(intent)
+            finish()
+        }
+
+        createBtn.setOnClickListener {
+            Toast.makeText(this, getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
         }
     }
 }

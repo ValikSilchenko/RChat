@@ -52,7 +52,7 @@ class SplashScreenWindow : AppCompatActivity() {
             else {
                 newWindow(AuthorizationWindow::class.java)
             }
-        }, 4000)
+        }, 3000)
     }
 
     private fun newWindow(window: Class<*>) {

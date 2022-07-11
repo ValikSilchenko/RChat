@@ -67,8 +67,11 @@
             android:id="@+id/PC_MessageTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLength="45"
-            android:maxLines="1"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:text="This is the message that gonna be displayed in chatswindow"
             android:textColor="?attr/pc_msg_color"
             android:textSize="15sp" />

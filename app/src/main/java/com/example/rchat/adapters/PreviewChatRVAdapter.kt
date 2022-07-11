@@ -82,6 +82,8 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
             mInfoTxt.text = arrayList[position].infoTxt
             chatId = arrayList[position].chatId
 
+            mMessage.isSelected = true
+
             if (arrayList[position].unreadMsgCount == 0) {
                 mInfoTxt.apply {
                     if (arrayList[position].infoTxt != "") {
