@@ -80,28 +80,28 @@ class AuthorizationWindow : AppCompatActivity() {
                     } catch (exception: Exception) {
                         if (ChatFunctions().isInternetAvailable(applicationContext)) {
                             ChatFunctions().showMessage(
-                                "Ошибка",
-                                "Ошибка установки соединения. Код: ${exception.message}",
+                                getString(R.string.error_title),
+                                "${getString(R.string.error_of_connection_title)} ${exception.message}",
                                 this
                             )
                         } else
                             ChatFunctions().showMessage(
-                                "Ошибка",
-                                "Ошибка отправки данных. Код: ${exception.message}",
+                                getString(R.string.error_title),
+                                "${getString(R.string.error_of_sending_data_title)} ${exception.message}",
                                 applicationContext
                             )
                     }
                 } catch (exception: Exception) {
                     ChatFunctions().showMessage(
-                        "Ошибка",
-                        "Ошибка отправки данных. Код: ${exception.message}",
+                        getString(R.string.error_title),
+                        "${getString(R.string.error_of_sending_data_title)} ${exception.message}",
                         this
                     )
                 }
             } else
                 ChatFunctions().showMessage(
-                    "Внимание",
-                    "Проверьте корректность введенных данных",
+                    getString(R.string.attention_title),
+                    getString(R.string.check_correct_title),
                     this
                 )
         }

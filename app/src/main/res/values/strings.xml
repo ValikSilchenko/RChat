@@ -57,4 +57,5 @@
     <string name="error_exit_acc_title">Ошибка выхода из аккаунта. Код:</string>
     <string name="really_wanna_delete_chat_title">Вы действительно хотите удалить данный чат?</string>
     <string name="error_sending_message_title">Ошибка отправки сообщения. Код:</string>
+    <string name="app_lang_title">Язык приложения</string>
 </resources>

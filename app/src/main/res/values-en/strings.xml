@@ -58,4 +58,5 @@
     <string name="error_exit_acc_title">Error of exiting app. Code:</string>
     <string name="really_wanna_delete_chat_title">Do you really want to delete this chat?</string>
     <string name="error_sending_message_title">Error of sending message. Code:</string>
+    <string name="app_lang_title">App language</string>
 </resources>
