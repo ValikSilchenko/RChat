@@ -109,11 +109,11 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
     private fun showAlertMessage(context: Context, chatName: String) {
         val message: AlertDialog.Builder = AlertDialog.Builder(context)
         message
-            .setTitle("Внимание")
-            .setMessage("Вы действительно хотите удалить данный чат?")
+            .setTitle(context.getString(R.string.attention_title))
+            .setMessage(context.getString(R.string.really_wanna_delete_chat_title))
             .setCancelable(true)
             .setPositiveButton(
-                "Да"
+                context.getString(R.string.yes_title)
             ) { _, _ ->
                 Toast.makeText(
                     context,
@@ -121,7 +121,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            .setNegativeButton("Нет") { dialog, _ ->
+            .setNegativeButton(context.getString(R.string.no_title)) { dialog, _ ->
                 dialog.cancel()
             }
         val messageWindow = message.create()

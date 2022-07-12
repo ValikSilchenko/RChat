@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -84,7 +85,6 @@ class ChatsWindow : AppCompatActivity() {
                         "${ChatSingleton.serverUrl}/count"
                     ).toInt()
                 }
-
                 val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
                 time = if (el["date"] == sdf)
                     el["time"].toString()
@@ -101,8 +101,8 @@ class ChatsWindow : AppCompatActivity() {
             }
         } catch (error: Exception) {
             ChatFunctions().showMessage(
-                "Ошибка",
-                "Окно чатов: ${error.message}",
+                getString(R.string.error_title),
+                "${getString(R.string.error_of_receiving_data_title)} ${error.message}",
                 this
             )
         }
@@ -120,7 +120,8 @@ class ChatsWindow : AppCompatActivity() {
                         true
                     }
                     R.id.new_group_chat_item -> {
-                        startActivity(Intent(this, CreateGroupChatWindow::class.java))
+                        Toast.makeText(this, getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
+//                        startActivity(Intent(this, CreateGroupChatWindow::class.java))
                         true
                     }
                     R.id.settings_item -> {

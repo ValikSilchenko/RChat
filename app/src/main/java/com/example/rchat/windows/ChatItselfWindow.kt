@@ -49,7 +49,7 @@ class ChatItselfWindow : AppCompatActivity() {
             messageInputET
         )
 
-        var unreadCount = Requests().get(
+        val unreadCount = Requests().get(
             mapOf("sender" to chatLogin, "recipient" to ChatSingleton.Van),
             "${ChatSingleton.serverUrl}/count"
         ).toInt()
@@ -92,7 +92,7 @@ class ChatItselfWindow : AppCompatActivity() {
         }
 
         attachBtn.setOnClickListener {
-            Toast.makeText(applicationContext, "В разработке...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
         }
 
         sendMessageBtn.setOnClickListener {

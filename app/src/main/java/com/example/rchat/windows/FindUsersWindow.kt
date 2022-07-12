@@ -80,17 +80,17 @@ class FindUsersWindow : AppCompatActivity() {
                     arrayAdapter.notifyItemInserted(foundUserArrayList.size)    //!
                     loginInput.text = null
                     if (foundUserArrayList.isEmpty())
-                        Toast.makeText(this, "Пользователи не найдены", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.users_not_found_title), Toast.LENGTH_SHORT).show()
                 } catch (exception: Exception) {
                     ChatFunctions().showMessage(
-                        "Ошибка",
-                        "Ошибка отправки данных. Код: ${exception.message}", this
+                        getString(R.string.error_title),
+                        "${getString(R.string.error_of_sending_data_title)} ${exception.message}", this
                     )
                 }
             } else
                 ChatFunctions().showMessage(
-                    " Ошибка",
-                    "Ничего не было введено",
+                    getString(R.string.error_title),
+                    getString(R.string.nothing_was_input_title),
                     this
                 )
         }

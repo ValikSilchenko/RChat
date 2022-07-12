@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -117,7 +116,6 @@ class SettingsWindow : AppCompatActivity() {
         }
 
         avatarBtn.setOnClickListener {
-//            takePicFromAlbum()
             Toast.makeText(this, getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
         }
 
@@ -125,7 +123,7 @@ class SettingsWindow : AppCompatActivity() {
             val message: AlertDialog.Builder = AlertDialog.Builder(this)
             message
                 .setTitle(getString(R.string.attention_title))
-                .setMessage(getString(R.string.really_waana_exit_account_title))
+                .setMessage(getString(R.string.really_wanna_exit_account_title))
                 .setCancelable(true)
                 .setPositiveButton(
                     getString(R.string.yes_title)
@@ -134,8 +132,8 @@ class SettingsWindow : AppCompatActivity() {
                         exitAccount()
                     } catch (exception: Exception) {
                         ChatFunctions().showMessage(
-                            "Ошибка",
-                            "Ошибка выхода из аккаунта. Код ошибки: ${exception.message}",
+                            getString(R.string.error_title),
+                            "${getString(R.string.error_exit_acc_title)} ${exception.message}",
                             this
                         )
                     }
@@ -143,13 +141,6 @@ class SettingsWindow : AppCompatActivity() {
                 .setNegativeButton(getString(R.string.no_title)) { dialog, _ -> dialog.cancel() }
             val messageWindow = message.create()
             messageWindow.show()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == ChatSingleton.ImgRequestCode) {
-            avatarImg?.setImageURI(data?.data)
         }
     }
 
@@ -163,20 +154,7 @@ class SettingsWindow : AppCompatActivity() {
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 
-    fun takePicFromAlbum() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
-        if (intent.resolveActivity(packageManager) != null)
-            startActivityForResult(intent, 1)
-    }
-
-    fun takePhoto() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (intent.resolveActivity(packageManager) != null)
-            startActivityForResult(intent, 0)
-    }
-
-    fun exitAccount() {
+    private fun exitAccount() {
         if (ChatFunctions().isServiceRunning(
                 BackgroundService::class.java,
                 applicationContext

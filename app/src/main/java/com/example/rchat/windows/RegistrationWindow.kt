@@ -75,27 +75,27 @@ class RegistrationWindow : AppCompatActivity() {
                     } catch (exception: Exception) {
                         if (ChatFunctions().isInternetAvailable(applicationContext)) {
                             ChatFunctions().showMessage(
-                                "Ошибка",
-                                "Ошибка установки соединения. Код: ${exception.message}",
+                                getString(R.string.error_title),
+                                "${getString(R.string.error_of_connection_title)} ${exception.message}",
                                 this
                             )
                         } else
                             ChatFunctions().showMessage(
-                                "Ошибка",
-                                "Ошибка отправки данных. Код: ${exception.message}",
+                                getString(R.string.error_title),
+                                "${getString(R.string.error_of_sending_data_title)} ${exception.message}",
                                 applicationContext
                             )
                     }
                 } catch (exception: Exception) {
                     ChatFunctions().showMessage(
-                        "Ошибка",
-                        "Ошибка отправки данных. Код: ${exception.message}", this
+                        getString(R.string.error_title),
+                        "${getString(R.string.error_of_sending_data_title)} ${exception.message}", this
                     )
                 }
             } else
                 ChatFunctions().showMessage(
-                    "Ошибка",
-                    "Внимательно проверьте корректность введенных данных, а также совпали ли пароли",
+                    getString(R.string.error_title),
+                    getString(R.string.check_data_and_passwords_title),
                     this
                 )
         }

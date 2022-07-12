@@ -86,8 +86,9 @@ object ChatSingleton {
 //            focusOnLastItem(0)
         } catch (exception: Exception) {
             ChatFunctions().showMessage(
-                "Ошибка",
-                "Ошибка отправки сообщения. Код: ${exception.message}", chatItselfActivity
+                chatItselfActivity.getString(R.string.error_title),  // Может возникнуть ошибка с вытаскиванием строки
+                "${chatItselfActivity.getString(R.string.error_sending_message_title)} ${exception.message}",
+                chatItselfActivity
             )
         }
     }
@@ -110,7 +111,7 @@ object ChatSingleton {
                     (parsedMessage["recipient"] as JSONObject)["username"].toString(),
                     parsedMessage["time"].toString(),
                     messageText,
-                    "Вы:",
+                    chatsWindowActivity.getString(R.string.you_title),  // Может возникнуть ошибка с вытаскиванием строки
                     userId,
                     0
                 )
