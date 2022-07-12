@@ -4,7 +4,10 @@ import com.rchat.server.models.PersonalMessage
 import com.rchat.server.models.Users
 
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
+import java.time.LocalDate
+import java.time.LocalTime
 
 interface PersonalMessageRepository: JpaRepository<PersonalMessage, Int> {
     @Query("select msg from PersonalMessage msg where msg.sender in (:user1, :user2)" +
@@ -23,4 +26,10 @@ interface PersonalMessageRepository: JpaRepository<PersonalMessage, Int> {
     @Query("select count(msg) - 0 as count from PersonalMessage msg" +
             " where msg.sender = :sender and msg.recipient = :recipient and msg.read = false")
     fun getUnreadCount(sender: Users, recipient: Users): Int
+
+    @Modifying
+    @Query("update PersonalMessage msg set msg.read = true" +
+            " where msg.read = false and (msg.date < :date or (msg.date = :date and msg.time < :time))" +
+            " and msg.recipient = :sender")
+    fun updateReadBefore(sender: Users, date: LocalDate, time: LocalTime)
 }

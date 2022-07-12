@@ -14,11 +14,13 @@ import com.fasterxml.jackson.annotation.JsonView
 import org.springframework.messaging.handler.annotation.Header
 import java.time.LocalDate
 import java.time.LocalTime
+import javax.transaction.Transactional
 
 @Controller
 class ChatController(private var personalMessageRepo: PersonalMessageRepository,
                      private var channelMessageRepo: ChannelMessageRepository,
                      private var userService: PgUserDetailsService) {
+    @Transactional
     @JsonView(View.AllWithId::class)
     @MessageMapping("/user/{recipient}/{sender}/")
     @SendTo("/chatTopic/{recipient}/", "/chatTopic/{sender}/")
@@ -26,12 +28,15 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
         @DestinationVariable recipient: String,
         @DestinationVariable sender: String,
         msg: String): PersonalMessage {
+        val date = LocalDate.now()
+        val time = LocalTime.now()
         val message = PersonalMessage(userService.getByName(sender),
             userService.getByName(recipient),
-            LocalTime.now(),
-            LocalDate.now(),
+            time,
+            date,
             msg)
         personalMessageRepo.save(message)
+        message.sender?.let { personalMessageRepo.updateReadBefore(it, date, time) }
         return message
     }
 
@@ -57,7 +62,7 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
         @DestinationVariable recipient: String,
         @DestinationVariable sender: String,
         @DestinationVariable msgId: String
-    ): PersonalMessage {
+    ): PersonalMessage {  // прочитать
         val message = personalMessageRepo.getById(msgId.toInt())
         message.read = true
         personalMessageRepo.save(message)
