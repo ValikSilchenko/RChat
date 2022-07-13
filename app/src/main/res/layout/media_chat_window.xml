@@ -30,19 +30,4 @@
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@id/MCW_BackBtn"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Здесь будет отображаться весь контент из данного чата"
-        android:textSize="20sp"
-        android:textColor="?attr/chat_txt_color"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:gravity="center"
-        android:padding="10dp" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

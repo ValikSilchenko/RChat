@@ -49,6 +49,10 @@ class WebSocketClient {
         session?.send("/app/user/$username/$sender/", msg)
     }
 
+    fun send(recLogin: String, senderLogin: String, id: Int) {
+        session?.send("/app/message/$recLogin/$senderLogin/", id)
+    }
+
     fun disconnect() {
         session?.disconnect()
     }
