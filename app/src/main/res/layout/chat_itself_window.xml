@@ -37,10 +37,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
+            android:clickable="true"
             android:text="Recipient Login"
             android:textColor="?attr/chat_txt_color"
             android:textSize="20sp"
-            android:clickable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/CIW_BackBtn"
             app:layout_constraintTop_toTopOf="parent" />
@@ -56,8 +56,8 @@
         android:backgroundTint="?attr/main_color"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="gone"
         android:src="@drawable/ic_more"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,14 +66,26 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
-        android:transcriptMode="normal"
-        android:dividerHeight="10dp"
         android:divider="@null"
+        android:dividerHeight="10dp"
+        android:transcriptMode="normal"
         app:layout_constraintBottom_toTopOf="@id/CIW_BottomContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/CIW_TopContainer"
         tools:listitem="@layout/message_item" />
+
+    <View
+        android:id="@+id/CIW_BottomLine"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="?attr/edit_txt_color"
+        app:layout_constraintBottom_toTopOf="@id/CIW_BottomContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/CIW_MessagesRV" />
 
     <LinearLayout
         android:id="@+id/CIW_BottomContainer"
@@ -84,7 +96,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/CIW_MessagesRV">
+        app:layout_constraintTop_toBottomOf="@id/CIW_BottomLine">
 
         <ImageButton
             android:id="@+id/CIW_SendMessageBtn"
@@ -104,10 +116,10 @@
             android:layout_marginStart="5dp"
             android:background="@drawable/round_corner"
             android:backgroundTint="?attr/background_color"
-            android:src="@drawable/ic_attach"
             android:clickable="true"
             android:focusable="true"
-            android:rotation="45" />
+            android:rotation="45"
+            android:src="@drawable/ic_attach" />
 
         <EditText
             android:id="@+id/CIW_MessageInputET"
