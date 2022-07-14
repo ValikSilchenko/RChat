@@ -27,29 +27,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/SW_AvatarImg"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_avatar"
             android:background="@drawable/round_corner"
-            android:backgroundTint="?attr/chat_txt_color"/>
+            android:backgroundTint="?attr/chat_txt_color"
+            android:src="@drawable/ic_avatar" />
 
         <Button
             android:id="@+id/SW_AvatarBtn"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:text="@string/change_avatar_title"
-            android:textSize="20sp"
-            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
             android:background="@drawable/button_round_corner"
-            android:layout_marginTop="10dp"/>
+            android:text="@string/change_avatar_title"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -58,8 +58,8 @@
         android:id="@+id/SW_NightModeContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -153,26 +153,34 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
+    <!--Localization-->
     <LinearLayout
         android:id="@+id/SW_LocalizationContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/SW_NightModeContainer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="15dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/SW_NightModeContainer">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/app_lang_title"
             android:textColor="?attr/chat_txt_color"
-            android:textSize="25sp"
-            android:gravity="center"/>
+            android:textSize="25sp" />
 
+        <Spinner
+            android:id="@+id/SW_LangSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:entries="@array/lang_array" />
     </LinearLayout>
 
     <Button
@@ -180,11 +188,11 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/button_round_corner"
         android:clickable="true"
         android:focusable="true"
         android:text="@string/exit_acc_title"
         android:textColor="@color/white"
-        android:background="@drawable/button_round_corner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

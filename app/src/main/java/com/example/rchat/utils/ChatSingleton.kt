@@ -46,14 +46,16 @@ object ChatSingleton {
     var isInChat = false
     var Billy = "Herrington"
     var Van = "Darkholme"
+    var cPackageName = ""
 
-    fun setChatsWindow(recView: RecyclerView, username: String, incomingContext: Activity) {
+    fun setChatsWindow(recView: RecyclerView, username: String, incomingContext: Activity, pName: String) {
         Van = username
         chatsWindowRV = recView
         chatsWindowActivity = incomingContext
         chatsArrayAdapter = PreviewChatRVAdapter(chatsArrayList)
         chatsWindowRV!!.layoutManager = LinearLayoutManager(chatsWindowActivity)
         chatsWindowRV!!.adapter = chatsArrayAdapter
+        cPackageName = pName
         createNotificationChannel()
     }
 
@@ -83,10 +85,9 @@ object ChatSingleton {
         try {
             webSocketClient.send(recipientLogin, message, Van)
             messageField.text = null
-//            focusOnLastItem(0)
         } catch (exception: Exception) {
             ChatFunctions().showMessage(
-                chatItselfActivity.getString(R.string.error_title),  // Может возникнуть ошибка с вытаскиванием строки
+                chatItselfActivity.getString(R.string.error_title),
                 "${chatItselfActivity.getString(R.string.error_sending_message_title)} ${exception.message}",
                 chatItselfActivity
             )
@@ -111,7 +112,7 @@ object ChatSingleton {
                     (parsedMessage["recipient"] as JSONObject)["username"].toString(),
                     parsedMessage["time"].toString(),
                     messageText,
-                    chatsWindowActivity.getString(R.string.you_title),  // Может возникнуть ошибка с вытаскиванием строки
+                    chatsWindowActivity.getString(R.string.you_title),
                     userId,
                     0
                 )
@@ -135,7 +136,7 @@ object ChatSingleton {
                         sendNotification(userId, sender, messageText)
                     }
                     updateMessageList(sender, messageText, "$date $time", msgId)
-                    focusOnLastItem(unreadMsg)
+                    focusOnLastItem(0)
                 } else
                     sendNotification(userId, sender, messageText)
             }
@@ -169,8 +170,8 @@ object ChatSingleton {
         val builder = NotificationCompat.Builder(chatsWindowActivity, channel_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(loginTitle)
-            .setContentIntent(pendingIntent)
             .setContentText(messageText)
+            .setContentIntent(pendingIntent)
             .setAutoCancel(true)
         notificationManager.notify(notificationId, builder.build())
     }
@@ -241,7 +242,6 @@ object ChatSingleton {
     fun clearMessagesList() {
         if (messagesArrayList.isNotEmpty()) {
             messagesArrayList.clear()
-            messagesArrayAdapter.notifyDataSetChanged()
         }
     }
 

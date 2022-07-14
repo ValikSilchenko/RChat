@@ -50,6 +50,7 @@ class SettingsWindow : AppCompatActivity() {
         val dayModeCBox: CheckBox = findViewById(R.id.SW_DayModeCB)
         val nightModeCBox: CheckBox = findViewById(R.id.SW_NightModeCB)
         val systemModeCBox: CheckBox = findViewById(R.id.SW_SystemModeCB)
+        val langSpinner: Spinner = findViewById(R.id.SW_LangSpinner)
 
         when (uiMode) {
             0 -> {
