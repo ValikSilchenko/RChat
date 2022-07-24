@@ -59,4 +59,8 @@
     <string name="really_wanna_delete_chat_title">Do you really want to delete this chat?</string>
     <string name="error_sending_message_title">Error of sending message. Code:</string>
     <string name="app_lang_title">App language</string>
+    <string-array name="lang_array">
+        <item>Russian</item>
+        <item>English</item>
+    </string-array>
 </resources>

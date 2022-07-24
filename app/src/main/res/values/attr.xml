@@ -10,5 +10,6 @@
         <attr name="message_bubble_color" format="color"/>
         <attr name="pc_msg_color" format="color"/>
         <attr name="mi_txt_color" format="color"/>
+        <attr name="line_color" format="color" />
     </declare-styleable>
 </resources>

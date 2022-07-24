@@ -49,7 +49,7 @@ class ChatsWindow : AppCompatActivity() {
         val user = ChatFunctions().getSavedLogin(this)
         userLogin.text = user
 
-        ChatSingleton.setChatsWindow(chatArray, user, this)
+        ChatSingleton.setChatsWindow(chatArray, user, this, packageName)
 
 //        networkConnection.observe(this) { isConnected ->
 //            if (isConnected)
