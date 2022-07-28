@@ -41,6 +41,17 @@
             android:textSize="30sp" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/CW_TopLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/edit_txt_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/CW_TopContainer"
+        app:layout_constraintBottom_toTopOf="@id/CW_ChatsRV"
+        android:layout_marginTop="5dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/CW_ChatsRV"
         android:layout_width="match_parent"

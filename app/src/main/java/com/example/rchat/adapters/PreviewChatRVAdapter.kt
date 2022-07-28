@@ -42,9 +42,14 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
             itemView.setOnLongClickListener {
                 val popupMenu = PopupMenu(itemView.context, it)
                 popupMenu.setOnMenuItemClickListener { item ->
+//                    item.title = "N"
                     when (item.itemId) {
                         R.id.delete_chat_item -> {
                             showAlertMessage(itemView.context, mLogin.text.toString())
+                            true
+                        }
+                        R.id.mute_chat_item -> {
+                            TODO("Добавить действие для уведомлений чата")
                             true
                         }
                         else -> false

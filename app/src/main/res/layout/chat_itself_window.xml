@@ -38,6 +38,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:clickable="true"
+            android:focusable="true"
             android:text="Recipient Login"
             android:textColor="?attr/chat_txt_color"
             android:textSize="20sp"
@@ -45,6 +46,17 @@
             app:layout_constraintStart_toEndOf="@+id/CIW_BackBtn"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/CIW_TopLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="?attr/edit_txt_color"
+        app:layout_constraintBottom_toTopOf="@id/CIW_MessagesRV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/CIW_TopContainer" />
 
     <ImageButton
         android:id="@+id/CIW_ActionsBtn"
@@ -72,15 +84,13 @@
         app:layout_constraintBottom_toTopOf="@id/CIW_BottomContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/CIW_TopContainer"
+        app:layout_constraintTop_toBottomOf="@id/CIW_TopLine"
         tools:listitem="@layout/message_item" />
 
     <View
         android:id="@+id/CIW_BottomLine"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_height="1dp"
         android:background="?attr/edit_txt_color"
         app:layout_constraintBottom_toTopOf="@id/CIW_BottomContainer"
         app:layout_constraintEnd_toEndOf="parent"

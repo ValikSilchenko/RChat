@@ -50,6 +50,8 @@ class ChatFunctions {
         editor.apply {
             remove("LOGIN_KEY")
             remove("IS_AUTHORIZED_KEY")
+            remove("NightMode")
+            remove("Notifications")
         }.apply()
     }
 
