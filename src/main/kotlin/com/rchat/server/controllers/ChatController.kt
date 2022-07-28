@@ -11,15 +11,16 @@ import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.stereotype.Controller
 import com.fasterxml.jackson.annotation.JsonView
-import org.springframework.messaging.handler.annotation.Header
 import java.time.LocalDate
 import java.time.LocalTime
 import javax.transaction.Transactional
 
 @Controller
-class ChatController(private var personalMessageRepo: PersonalMessageRepository,
-                     private var channelMessageRepo: ChannelMessageRepository,
-                     private var userService: PgUserDetailsService) {
+class ChatController(
+    private var personalMessageRepo: PersonalMessageRepository,
+    private var channelMessageRepo: ChannelMessageRepository,
+    private var userService: PgUserDetailsService
+) {
     @Transactional
     @JsonView(View.AllWithId::class)
     @MessageMapping("/user/{recipient}/{sender}/")
@@ -27,16 +28,23 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
     fun processPersonal(
         @DestinationVariable recipient: String,
         @DestinationVariable sender: String,
-        msg: String): PersonalMessage {
+        msg: String
+    ): PersonalMessage {
         val date = LocalDate.now()
         val time = LocalTime.now()
-        val message = PersonalMessage(userService.getByName(sender),
+        val message = PersonalMessage(
+            userService.getByName(sender),
             userService.getByName(recipient),
             time,
             date,
-            msg)
+            msg
+        )
         personalMessageRepo.save(message)
-        message.sender?.let { personalMessageRepo.updateReadBefore(it, date, time) }
+        message.sender?.let { msgSender ->
+            message.recipient?.let { msgRecipient ->
+                personalMessageRepo.updateReadBefore(msgSender, msgRecipient, date, time)
+            }
+        }
         return message
     }
 
@@ -55,7 +63,7 @@ class ChatController(private var personalMessageRepo: PersonalMessageRepository,
         return message
     }
 
-    @JsonView(View.AllWithId::class)
+    @JsonView(View.AllWithId::class)  // возвращать только id и read
     @MessageMapping("/message/{recipient}/{sender}/{msgId}/")
     @SendTo("/chatTopic/{recipient}/", "/chatTopic/{sender}/")
     fun updateRead(
