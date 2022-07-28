@@ -44,6 +44,7 @@ object ChatSingleton {
     private var usersArrayList: ArrayList<CGCDataClass> = ArrayList()
     val chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
     var isInChat = false
+    var isNotificationOn = true
     var Billy = "Herrington"
     var Van = "Darkholme"
     var cPackageName = ""
@@ -159,21 +160,23 @@ object ChatSingleton {
     }
 
     private fun sendNotification(notificationId: Int, loginTitle: String, messageText: String) {
-        val intent = Intent(chatsWindowActivity, ChatItselfWindow::class.java)
-        chatName = loginTitle
-        val pendingIntent = PendingIntent.getActivity(
-            chatsWindowActivity,
-            0,
-            intent,
-            0
-        )
-        val builder = NotificationCompat.Builder(chatsWindowActivity, channel_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(loginTitle)
-            .setContentText(messageText)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-        notificationManager.notify(notificationId, builder.build())
+        if (isNotificationOn) {
+            val intent = Intent(chatsWindowActivity, ChatItselfWindow::class.java)
+            chatName = loginTitle
+            val pendingIntent = PendingIntent.getActivity(
+                chatsWindowActivity,
+                0,
+                intent,
+                0
+            )
+            val builder = NotificationCompat.Builder(chatsWindowActivity, channel_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(loginTitle)
+                .setContentText(messageText)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+            notificationManager.notify(notificationId, builder.build())
+        }
     }
 
     fun deleteNotification() {

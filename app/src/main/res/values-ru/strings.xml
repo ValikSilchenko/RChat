@@ -59,6 +59,10 @@
     <string name="really_wanna_delete_chat_title">Вы действительно хотите удалить данный чат?</string>
     <string name="error_sending_message_title">Ошибка отправки сообщения. Код:</string>
     <string name="app_lang_title">Язык приложения</string>
+    <string name="notif_off_title">Отключить уведомления</string>
+    <string name="notifications_title">Уведомления</string>
+    <string name="on_title">Вкл</string>
+    <string name="off_title">Выкл</string>
     <string-array name="lang_array">
         <item>Русский</item>
         <item>Английский</item>

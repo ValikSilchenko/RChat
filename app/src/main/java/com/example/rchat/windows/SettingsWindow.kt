@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 import com.example.rchat.R
 import com.example.rchat.utils.BackgroundService
 import com.example.rchat.utils.ChatFunctions
@@ -19,7 +21,7 @@ class SettingsWindow : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
+        val prefs = getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
         val editor = prefs.edit()
         var uiMode = 0
 
@@ -44,13 +46,20 @@ class SettingsWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_window)
 
-        val avatarBtn: Button = findViewById(R.id.SW_AvatarBtn)
         val backBtn: ImageButton = findViewById(R.id.SW_ToChatsBtn)
+        val avatarBtn: Button = findViewById(R.id.SW_AvatarBtn)
         val exitAccountBtn: Button = findViewById(R.id.SW_ExitAccountBtn)
         val dayModeCBox: CheckBox = findViewById(R.id.SW_DayModeCB)
         val nightModeCBox: CheckBox = findViewById(R.id.SW_NightModeCB)
         val systemModeCBox: CheckBox = findViewById(R.id.SW_SystemModeCB)
         val langSpinner: Spinner = findViewById(R.id.SW_LangSpinner)
+        val notificationsOnTV: TextView = findViewById(R.id.SW_NotifOnTextView)
+        val notificationsOffTV: TextView = findViewById(R.id.SW_NotifOffTextView)
+        val notificationsSwitch: SwitchCompat = findViewById(R.id.SW_NotificationsSC)
+
+        val languages = arrayOf("En", "Ru")
+        val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, languages)
+        langSpinner.adapter = arrayAdapter
 
         when (uiMode) {
             0 -> {
@@ -67,6 +76,21 @@ class SettingsWindow : AppCompatActivity() {
                 dayModeCBox.isChecked = false
                 nightModeCBox.isChecked = false
                 systemModeCBox.isChecked = true
+            }
+        }
+
+        when (prefs.getBoolean("Notifications", true)) {
+            true -> {
+                notificationsOffTV.visibility = View.INVISIBLE
+                notificationsOnTV.visibility = View.VISIBLE
+                notificationsSwitch.isChecked = true
+                ChatSingleton.isNotificationOn = true
+            }
+            false -> {
+                notificationsOnTV.visibility = View.INVISIBLE
+                notificationsOffTV.visibility = View.VISIBLE
+                notificationsSwitch.isChecked = false
+                ChatSingleton.isNotificationOn = false
             }
         }
 
@@ -143,6 +167,48 @@ class SettingsWindow : AppCompatActivity() {
             val messageWindow = message.create()
             messageWindow.show()
         }
+
+        notificationsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                notificationsOffTV.visibility = View.INVISIBLE
+                notificationsOnTV.visibility = View.VISIBLE
+                editor.apply {
+                    putBoolean("Notifications", true)
+                }.apply()
+                ChatSingleton.isNotificationOn = true
+            }
+            else {
+                notificationsOnTV.visibility = View.INVISIBLE
+                notificationsOffTV.visibility = View.VISIBLE
+                editor.apply {
+                    putBoolean("Notifications", false)
+                }.apply()
+                ChatSingleton.isNotificationOn = false
+            }
+        }
+
+//        langSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+//                val config = resources.configuration
+//                val lang = languages[position]
+//                val locale = Locale(lang)
+//                Locale.setDefault(locale)
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+//                    config.setLocale(locale)
+//                else
+//                    config.locale = locale
+//
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+//                    createConfigurationContext(config)
+//                resources.updateConfiguration(config, resources.displayMetrics)
+//
+//                setContentView(R.layout.settings_window)
+//            }
+//
+//            override fun onNothingSelected(p0: AdapterView<*>?) {
+//                TODO("Not yet implemented")
+//            }
+//        }
     }
 
     @Override
