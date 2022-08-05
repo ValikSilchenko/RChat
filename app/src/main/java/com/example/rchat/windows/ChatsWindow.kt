@@ -42,7 +42,6 @@ class ChatsWindow : AppCompatActivity() {
         setContentView(R.layout.chats_window)
 
 //        val networkConnection = NetworkConnectionLiveData(applicationContext)   //!
-
         val userLogin: TextView = findViewById(R.id.CW_AppNameTV)
         val chatArray: RecyclerView = findViewById(R.id.CW_ChatsRV)
         val moreBtn: ImageButton = findViewById(R.id.CW_MoreBtn)
@@ -73,7 +72,7 @@ class ChatsWindow : AppCompatActivity() {
             for (el in response) {
                 if ((el["sender"] as JSONObject)["username"].toString() == user) {
                     username = (el["recipient"] as JSONObject)["username"].toString()
-                    youTxt = "Вы:"
+                    youTxt = getString(R.string.you_title)
                     id = (el["recipient"] as JSONObject)["id"] as Int
                     unreadMsg = 0
                 } else {

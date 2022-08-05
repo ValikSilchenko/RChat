@@ -80,8 +80,7 @@ class ChatItselfWindow : AppCompatActivity() {
         }
 
         backToMainMenuBtn.setOnClickListener {
-            ChatSingleton.clearMessagesList()
-            startIntent()
+            closeChatItselfWindow()
         }
 
         chatNameTV.setOnClickListener {
@@ -107,11 +106,15 @@ class ChatItselfWindow : AppCompatActivity() {
 
     @Override
     override fun onBackPressed() {
-        startIntent()
+        closeChatItselfWindow()
     }
 
-    private fun startIntent() {
-        ChatSingleton.isInChat = false
+    private fun closeChatItselfWindow() {
+        ChatSingleton.apply {
+            isInChat = false
+            Billy = "Herrington"
+            clearMessagesList()
+        }
         super.onBackPressed()
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         finish()

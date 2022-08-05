@@ -45,7 +45,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
 //                    item.title = "N"
                     when (item.itemId) {
                         R.id.delete_chat_item -> {
-                            showAlertMessage(itemView.context, mLogin.text.toString())
+                            showAlertMessage(itemView.context, chatId.toString())
                             true
                         }
                         R.id.mute_chat_item -> {
