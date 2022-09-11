@@ -45,6 +45,7 @@ class MessageItemLVAdapter(
         outgoingTime.text = arrayList[position].outgoingTime
         val msgId = arrayList[position].msgId
 
+        // НЕ ЛЕЗЬ БЛЯТЬ ДЕБИЛ СУКА ЕБАНЫЙ
         // НИ В КОЕМ СЛУЧАЕ НЕ УБИРАТЬ ToString() - БЕЗ НЕГО НОРМАЛЬНО СООБЩЕНИЯ НЕ ВЫДЕЛЯЮТСЯ
         if (incomingMessage.text.toString() == "") {
             incomingContainer.visibility = View.GONE
