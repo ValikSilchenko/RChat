@@ -45,8 +45,8 @@ object ChatSingleton {
     val chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
     var isInChat = false
     var isNotificationOn = true
-    var Billy = "Herrington"
-    var Van = "Darkholme"
+    var Billy = "Herrington" // Логин собеседника
+    var Van = "Darkholme" // Логин авторизованного пользователя
     var cPackageName = ""
 
     fun setChatsWindow(recView: RecyclerView, username: String, incomingContext: Activity, pName: String) {
@@ -214,6 +214,7 @@ object ChatSingleton {
         val outgoingTime: String
 
         if (senderLogin == Van) {
+            println("Sending message")
             incomingLogin = ""
             incomingMessage = ""
             incomingTime = ""
@@ -221,6 +222,7 @@ object ChatSingleton {
             outgoingMessage = message
             outgoingTime = time
         } else {
+            println("Receiving message")
             incomingLogin = senderLogin
             incomingMessage = message
             incomingTime = time

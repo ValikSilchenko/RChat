@@ -45,11 +45,12 @@ class MessageItemLVAdapter(
         outgoingTime.text = arrayList[position].outgoingTime
         val msgId = arrayList[position].msgId
 
-        if (incomingMessage.text == "") {
+        // НИ В КОЕМ СЛУЧАЕ НЕ УБИРАТЬ ToString() - БЕЗ НЕГО НОРМАЛЬНО СООБЩЕНИЯ НЕ ВЫДЕЛЯЮТСЯ
+        if (incomingMessage.text.toString() == "") {
             incomingContainer.visibility = View.GONE
             incomingLogin.visibility = View.GONE
 
-        } else if (outgoingMessage.text == "") {
+        } else if (outgoingMessage.text.toString() == "") {
             outgoingContainer.visibility = View.GONE
             outgoingLogin.visibility = View.GONE
         }
