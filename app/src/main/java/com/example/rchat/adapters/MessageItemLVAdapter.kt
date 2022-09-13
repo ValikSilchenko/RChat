@@ -9,6 +9,8 @@ import android.widget.*
 import com.example.rchat.R
 import com.example.rchat.dataclasses.MessageItemDataClass
 
+/* Класс-адаптер для единичного элемента - сообщения
+*/
 class MessageItemLVAdapter(
     private val context: Activity,
     private val arrayList: ArrayList<MessageItemDataClass>
@@ -45,6 +47,8 @@ class MessageItemLVAdapter(
         outgoingTime.text = arrayList[position].outgoingTime
         val msgId = arrayList[position].msgId
 
+        /* Скрытие ненужных блоков в сообщении
+        */
         // НЕ ЛЕЗЬ БЛЯТЬ ДЕБИЛ СУКА ЕБАНЫЙ
         // НИ В КОЕМ СЛУЧАЕ НЕ УБИРАТЬ ToString() - БЕЗ НЕГО НОРМАЛЬНО СООБЩЕНИЯ НЕ ВЫДЕЛЯЮТСЯ
         if (incomingMessage.text.toString() == "") {
@@ -61,6 +65,8 @@ class MessageItemLVAdapter(
         else
             incomingMessage.text.toString()
 
+        /* Действия на долгое нажатие на сообщение
+        */
         view.setOnLongClickListener {
             val popupMenu = PopupMenu(context, it)
             popupMenu.setOnMenuItemClickListener { item ->

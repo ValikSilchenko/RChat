@@ -23,6 +23,8 @@ import com.example.rchat.dataclasses.PreviewChatDataClass
 import com.example.rchat.windows.ChatItselfWindow
 import org.json.JSONObject
 
+/* Утилитный класс (объект) основной логики приложения
+*/
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
     const val serverUrl = "http://194.87.248.192:8080"
@@ -49,6 +51,9 @@ object ChatSingleton {
     var Van = "Darkholme" // Логин авторизованного пользователя
     var cPackageName = ""
 
+    /* Сеттер окна чатов
+        Вызывается в ChatsWindow.kt в методе onCreate()
+     */
     fun setChatsWindow(recView: RecyclerView, username: String, incomingContext: Activity, pName: String) {
         Van = username
         chatsWindowRV = recView
@@ -60,6 +65,9 @@ object ChatSingleton {
         createNotificationChannel()
     }
 
+    /* Сеттер окна самого чата
+        Вызывается в ChatItselfWindow.kt в методе onCreate()
+     */
     fun setChatItselfWindow(
         recView: ListView,
         username: String,
@@ -74,14 +82,23 @@ object ChatSingleton {
         messageEditText = editText
     }
 
+    /* Функция открытия соединения с сокетом
+        Вызывается в BackgroundService.kt в методе openCloseConnection()
+     */
     fun openConnection(username: String) {
         webSocketClient.connect(username)
     }
 
+    /* Функция закрытия соединения с сокетом
+        Вызывается в BackgroundService.kt в методе openCloseConnection() и в методе onDestroy()
+     */
     fun closeConnection() {
         webSocketClient.disconnect()
     }
 
+    /* Функция отправки сообщения
+        Вызывается в ChatItselfWindow.kt в методе onCreate() при нажатии кнопки отправки сообщения
+     */
     fun sendMessage(recipientLogin: String, message: String, messageField: EditText) {
         try {
             webSocketClient.send(recipientLogin, message, Van)
@@ -95,6 +112,9 @@ object ChatSingleton {
         }
     }
 
+    /* Функция получения и последующей обработки сообщения
+        Вызывается в WebSocketClient.kt в методе connect()
+     */
     fun processMessage(message: Map<*, *>) {
         chatsWindowActivity.runOnUiThread {
             val parsedMessage = JSONObject(message)
@@ -144,6 +164,9 @@ object ChatSingleton {
         }
     }
 
+    /* Функция создания канала для получения уведомлений от чатов
+        Вызывается в этом объекте в функции setChatsWindow()
+     */
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager =
@@ -159,6 +182,9 @@ object ChatSingleton {
         }
     }
 
+    /* Функция показа уведомлений от чатов
+        Вызывается в этом объекте в функции processMessage()
+     */
     private fun sendNotification(notificationId: Int, loginTitle: String, messageText: String) {
         if (isNotificationOn) {
             val intent = Intent(chatsWindowActivity, ChatItselfWindow::class.java)
@@ -179,10 +205,16 @@ object ChatSingleton {
         }
     }
 
+    /* Функция удаления всех уведомлений
+        Вызывается в SettingsWindow.kt в методе exitAccount()
+     */
     fun deleteNotification() {
         notificationManager.cancelAll()
     }
 
+    /* Функция добавления нового чата в список чатов
+        Вызывается в этом объекте в функции processMessage() и в ChatsWindow.kt в методе onCreate() при получении ответа на запрос на список чатов
+     */
     fun updateChatList(
         lastMessageRecipient: String,
         time: String,
@@ -205,6 +237,9 @@ object ChatSingleton {
         chatsArrayAdapter.notifyItemInserted(0)
     }
 
+    /* Функция добавления нового сообщения в список сообщений
+        Вызывается в этом объекте в функции processMessage() и в ChatItselfWindow.kt в методе onCreate()
+     */
     fun updateMessageList(senderLogin: String, message: String, time: String, msgId: Int) {
         val incomingLogin: String
         val incomingMessage: String
@@ -244,24 +279,39 @@ object ChatSingleton {
         messagesArrayAdapter.notifyDataSetChanged()
     }
 
+    /* Функция очистки списка сообщений
+        Вызывается в ChatItselfWindow.kt в методе closeChatItselfWindow()
+     */
     fun clearMessagesList() {
         if (messagesArrayList.isNotEmpty()) {
             messagesArrayList.clear()
         }
     }
 
+    /* Функция фокусировки на последнем сообщении
+        Вызывается в этом объекте в функции processMessage() и в ChatItselfWindow.kt в методе onCreate() после получения всех сообщений из запроса
+     */
     fun focusOnLastItem(unreadCount: Int) {
         chatItselfRV?.setSelection(messagesArrayList.size - 1 - unreadCount)
     }
 
+    /* Функция отправки запроса на пометку сообщения прочитанным
+        Вызывается в ChatItselfWindow.kt в методе onCreate() после получения всех сообщений из запроса
+     */
     fun sendRequestForReading(sender: String, msgId: Int) {
         webSocketClient.send(Van, sender, msgId)
     }
 
+    /* Функция добавления пользователя в список для беседы
+        Вызывается в CreateGroupChatRVAdapter.kt в методе init
+     */
     fun addUserForGroupChat(userName: String) {
         usersArrayList.add(CGCDataClass(userName))
     }
 
+    /* Функция удаления пользователя из списка для беседы
+        Вызывается в CreateGroupChatRVAdapter.kt в методе init
+     */
     fun deleteUserFromGroupChatArray(userName: String) {
         for (el in usersArrayList.indices) {
             if (usersArrayList[el].login == userName) {

@@ -16,6 +16,8 @@ import com.example.rchat.dataclasses.PreviewChatDataClass
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.windows.ChatItselfWindow
 
+/* Класс-адаптер для единичного элемента - превью чата
+*/
 class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass>) :
     RecyclerView.Adapter<PreviewChatRVAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -27,6 +29,8 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
         var chatId = 0
 
         init {
+            /* Переход в чат по нажатию на чат
+            */
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ChatItselfWindow::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
@@ -39,6 +43,8 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
                 itemView.context.startActivity(intent)
             }
 
+            /* Долгое нажатие на чат
+            */
             itemView.setOnLongClickListener {
                 val popupMenu = PopupMenu(itemView.context, it)
                 popupMenu.setOnMenuItemClickListener { item ->
@@ -50,6 +56,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
                         }
                         R.id.mute_chat_item -> {
                             TODO("Добавить действие для уведомлений чата")
+                            Toast.makeText(itemView.context, itemView.context.getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
                             true
                         }
                         else -> false
@@ -87,8 +94,12 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
             mInfoTxt.text = arrayList[position].infoTxt
             chatId = arrayList[position].chatId
 
+            /* Для скролла длинных сообщений
+            */
             mMessage.isSelected = true
 
+            /* Установка количества непрочитанных сообщений
+            */
             if (arrayList[position].unreadMsgCount == 0) {
                 mInfoTxt.apply {
                     if (arrayList[position].infoTxt != "") {
@@ -111,6 +122,8 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
         return arrayList.size
     }
 
+    /* Функция показа предупреждающего сообщения при удалении чата
+    */
     private fun showAlertMessage(context: Context, chatName: String) {
         val message: AlertDialog.Builder = AlertDialog.Builder(context)
         message

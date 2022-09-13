@@ -7,6 +7,7 @@
     android:background="?attr/background_color"
     tools:context=".windows.ChatsWindow">
 
+    <!-- Верхний контейнер -->
     <LinearLayout
         android:id="@+id/CW_TopContainer"
         android:layout_width="match_parent"
@@ -21,6 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- Кнопка дополнительных действий -->
         <ImageButton
             android:id="@+id/CW_MoreBtn"
             android:layout_width="50dp"
@@ -31,6 +33,7 @@
             android:focusable="true"
             android:src="@drawable/ic_more" />
 
+        <!-- Логин авторизованного пользователя -->
         <TextView
             android:id="@+id/CW_AppNameTV"
             android:layout_width="match_parent"
@@ -41,6 +44,7 @@
             android:textSize="30sp" />
     </LinearLayout>
 
+    <!-- Верхняя разграничительная линия -->
     <View
         android:id="@+id/CW_TopLine"
         android:layout_width="match_parent"
@@ -52,6 +56,7 @@
         app:layout_constraintBottom_toTopOf="@id/CW_ChatsRV"
         android:layout_marginTop="5dp" />
 
+    <!-- Список чатов -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/CW_ChatsRV"
         android:layout_width="match_parent"

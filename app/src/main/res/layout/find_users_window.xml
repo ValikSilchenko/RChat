@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".windows.FindUsersWindow">
 
+    <!-- Кнопка выхода назад -->
     <ImageButton
         android:id="@+id/FUW_BackBtn"
         android:layout_width="50dp"
@@ -20,6 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Контейнер поиска пользователя -->
     <LinearLayout
         android:id="@+id/FUW_Container"
         android:layout_width="match_parent"
@@ -30,6 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/FUW_BackBtn">
 
+        <!-- Кнопка поиска пользователя -->
         <ImageButton
             android:id="@+id/FUW_FindUserBtn"
             android:layout_width="50dp"
@@ -40,6 +43,7 @@
             android:background="@drawable/round_corner"
             android:focusable="true" />
 
+        <!-- Поле ввода логина -->
         <EditText
             android:id="@+id/FUW_FindUserLoginET"
             android:layout_width="match_parent"
@@ -53,6 +57,7 @@
             android:textColorHint="?attr/edit_txt_color" />
     </LinearLayout>
 
+    <!-- Список найденных пользователей -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/FUW_FoundUsersRV"
         android:layout_width="match_parent"

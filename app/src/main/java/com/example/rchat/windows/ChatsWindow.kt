@@ -21,11 +21,13 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
+/* Оконный класс списка чатов
+*/
 class ChatsWindow : AppCompatActivity() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        /* Установка темы приложения
+        */
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
         when (prefs.getString("NightMode", "Day")) {
             "Day" -> setTheme(R.style.Theme_Light)
@@ -48,6 +50,8 @@ class ChatsWindow : AppCompatActivity() {
         val user = ChatFunctions().getSavedLogin(this)
         userLogin.text = user
 
+        /* Сеттер данного окна в синглтоне
+        */
         ChatSingleton.setChatsWindow(chatArray, user, this, packageName)
 
 //        networkConnection.observe(this) { isConnected ->
@@ -57,6 +61,8 @@ class ChatsWindow : AppCompatActivity() {
 //                Toast.makeText(applicationContext, "Internet disconnected", Toast.LENGTH_SHORT).show()
 //        }
 
+        /* Получение списка чатов
+        */
         try {
             val response: List<JSONObject> = JasonSTATHAM().stringToListOfJSONObj(
                 Requests().get(
@@ -106,6 +112,8 @@ class ChatsWindow : AppCompatActivity() {
             )
         }
 
+        /* Нажатие кнопки опций
+        */
         moreBtn.setOnClickListener {
             val popupMenu = PopupMenu(this, it)
             popupMenu.setOnMenuItemClickListener { item ->

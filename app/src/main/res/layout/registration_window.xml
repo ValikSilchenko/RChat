@@ -7,6 +7,7 @@
     android:background="?attr/background_color"
     tools:context=".windows.RegistrationWindow">
 
+    <!-- Верхний текст -->
     <TextView
         android:id="@+id/RW_TopTextTV"
         android:layout_width="wrap_content"
@@ -23,6 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Поле ввода логина -->
     <EditText
         android:id="@+id/RW_LoginET"
         android:layout_width="match_parent"
@@ -38,6 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/RW_TopTextTV" />
 
+    <!-- Поле ввода электронной почты -->
     <EditText
         android:id="@+id/RW_EmailET"
         android:layout_width="match_parent"
@@ -53,6 +56,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/RW_LoginET" />
 
+    <!-- Поле ввода номера телефона -->
     <EditText
         android:id="@+id/RW_PhoneNumberET"
         android:layout_width="match_parent"
@@ -70,6 +74,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/RW_EmailET" />
 
+    <!-- Поле ввода пароля -->
     <EditText
         android:id="@+id/RW_PasswordET"
         android:layout_width="match_parent"
@@ -86,6 +91,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/RW_PhoneNumberET" />
 
+    <!-- Поле повторного ввода паспорта -->
     <EditText
         android:id="@+id/RW_RepeatPasswordET"
         android:layout_width="match_parent"
@@ -102,6 +108,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/RW_PasswordET" />
 
+    <!-- Кнопка регистрации -->
     <Button
         android:id="@+id/RW_RegistrationBtn"
         android:layout_width="match_parent"
@@ -118,6 +125,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/RW_RepeatPasswordET" />
 
+    <!-- Кнопка перехода в окно авторизации -->
     <Button
         android:id="@+id/RW_AuthorizeBtn"
         android:layout_width="match_parent"

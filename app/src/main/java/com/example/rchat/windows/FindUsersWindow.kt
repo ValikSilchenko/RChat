@@ -17,6 +17,8 @@ import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
 import com.example.rchat.utils.Requests
 
+/* Оконный класс поиска пользователей для создания нового чата
+*/
 class FindUsersWindow : AppCompatActivity() {
 
     private var foundUserArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
@@ -24,6 +26,8 @@ class FindUsersWindow : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        /* Установка темы приложения
+        */
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
         when (prefs.getString("NightMode", "Day")) {
             "Day" -> setTheme(R.style.Theme_Light)
@@ -49,12 +53,16 @@ class FindUsersWindow : AppCompatActivity() {
         foundUsersRV.layoutManager = LinearLayoutManager(this)
         foundUsersRV.adapter = arrayAdapter
 
+        /* Нажатие кнопки возврата
+        */
         backToChatsWindow.setOnClickListener {
             onBackPressed()
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             finish()
         }
 
+        /* Нажатие кнопки поиска пользователей по логину
+        */
         findBtn.setOnClickListener {
             if (loginInput.text.isNotEmpty()) {
                 try {

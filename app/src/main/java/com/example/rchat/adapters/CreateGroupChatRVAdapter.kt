@@ -10,6 +10,8 @@ import com.example.rchat.R
 import com.example.rchat.dataclasses.PreviewChatDataClass
 import com.example.rchat.utils.ChatSingleton
 
+/* Класс-адаптер для единичного элемента - превью найденного пользователя для создания беседы
+*/
 class CreateGroupChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass>) :
     RecyclerView.Adapter<CreateGroupChatRVAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

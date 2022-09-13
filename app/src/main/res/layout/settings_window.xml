@@ -7,6 +7,7 @@
     android:background="?attr/background_color"
     tools:context=".windows.SettingsWindow">
 
+    <!-- Кнопка выхода назад -->
     <ImageButton
         android:id="@+id/SW_ToChatsBtn"
         android:layout_width="50dp"
@@ -21,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--Avatar-->
+    <!-- Контейнер аватара -->
     <LinearLayout
         android:id="@+id/SW_AvatarContainer"
         android:layout_width="wrap_content"
@@ -32,6 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- Аватар -->
         <ImageView
             android:id="@+id/SW_AvatarImg"
             android:layout_width="100dp"
@@ -41,6 +43,7 @@
             android:backgroundTint="?attr/chat_txt_color"
             android:src="@drawable/ic_avatar" />
 
+        <!-- Кнопка смены аватара -->
         <Button
             android:id="@+id/SW_AvatarBtn"
             android:layout_width="wrap_content"
@@ -49,10 +52,9 @@
             android:background="@drawable/button_round_corner"
             android:text="@string/change_avatar_title"
             android:textColor="@color/white" />
-
     </LinearLayout>
 
-    <!--Night Mode-->
+    <!-- Контейнер темной темы -->
     <LinearLayout
         android:id="@+id/SW_NightModeContainer"
         android:layout_width="match_parent"
@@ -69,6 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!-- Текст темной темы -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -80,6 +83,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- Контейнер выбора темы -->
             <LinearLayout
                 android:id="@+id/SW_ModesSelection_Container"
                 android:layout_width="wrap_content"
@@ -89,6 +93,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <!-- Контейнер темы светлой -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -96,12 +101,14 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp">
 
+                    <!-- CheckBox светлой темы -->
                     <CheckBox
                         android:id="@+id/SW_DayModeCB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />
 
+                    <!-- Текст светлой темы -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -109,6 +116,7 @@
                         android:textColor="?attr/chat_txt_color" />
                 </LinearLayout>
 
+                <!-- Контейнер темы темной -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -116,12 +124,14 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp">
 
+                    <!-- CheckBox темной темы -->
                     <CheckBox
                         android:id="@+id/SW_NightModeCB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />
 
+                    <!-- Текст темной темы -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -129,6 +139,7 @@
                         android:textColor="?attr/chat_txt_color" />
                 </LinearLayout>
 
+                <!-- Контейнер темы системной -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -136,12 +147,14 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp">
 
+                    <!-- CheckBox системной темы -->
                     <CheckBox
                         android:id="@+id/SW_SystemModeCB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />
 
+                    <!-- Текст системной темы -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -152,7 +165,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
-    <!--Localization-->
+    <!-- Контейнер локализации -->
     <LinearLayout
         android:id="@+id/SW_LocalizationContainer"
         android:layout_width="match_parent"
@@ -165,6 +178,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/SW_NightModeContainer">
 
+        <!-- Текст локализации -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -173,6 +187,7 @@
             android:textColor="?attr/chat_txt_color"
             android:textSize="25sp" />
 
+        <!-- Спиннер локализации -->
         <Spinner
             android:id="@+id/SW_LangSpinner"
             android:layout_width="match_parent"
@@ -181,6 +196,7 @@
             android:layout_marginStart="10dp" />
     </LinearLayout>
 
+    <!-- Контейнер уведомлений -->
     <LinearLayout
         android:id="@+id/SW_NotificationsContainer"
         android:layout_width="match_parent"
@@ -193,6 +209,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/SW_LocalizationContainer">
 
+        <!-- Текст уведомлений -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -201,12 +218,14 @@
             android:textColor="?attr/chat_txt_color"
             android:textSize="25sp" />
 
+        <!-- Контейнер переключателя -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginStart="10dp">
 
+            <!-- Текст выключенных уведомлений -->
             <TextView
                 android:id="@+id/SW_NotifOffTextView"
                 android:layout_width="wrap_content"
@@ -215,12 +234,14 @@
                 android:textColor="?attr/chat_txt_color"
                 android:textSize="20sp" />
 
+            <!-- Переключатель уведомлений -->
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/SW_NotificationsSC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:thumbTint="?attr/main_color" />
 
+            <!-- Текст включенных уведомлений -->
             <TextView
                 android:id="@+id/SW_NotifOnTextView"
                 android:layout_width="wrap_content"
@@ -231,6 +252,7 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Кнопка выхода из аккаунта -->
     <Button
         android:id="@+id/SW_ExitAccountBtn"
         android:layout_width="wrap_content"
@@ -244,5 +266,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

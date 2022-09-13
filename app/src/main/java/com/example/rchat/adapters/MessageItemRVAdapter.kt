@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.R
 import com.example.rchat.dataclasses.MessageItemDataClass
 
+/* Класс=адаптер для единичного элемента - сообщения
+*/
 class MessageItemRVAdapter(private val arrayList: ArrayList<MessageItemDataClass>) :
     RecyclerView.Adapter<MessageItemRVAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -25,6 +27,8 @@ class MessageItemRVAdapter(private val arrayList: ArrayList<MessageItemDataClass
         val outgoingContainer: LinearLayout = itemView.findViewById(R.id.MI_OutgoingContainer)
         val outgoingTime: TextView = itemView.findViewById(R.id.MI_OutgoingTimeTV)
 
+        /* Действия на долгое нажатие на сообщение
+        */
         init {
             itemView.setOnLongClickListener {
                 val popupMenu = PopupMenu(itemView.context, it)
@@ -93,6 +97,8 @@ class MessageItemRVAdapter(private val arrayList: ArrayList<MessageItemDataClass
             outgoingMessage.text = arrayList[position].outgoingMessage
             outgoingTime.text = arrayList[position].outgoingTime
 
+            /* Скрытие ненужных блоков в сообщении
+            */
             // НЕ ЛЕЗЬ БЛЯТЬ ДЕБИЛ СУКА ЕБАНЫЙ
             // НИ В КОЕМ СЛУЧАЕ НЕ УБИРАТЬ ToString() - БЕЗ НЕГО НОРМАЛЬНО СООБЩЕНИЯ НЕ ВЫДЕЛЯЮТСЯ
             if (incomingMessage.text.toString() == "") {

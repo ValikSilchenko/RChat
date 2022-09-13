@@ -15,9 +15,13 @@ import com.example.rchat.R
 import com.example.rchat.adapters.CreateGroupChatRVAdapter
 import com.example.rchat.utils.ChatSingleton
 
+/* Оконный класс создания бесед - групповых чатов
+*/
 class CreateGroupChatWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        /* Установка темы приложения
+        */
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
         when (prefs.getString("NightMode", "Day")) {
             "Day" -> setTheme(R.style.Theme_Light)
@@ -43,6 +47,8 @@ class CreateGroupChatWindow : AppCompatActivity() {
         usersArray.layoutManager = LinearLayoutManager(this)
         usersArray.adapter = recViewAdapter
 
+        /* Нажатие кнопки возврата
+        */
         backBtn.setOnClickListener {
             val intent = Intent(this, ChatsWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
@@ -50,6 +56,8 @@ class CreateGroupChatWindow : AppCompatActivity() {
             finish()
         }
 
+        /* Нажатие кнопки создания беседы
+        */
         createBtn.setOnClickListener {
             Toast.makeText(this, getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
         }

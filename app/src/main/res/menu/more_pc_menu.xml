@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Выключение уведомлений от чата -->
     <item
         android:id="@+id/mute_chat_item"
         android:title="@string/notif_off_title"
         android:icon="@drawable/ic_mute" />
 
+    <!-- Удаление чата -->
     <item
         android:id="@+id/delete_chat_item"
         android:title="@string/delete_chat_title"

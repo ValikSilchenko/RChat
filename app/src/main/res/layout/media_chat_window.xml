@@ -7,6 +7,7 @@
     android:background="?attr/background_color"
     tools:context=".windows.MediaChatWindow">
 
+    <!-- Кнопка выхода назад -->
     <ImageButton
         android:id="@+id/MCW_BackBtn"
         android:layout_width="50dp"
@@ -20,6 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Имя чата / беседы, откуда было вызвано окно -->
     <TextView
         android:id="@+id/MCW_ChatNameTV"
         android:layout_width="wrap_content"

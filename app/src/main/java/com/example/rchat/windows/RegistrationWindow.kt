@@ -12,11 +12,14 @@ import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.Requests
 
-
+/* Оконный класс окна регистрации
+*/
 class RegistrationWindow : AppCompatActivity() {
     private lateinit var login: String
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        /* Установка темы приложения
+        */
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
         when (prefs.getString("NightMode", "Day")) {
             "Day" -> setTheme(R.style.Theme_Light)
@@ -40,10 +43,14 @@ class RegistrationWindow : AppCompatActivity() {
         val registrationBtn: Button = findViewById(R.id.RW_RegistrationBtn)
         val authorizeBtn: Button = findViewById(R.id.RW_AuthorizeBtn)
 
+        /* Нажатие кнопки авторизации
+        */
         authorizeBtn.setOnClickListener {
             onBackPressed()
         }
 
+        /* Нажатие кнопки регистрации
+        */
         registrationBtn.setOnClickListener {
             if (emailText.text.isNotEmpty() && loginText.text.isNotEmpty()
                 && phoneNumberText.text.isNotEmpty() && passwordText.text.isNotEmpty()

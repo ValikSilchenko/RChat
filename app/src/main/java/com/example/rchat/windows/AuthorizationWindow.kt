@@ -14,10 +14,14 @@ import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.Requests
 
+/* Оконный класс окна авторизации
+*/
 class AuthorizationWindow : AppCompatActivity() {
     private lateinit var login: String
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        /* Установка темы приложения
+        */
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
         when (prefs.getString("NightMode", "Day")) {
             "Day" -> setTheme(R.style.Theme_Light)
@@ -33,6 +37,8 @@ class AuthorizationWindow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.authorize_window)
 
+        /* Открытие окна чатов, если пользователь авторизован
+        */
         if (ChatFunctions().isAuthorized(this)) {
             login = ChatFunctions().getSavedLogin(this)
             if (!ChatFunctions().isServiceRunning(
@@ -49,6 +55,8 @@ class AuthorizationWindow : AppCompatActivity() {
         val enterAccountBtn: Button = findViewById(R.id.AW_AuthorizeBtn)
         val noBitches: Button = findViewById(R.id.AW_NoAccountBtn)
 
+        /* Нажатие кнопки открытия окна регистрации
+        */
         noBitches.setOnClickListener {
             val intent = Intent(this, RegistrationWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
@@ -56,6 +64,8 @@ class AuthorizationWindow : AppCompatActivity() {
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
 
+        /* Нажатие кнопки входа в аккаунт
+        */
         enterAccountBtn.setOnClickListener {
             if (authorizeLoginText.text.isNotEmpty() && authorizePasswordText.text.isNotEmpty()) {
                 login = authorizeLoginText.text.toString()
@@ -122,6 +132,8 @@ class AuthorizationWindow : AppCompatActivity() {
         messageWindow.show()
     }
 
+    /* Функция открытия другого окна
+    */
     private fun startIntent(Window: Class<*>?) {
         startActivity(Intent(this, Window))
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)

@@ -8,7 +8,12 @@ import android.os.Build
 import androidx.appcompat.app.AlertDialog
 import com.example.rchat.R
 
+/* Утилитный класс функций, используемых в различных других классах
+*/
 class ChatFunctions {
+    /* Функция показа всплывающего окна
+        Вызывается в ChatSingleton.kt  в методе sendMessage()
+     */
     fun showMessage(titleText: CharSequence, messageText: CharSequence, context: Context) {
         val message: AlertDialog.Builder = AlertDialog.Builder(context)
         message
@@ -22,6 +27,9 @@ class ChatFunctions {
         messageWindow.show()
     }
 
+    /* Функция проверки, авторизован ли пользователь
+        Вызывается в AuthorizationWindow.kt в методе onCreate() и в SplashScreenWindow.kt в методе onCreate()
+     */
     fun isAuthorized(context: Context): Boolean {
         val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
         val isAuthorized = prefs.getBoolean("IS_AUTHORIZED_KEY", false)
@@ -30,6 +38,10 @@ class ChatFunctions {
         return false
     }
 
+    /* Функция сохранения логина и состояния авторизованности пользователя ("IS_AUTHORIZED_KEY")
+        Вызывается в AuthorizationWindow.kt в методе onCreate() при нажатии кнопки входа в аккаунт
+        и в RegistrationWindow.kt в методе OnCreate() при нажатии кнопки регистрации
+     */
     fun saveLogin(context: Context, stringToSave: String, isAuthorized: Boolean) {
         val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
         val editor = prefs.edit()
@@ -39,11 +51,18 @@ class ChatFunctions {
         }.apply()
     }
 
+    /* Функция возврата сохраненного логина
+        Вызывается в BackgroundService.kt в методе openCloseConnection(), в AuthorizationWindow.kt в методе onCreate(),
+        в ChatsWindow.kt в методе onCreate() и в SplashScreenWindow.kt в методе onCreate()
+     */
     fun getSavedLogin(context: Context): String {
         val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
         return prefs.getString("LOGIN_KEY", "NaN").toString()
     }
 
+    /* Функция удаления всех сохраненных данных
+        Вызывается в SettingsWindow.kt в методе exitAccount()
+     */
     fun deleteData(context: Context) {
         val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
         val editor = prefs.edit()
@@ -55,6 +74,10 @@ class ChatFunctions {
         }.apply()
     }
 
+    /* Функция проверки, работает ли фоновый процесс
+        Вызывается в AuthorizationWindow.kt в методе onCreate(), в SettingsWindow.kt в методе exitAccount()
+        и в SplashScreenWindow.kt в методе onCreate() в момент истечения времени показа этого окна
+     */
     fun isServiceRunning(serviceClass: Class<*>, context: Context): Boolean {
         val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in activityManager.getRunningServices(Integer.MAX_VALUE)) {
@@ -65,6 +88,9 @@ class ChatFunctions {
         return false
     }
 
+    /* Функция преобразования телефонного номера
+        Вызывается в RegistrationWindow в методе onCreate() при нажатии кнопки регистрации пользователя
+     */
     fun transformPhoneNumber(number: String): String {
         var result = ""
         if (number.length > 10) {
@@ -78,6 +104,10 @@ class ChatFunctions {
         return result
     }
 
+    /* Функция проверки интернет-соединения
+        Вызывается в AuthorizationWindow() в методе onCreate() при нажатии кнопки входа в аккаунт
+        и в RegistrationWindow.kt в методе onCreate() при нажатии кнопки регистрации
+     */
     fun isInternetAvailable(context: Context): Boolean {
         if (context == null)
             return false

@@ -15,6 +15,8 @@ import com.example.rchat.utils.BackgroundService
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 
+/* Оконный класс окна настроек
+*/
 class SettingsWindow : AppCompatActivity() {
 
     private val avatarImg: ImageView? = null
@@ -25,6 +27,8 @@ class SettingsWindow : AppCompatActivity() {
         val editor = prefs.edit()
         var uiMode = 0
 
+        /* Установка темы приложения
+        */
         when (prefs.getString("NightMode", "Day")) {
             "Day" -> {
                 setTheme(R.style.Theme_Light)
@@ -61,6 +65,8 @@ class SettingsWindow : AppCompatActivity() {
         val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, languages)
         langSpinner.adapter = arrayAdapter
 
+        /* Настройка "темовых" CheckBox в зависимости от темы приложения при открытии окна
+        */
         when (uiMode) {
             0 -> {
                 dayModeCBox.isChecked = true
@@ -79,6 +85,8 @@ class SettingsWindow : AppCompatActivity() {
             }
         }
 
+        /* Настройка ползунка уведомлений при открытии окна
+        */
         when (prefs.getBoolean("Notifications", true)) {
             true -> {
                 notificationsOffTV.visibility = View.INVISIBLE
@@ -94,6 +102,8 @@ class SettingsWindow : AppCompatActivity() {
             }
         }
 
+        /* Установка светлой темы
+        */
         dayModeCBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 nightModeCBox.isChecked = false
@@ -108,6 +118,8 @@ class SettingsWindow : AppCompatActivity() {
                 }.apply()
         }
 
+        /* Установка темной темы
+        */
         nightModeCBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 dayModeCBox.isChecked = false
@@ -122,6 +134,8 @@ class SettingsWindow : AppCompatActivity() {
                 }.apply()
         }
 
+        /* Установка системной темы
+        */
         systemModeCBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 dayModeCBox.isChecked = false
@@ -136,14 +150,20 @@ class SettingsWindow : AppCompatActivity() {
                 }.apply()
         }
 
+        /* Нажатие кнопки возврата
+        */
         backBtn.setOnClickListener {
             startIntent()
         }
 
+        /* Нажатие кнопки смены аватара
+        */
         avatarBtn.setOnClickListener {
             Toast.makeText(this, getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
         }
 
+        /* Нажатие кнопки выхода из аккаунта
+        */
         exitAccountBtn.setOnClickListener {
             val message: AlertDialog.Builder = AlertDialog.Builder(this)
             message
@@ -168,6 +188,8 @@ class SettingsWindow : AppCompatActivity() {
             messageWindow.show()
         }
 
+        /* Переключение ползунка уведомлений
+        */
         notificationsSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 notificationsOffTV.visibility = View.INVISIBLE
@@ -216,11 +238,15 @@ class SettingsWindow : AppCompatActivity() {
         startIntent()
     }
 
+    /* Функция возврата на предыдущее окно
+    */
     private fun startIntent() {
         super.onBackPressed()
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 
+    /* Функция выхода из аккаунта и очистки всех данных аккаунта в приложении
+    */
     private fun exitAccount() {
         if (ChatFunctions().isServiceRunning(
                 BackgroundService::class.java,

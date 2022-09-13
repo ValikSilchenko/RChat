@@ -12,9 +12,13 @@ import com.example.rchat.R
 import com.example.rchat.utils.BackgroundService
 import com.example.rchat.utils.ChatFunctions
 
+/* Оконный класс приветственного окна
+*/
 class SplashScreenWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        /* Установка темы приложения
+        */
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
         when (prefs.getString("NightMode", "Day")) {
             "Day" -> setTheme(R.style.Theme_Light)
@@ -33,6 +37,8 @@ class SplashScreenWindow : AppCompatActivity() {
         val welcomeTxt: TextView = findViewById(R.id.SSW_WelcomeTV)
         val loginText: TextView = findViewById(R.id.SSW_LoginTV)
 
+        /* Показ различных текстов в зависимости от того, авторизован пользователь или нет
+        */
         if (!ChatFunctions().isAuthorized(this)) {
             welcomeTxt.text = getString(R.string.welcome_rchat_title)
             loginText.visibility = View.GONE
@@ -42,20 +48,24 @@ class SplashScreenWindow : AppCompatActivity() {
             loginText.text = ChatFunctions().getSavedLogin(this)
         }
 
+        /* Открытие нового окна через какое-то время
+        */
         val handler = Handler()
         handler.postDelayed({
             if (ChatFunctions().isAuthorized(this)) {
                 if (!ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
                     startService(Intent(applicationContext, BackgroundService::class.java))
-                newWindow(ChatsWindow::class.java)
+                openNewWindow(ChatsWindow::class.java)
             }
             else {
-                newWindow(AuthorizationWindow::class.java)
+                openNewWindow(AuthorizationWindow::class.java)
             }
         }, 3000)
     }
 
-    private fun newWindow(window: Class<*>) {
+    /* Функция открытия нового окна
+    */
+    private fun openNewWindow(window: Class<*>) {
         val mIntent = Intent(this, window)
         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(mIntent)

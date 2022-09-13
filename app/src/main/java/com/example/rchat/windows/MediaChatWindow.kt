@@ -9,9 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
 import com.example.rchat.utils.ChatSingleton
 
+/* Оконный класс медиавложений в чате
+*/
 class MediaChatWindow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        /* Установка темы приложения
+        */
         val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
         when (prefs.getString("NightMode", "Day")) {
             "Day" -> setTheme(R.style.Theme_Light)
@@ -32,6 +36,8 @@ class MediaChatWindow : AppCompatActivity() {
 
         testTxt.text = ChatSingleton.chatName
 
+        /* Нажатие кнопки возврата
+        */
         backBtn.setOnClickListener {
             super.onBackPressed()
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)

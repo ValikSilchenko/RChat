@@ -13,6 +13,8 @@ import com.example.rchat.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
+/* Утилитный класс фонового процесса
+*/
 class BackgroundService : Service() {
 
     private var flag = 0
@@ -23,6 +25,8 @@ class BackgroundService : Service() {
         throw UnsupportedOperationException("Not yet implemented")
     }
 
+    /* Срабатывает при запуске фонового процесса - показывает постоянное уведомление, запускает функцию открытия-закрытия соединения
+    */
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         createNotificationChannel()
         val builder = NotificationCompat.Builder(applicationContext, "serviceID")
@@ -35,6 +39,8 @@ class BackgroundService : Service() {
         return START_STICKY
     }
 
+    /* Срабатывает при завершении фонового процесса - закрывает соединение
+    */
     override fun onDestroy() {
         super.onDestroy()
         flag = 1
@@ -42,6 +48,8 @@ class BackgroundService : Service() {
         stopForeground(true)
     }
 
+    /* Функция создания канала для показа постоянного уведомления
+    */
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -54,6 +62,8 @@ class BackgroundService : Service() {
         }
     }
 
+    /* Функция открытия-закрытия соединения
+    */
     private fun openCloseConnection() {
         GlobalScope.async {
             while (flag == 0) {
