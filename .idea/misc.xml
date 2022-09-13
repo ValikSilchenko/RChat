@@ -6,11 +6,13 @@
         <entry key="..\:/Users/D0gg/AndroidStudioProjects/RChat/app/src/main/res/layout/preview_chat.xml" value="0.24954710144927536" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/drawable-anydpi/ic_Back_Btn_Image.xml" value="0.214" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/drawable-anydpi/ic_Send_Btn_Image.xml" value="0.1555" />
+        <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/drawable-anydpi/ic_delete.xml" value="0.187" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/drawable-anydpi/ic_done.xml" value="0.233" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/drawable-anydpi/ic_message_img.xml" value="0.144" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/drawable-anydpi/ic_unread_img.xml" value="0.233" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/drawable/MI_Background.xml" value="0.233" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/drawable/button_round_corner.xml" value="0.1055" />
+        <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/drawable/ciw_message_input_round_corner.xml" value="0.187" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.233" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/drawable/mi_background.xml" value="0.233" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/drawable/preview_chat_roundcorner.xml" value="0.233" />
@@ -49,12 +51,12 @@
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/outcoming_message_item.xml" value="0.3845108695652174" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/outcomingmessage_item.xml" value="0.3845108695652174" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/preview_chat.xml" value="0.22" />
-        <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/preview_chat_item.xml" value="0.22" />
+        <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/preview_chat_item.xml" value="0.33" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/registration_window.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/roundcorner.xml" value="0.3692708333333333" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/roundcorners.xml" value="0.3692708333333333" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/settings.xml" value="0.3845108695652174" />
-        <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/settings_window.xml" value="0.22" />
+        <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/settings_window.xml" value="0.33" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/splash_screen_window.xml" value="0.15443840579710144" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/menu/chatswindow_menu.xml" value="0.3692708333333333" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/menu/more_cw_menu.xml" value="0.3692708333333333" />

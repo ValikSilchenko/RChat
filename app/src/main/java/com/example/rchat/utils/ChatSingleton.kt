@@ -44,8 +44,9 @@ object ChatSingleton {
     private var usersArrayList: ArrayList<CGCDataClass> = ArrayList()
     val chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
     var isInChat = false
-    var Billy = "Herrington"
-    var Van = "Darkholme"
+    var isNotificationOn = true
+    var Billy = "Herrington" // Логин собеседника
+    var Van = "Darkholme" // Логин авторизованного пользователя
     var cPackageName = ""
 
     fun setChatsWindow(recView: RecyclerView, username: String, incomingContext: Activity, pName: String) {
@@ -103,7 +104,7 @@ object ChatSingleton {
             val time = parsedMessage["time"].toString()
             val date = parsedMessage["date"].toString()
             val msgId = parsedMessage["id"] as Int
-            val unreadMsg: Int
+            val unreadMsgCount: Int
 
             if (parsedMessage["read"] as Boolean)
                 return@runOnUiThread
@@ -119,7 +120,7 @@ object ChatSingleton {
                 updateMessageList(sender, messageText, "$date $time", msgId)
                 focusOnLastItem(0)
             } else {
-                unreadMsg = Requests().get(
+                unreadMsgCount = Requests().get(
                     mapOf("sender" to sender, "recipient" to Van),
                     "$serverUrl/count"
                 ).toInt()
@@ -129,14 +130,14 @@ object ChatSingleton {
                     messageText,
                     "",
                     userId,
-                    unreadMsg
+                    unreadMsgCount
                 )
                 if (sender == Billy) {
                     if (!isInChat) {
                         sendNotification(userId, sender, messageText)
                     }
                     updateMessageList(sender, messageText, "$date $time", msgId)
-                    focusOnLastItem(0)
+                    focusOnLastItem(unreadMsgCount)  //!
                 } else
                     sendNotification(userId, sender, messageText)
             }
@@ -159,21 +160,23 @@ object ChatSingleton {
     }
 
     private fun sendNotification(notificationId: Int, loginTitle: String, messageText: String) {
-        val intent = Intent(chatsWindowActivity, ChatItselfWindow::class.java)
-        chatName = loginTitle
-        val pendingIntent = PendingIntent.getActivity(
-            chatsWindowActivity,
-            0,
-            intent,
-            0
-        )
-        val builder = NotificationCompat.Builder(chatsWindowActivity, channel_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(loginTitle)
-            .setContentText(messageText)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-        notificationManager.notify(notificationId, builder.build())
+        if (isNotificationOn) {
+            val intent = Intent(chatsWindowActivity, ChatItselfWindow::class.java)
+            chatName = loginTitle
+            val pendingIntent = PendingIntent.getActivity(
+                chatsWindowActivity,
+                0,
+                intent,
+                0
+            )
+            val builder = NotificationCompat.Builder(chatsWindowActivity, channel_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(loginTitle)
+                .setContentText(messageText)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+            notificationManager.notify(notificationId, builder.build())
+        }
     }
 
     fun deleteNotification() {
@@ -186,7 +189,7 @@ object ChatSingleton {
         message: String,
         youTxt: String,
         chatId: Int,
-        unreadMsg: Int
+        unreadMsgCount: Int
     ) {
         for (el in chatsArrayList.indices) {
             if (chatsArrayList[el].login == lastMessageRecipient) {
@@ -197,7 +200,7 @@ object ChatSingleton {
         }
         chatsArrayList.add(
             0,
-            PreviewChatDataClass(lastMessageRecipient, time, message, youTxt, unreadMsg, chatId)
+            PreviewChatDataClass(lastMessageRecipient, time, message, youTxt, unreadMsgCount, chatId)
         )
         chatsArrayAdapter.notifyItemInserted(0)
     }
@@ -211,6 +214,7 @@ object ChatSingleton {
         val outgoingTime: String
 
         if (senderLogin == Van) {
+            println("Sending message")
             incomingLogin = ""
             incomingMessage = ""
             incomingTime = ""
@@ -218,6 +222,7 @@ object ChatSingleton {
             outgoingMessage = message
             outgoingTime = time
         } else {
+            println("Receiving message")
             incomingLogin = senderLogin
             incomingMessage = message
             incomingTime = time
