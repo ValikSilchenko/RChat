@@ -105,53 +105,65 @@
         app:layout_constraintTop_toBottomOf="@id/CIW_MessagesRV" />
 
     <!-- Нижний контейнер -->
+    <!-- android:layoutDirection="rtl" -->
     <LinearLayout
         android:id="@+id/CIW_BottomContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layoutDirection="rtl"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/CIW_BottomLine">
 
-        <!-- Кнопка отправки сообщения -->
-        <ImageButton
-            android:id="@+id/CIW_SendMessageBtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/round_corner"
-            android:backgroundTint="?attr/main_color"
-            android:clickable="true"
-            android:focusable="true"
-            android:rotation="180"
-            android:src="@drawable/ic_send" />
-
-        <!-- Кнопка прикрепления медиафайлов -->
-        <ImageButton
-            android:id="@+id/CIW_AttachBtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="5dp"
-            android:background="@drawable/round_corner"
-            android:backgroundTint="?attr/background_color"
-            android:clickable="true"
-            android:focusable="true"
-            android:rotation="45"
-            android:src="@drawable/ic_attach" />
-
-        <!-- Поле ввода сообщения -->
-        <EditText
-            android:id="@+id/CIW_MessageInputET"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?attr/edit_txt_color"
-            android:hint="@string/Message_Input_Hint"
-            android:inputType="textMultiLine|textCapSentences"
-            android:layoutDirection="ltr"
-            android:maxHeight="150dp"
-            android:textColor="?attr/chat_txt_color"
-            android:textColorHint="?attr/edit_txt_color" />
+            android:layout_height="match_parent">
+
+            <!-- Кнопка отправки сообщения -->
+            <ImageButton
+                android:id="@+id/CIW_SendMessageBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="?attr/main_color"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_send"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- Кнопка прикрепления медиафайлов -->
+            <ImageButton
+                android:id="@+id/CIW_AttachBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="?attr/background_color"
+                android:clickable="true"
+                android:focusable="true"
+                android:rotation="45"
+                android:src="@drawable/ic_attach"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/CIW_SendMessageBtn"/>
+
+            <!-- Поле ввода сообщения -->
+            <EditText
+                android:id="@+id/CIW_MessageInputET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/edit_txt_color"
+                android:hint="@string/Message_Input_Hint"
+                android:inputType="textMultiLine|textCapSentences"
+                android:layoutDirection="ltr"
+                android:maxHeight="150dp"
+                android:textColor="?attr/chat_txt_color"
+                android:textColorHint="?attr/edit_txt_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/CIW_AttachBtn"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
