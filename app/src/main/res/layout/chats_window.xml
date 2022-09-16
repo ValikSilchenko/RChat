@@ -49,12 +49,25 @@
         android:id="@+id/CW_TopLine"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="5dp"
         android:background="?attr/edit_txt_color"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/CW_TopContainer"
         app:layout_constraintBottom_toTopOf="@id/CW_ChatsRV"
-        android:layout_marginTop="5dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/CW_TopContainer" />
+
+    <TextView
+        android:id="@+id/CW_NoChatsTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/theres_nothing_here_title"
+        android:textColor="?attr/chat_txt_color"
+        android:textSize="25sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Список чатов -->
     <androidx.recyclerview.widget.RecyclerView
@@ -63,11 +76,11 @@
         android:layout_height="0dp"
         android:layout_margin="10dp"
         android:clickable="true"
+        android:divider="@null"
+        android:dividerHeight="10dp"
         android:focusable="true"
         android:longClickable="true"
         android:scrollbars="none"
-        android:dividerHeight="10dp"
-        android:divider="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

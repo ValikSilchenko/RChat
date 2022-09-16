@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -44,6 +45,7 @@ class ChatsWindow : AppCompatActivity() {
         setContentView(R.layout.chats_window)
 
 //        val networkConnection = NetworkConnectionLiveData(applicationContext)   //!
+        val noChatsTxt: TextView = findViewById(R.id.CW_NoChatsTxt)
         val userLogin: TextView = findViewById(R.id.CW_AppNameTV)
         val chatArray: RecyclerView = findViewById(R.id.CW_ChatsRV)
         val moreBtn: ImageButton = findViewById(R.id.CW_MoreBtn)
@@ -52,7 +54,7 @@ class ChatsWindow : AppCompatActivity() {
 
         /* Сеттер данного окна в синглтоне
         */
-        ChatSingleton.setChatsWindow(chatArray, user, this, packageName)
+        ChatSingleton.setChatsWindow(chatArray, user, this, packageName, noChatsTxt)
 
 //        networkConnection.observe(this) { isConnected ->
 //            if (isConnected)
@@ -111,6 +113,11 @@ class ChatsWindow : AppCompatActivity() {
                 this
             )
         }
+
+        /* Скрытие текста, если чаты есть
+        */
+        if (ChatSingleton.chatsArrayList.size > 0)
+            noChatsTxt.visibility = View.GONE
 
         /* Нажатие кнопки опций
         */
@@ -173,5 +180,9 @@ class ChatsWindow : AppCompatActivity() {
             .setNegativeButton(getString(R.string.no_title)) { dialog, _ -> dialog.cancel() }
         val messageWindow = message.create()
         messageWindow.show()
+    }
+
+    fun hideNoChatsTxt() {
+
     }
 }

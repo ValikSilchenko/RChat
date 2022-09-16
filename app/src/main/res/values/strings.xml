@@ -62,6 +62,7 @@
     <string name="notifications_title">Уведомления</string>
     <string name="on_title">Вкл</string>
     <string name="off_title">Выкл</string>
+    <string name="theres_nothing_here_title">Здесь пока ничего нет...</string>
     <string-array name="lang_array">
         <item>Русский</item>
         <item>Английский</item>

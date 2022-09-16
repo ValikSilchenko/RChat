@@ -63,6 +63,7 @@
     <string name="notifications_title">Notifications</string>
     <string name="on_title">On</string>
     <string name="off_title">Off</string>
+    <string name="theres_nothing_here_title">There is nothing here...</string>
     <string-array name="lang_array">
         <item>Russian</item>
         <item>English</item>

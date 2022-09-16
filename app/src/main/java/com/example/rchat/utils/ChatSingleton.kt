@@ -9,8 +9,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import android.view.View
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +39,7 @@ object ChatSingleton {
     private lateinit var chatsArrayAdapter: PreviewChatRVAdapter
     private lateinit var messagesArrayAdapter: MessageItemLVAdapter
     private lateinit var messageEditText: EditText
+    private lateinit var noChatsText: TextView
     private const val channel_ID = "new_messages"
     private const val description = "Messages Notifications"
     private val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
@@ -54,7 +57,7 @@ object ChatSingleton {
     /* Сеттер окна чатов
         Вызывается в ChatsWindow.kt в методе onCreate()
      */
-    fun setChatsWindow(recView: RecyclerView, username: String, incomingContext: Activity, pName: String) {
+    fun setChatsWindow(recView: RecyclerView, username: String, incomingContext: Activity, pName: String, nochatsTxt: TextView) {
         Van = username
         chatsWindowRV = recView
         chatsWindowActivity = incomingContext
@@ -62,6 +65,7 @@ object ChatSingleton {
         chatsWindowRV!!.layoutManager = LinearLayoutManager(chatsWindowActivity)
         chatsWindowRV!!.adapter = chatsArrayAdapter
         cPackageName = pName
+        noChatsText = nochatsTxt
         createNotificationChannel()
     }
 
@@ -161,6 +165,7 @@ object ChatSingleton {
                 } else
                     sendNotification(userId, sender, messageText)
             }
+            noChatsText.visibility = View.GONE
         }
     }
 
