@@ -64,6 +64,13 @@
     <string name="on_title">On</string>
     <string name="off_title">Off</string>
     <string name="theres_nothing_here_title">There is nothing here...</string>
+    <string name="enter_email_for_sending_title">Enter e-mail for code receiving</string>
+    <string name="send_email_title">Send e-mail</string>
+    <string name="send_acceptance_code_title">Введите код подтверждения</string>
+    <string name="send_code_title">Отправить код</string>
+    <string name="enter_new_password_title">Введите новый пароль</string>
+    <string name="repeat_new_password_title">Повторите новый пароль</string>
+    <string name="save_password_title">Сохранить пароль</string>
     <string-array name="lang_array">
         <item>Russian</item>
         <item>English</item>

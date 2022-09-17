@@ -181,8 +181,4 @@ class ChatsWindow : AppCompatActivity() {
         val messageWindow = message.create()
         messageWindow.show()
     }
-
-    fun hideNoChatsTxt() {
-
-    }
 }

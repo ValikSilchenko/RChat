@@ -54,6 +54,7 @@ class AuthorizationWindow : AppCompatActivity() {
         val authorizePasswordText: EditText = findViewById(R.id.AW_PasswordET)
         val enterAccountBtn: Button = findViewById(R.id.AW_AuthorizeBtn)
         val noBitches: Button = findViewById(R.id.AW_NoAccountBtn)
+        val forgotPasswordBtn: Button = findViewById(R.id.AW_ForgotPasswordBtn)
 
         /* Нажатие кнопки открытия окна регистрации
         */
@@ -62,6 +63,12 @@ class AuthorizationWindow : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             startActivity(intent)
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        }
+
+        /* Нажатие кнопки перехода в окно восстановления пароля
+        */
+        forgotPasswordBtn.setOnClickListener {
+            startIntent(ResetPasswordWindow::class.java)
         }
 
         /* Нажатие кнопки входа в аккаунт
