@@ -46,7 +46,7 @@ class PgUserDetailsService(private var userRepo: UserRepository) : UserDetailsSe
         )
         if (dbUser.username == username &&
             bCryptPasswordEncoder.matches(password, dbUser.password))
-            return ResponseEntity<String>(HttpStatus.OK)
+            return ResponseEntity(dbUser.id.toString(), HttpStatus.OK)
         return ResponseEntity<String>("Неверные данные", HttpStatus.BAD_REQUEST)
     }
 

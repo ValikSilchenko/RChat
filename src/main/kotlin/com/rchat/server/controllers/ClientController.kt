@@ -74,7 +74,7 @@ class ClientController(
             return ResponseEntity("Пользователь с таким именем уже существует", HttpStatus.BAD_REQUEST)
         }
 //        userService.autoLogin(user)
-        return ResponseEntity<String>(HttpStatus.OK)
+        return ResponseEntity(user.id.toString(), HttpStatus.OK)
     }
 
     @PostMapping("/channel")
