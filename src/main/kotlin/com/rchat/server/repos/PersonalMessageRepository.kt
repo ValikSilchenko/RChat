@@ -32,4 +32,8 @@ interface PersonalMessageRepository: JpaRepository<PersonalMessage, Int> {
             " where msg.read = false and (msg.date < :date or (msg.date = :date and msg.time < :time))" +
             " and msg.recipient = :sender and msg.sender = :recipient")
     fun updateReadBefore(sender: Users, recipient: Users, date: LocalDate, time: LocalTime)
+
+    @Modifying
+    @Query("delete from PersonalMessage msg where msg.sender in (:user1, :user2) and msg.recipient in (:user1, :user2)")
+    fun deleteChat(user1: Users, user2: Users)
 }

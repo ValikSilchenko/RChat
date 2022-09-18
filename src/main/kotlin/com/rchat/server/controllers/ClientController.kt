@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonView
 import com.rchat.server.repos.ChannelMessageRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.web.bind.annotation.DeleteMapping
+import javax.transaction.Transactional
 
 @RestController
 class ClientController(
@@ -51,6 +52,13 @@ class ClientController(
             userService.getByName(sender),
             userService.getByName(recipient)
         )
+    }
+
+    @Transactional
+    @DeleteMapping("/personal")
+    fun deleteChat(@RequestParam id1: String, @RequestParam id2: String): ResponseEntity<String> {
+        personalMessageRepo.deleteChat(userService.getById(id1.toInt()), userService.getById(id2.toInt()))
+        return ResponseEntity<String>(HttpStatus.OK)
     }
 
     @PostMapping("/login")
