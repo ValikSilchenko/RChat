@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Light">
         <activity
+            android:name=".windows.ResetPasswordWindow"
+            android:exported="false" />
+        <activity
             android:name=".windows.MediaChatWindow"
             android:exported="true"
             android:screenOrientation="portrait">

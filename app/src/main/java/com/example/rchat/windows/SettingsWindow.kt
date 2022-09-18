@@ -255,7 +255,11 @@ class SettingsWindow : AppCompatActivity() {
         )
             stopService(Intent(applicationContext, BackgroundService::class.java))
         ChatFunctions().deleteData(this)
-        ChatSingleton.deleteNotification()
+        ChatSingleton.apply {
+            deleteNotification()
+            clearChatsList()
+            clearMessagesList()
+        }
         val intent = Intent(this, AuthorizationWindow::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)

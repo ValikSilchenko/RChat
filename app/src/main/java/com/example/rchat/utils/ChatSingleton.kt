@@ -293,6 +293,15 @@ object ChatSingleton {
         }
     }
 
+    /* Функция очистки списка чатов
+        Вызывается в SettingsWindow.kt в методе exitAccount()
+     */
+    fun clearChatsList() {
+        if (chatsArrayList.isNotEmpty()) {
+            chatsArrayList.clear()
+        }
+    }
+
     /* Функция фокусировки на последнем сообщении
         Вызывается в этом объекте в функции processMessage() и в ChatItselfWindow.kt в методе onCreate() после получения всех сообщений из запроса
      */
