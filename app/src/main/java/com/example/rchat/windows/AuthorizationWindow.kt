@@ -77,15 +77,18 @@ class AuthorizationWindow : AppCompatActivity() {
             if (authorizeLoginText.text.isNotEmpty() && authorizePasswordText.text.isNotEmpty()) {
                 login = authorizeLoginText.text.toString()
                 try {
-                    Requests().post(
+                    val userID = Requests().post(
                         mapOf(
                             "username" to login,
                             "password" to authorizePasswordText.text.toString()
                         ),
                         "${ChatSingleton.serverUrl}/login"
-                    )
+                    ).toInt()
                     try {
-                        ChatFunctions().saveLogin(this, login, true)
+                        ChatFunctions().apply {
+                            saveLogin(applicationContext, login, true)
+                            saveUserID(applicationContext, userID)
+                        }
                         val mIntent = Intent(this, SplashScreenWindow::class.java)
                         mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                         startActivity(mIntent)

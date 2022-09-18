@@ -57,7 +57,13 @@ object ChatSingleton {
     /* Сеттер окна чатов
         Вызывается в ChatsWindow.kt в методе onCreate()
      */
-    fun setChatsWindow(recView: RecyclerView, username: String, incomingContext: Activity, pName: String, nochatsTxt: TextView) {
+    fun setChatsWindow(
+        recView: RecyclerView,
+        username: String,
+        incomingContext: Activity,
+        pName: String,
+        nochatsTxt: TextView
+    ) {
         Van = username
         chatsWindowRV = recView
         chatsWindowActivity = incomingContext
@@ -230,14 +236,20 @@ object ChatSingleton {
     ) {
         for (el in chatsArrayList.indices) {
             if (chatsArrayList[el].login == lastMessageRecipient) {
-                chatsArrayList.removeAt(el)
-                chatsArrayAdapter.notifyItemRemoved(el)
+                removeChatFromChatList(el)
                 break
             }
         }
         chatsArrayList.add(
             0,
-            PreviewChatDataClass(lastMessageRecipient, time, message, youTxt, unreadMsgCount, chatId)
+            PreviewChatDataClass(
+                lastMessageRecipient,
+                time,
+                message,
+                youTxt,
+                unreadMsgCount,
+                chatId
+            )
         )
         chatsArrayAdapter.notifyItemInserted(0)
     }
@@ -254,7 +266,6 @@ object ChatSingleton {
         val outgoingTime: String
 
         if (senderLogin == Van) {
-            println("Sending message")
             incomingLogin = ""
             incomingMessage = ""
             incomingTime = ""
@@ -262,7 +273,6 @@ object ChatSingleton {
             outgoingMessage = message
             outgoingTime = time
         } else {
-            println("Receiving message")
             incomingLogin = senderLogin
             incomingMessage = message
             incomingTime = time
@@ -333,5 +343,13 @@ object ChatSingleton {
                 break
             }
         }
+    }
+
+    /* Функция удаления чата по его позиции в списке чатов
+
+     */
+    fun removeChatFromChatList(chatPosition: Int) {
+        chatsArrayList.removeAt(chatPosition)
+        chatsArrayAdapter.notifyItemRemoved(chatPosition)
     }
 }

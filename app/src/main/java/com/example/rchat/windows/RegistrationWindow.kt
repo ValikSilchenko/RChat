@@ -59,7 +59,7 @@ class RegistrationWindow : AppCompatActivity() {
             ) {
                 login = loginText.text.toString()
                 try {
-                    Requests().post(
+                    val userID = Requests().post(
                         mapOf(
                             "username" to login,
                             "email" to emailText.text.toString(),
@@ -67,9 +67,12 @@ class RegistrationWindow : AppCompatActivity() {
                             "password" to passwordText.text.toString()
                         ),
                         "${ChatSingleton.serverUrl}/user"
-                    )
+                    ).toInt()
                     try {
-                        ChatFunctions().saveLogin(this, login, true)
+                        ChatFunctions().apply {
+                            saveLogin(applicationContext, login, true)
+                            saveUserID(applicationContext, userID)
+                        }
                         val mIntent = Intent(this, SplashScreenWindow::class.java)
                         mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                         startActivity(mIntent)
@@ -78,7 +81,6 @@ class RegistrationWindow : AppCompatActivity() {
                             android.R.anim.slide_out_right
                         )
                         finish()
-
                     } catch (exception: Exception) {
                         if (ChatFunctions().isInternetAvailable(applicationContext)) {
                             ChatFunctions().showMessage(

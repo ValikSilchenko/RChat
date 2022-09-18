@@ -125,7 +125,7 @@ class ChatsWindow : AppCompatActivity() {
             val popupMenu = PopupMenu(this, it)
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.new_chat_item -> {
+                    R.id.new_chat_item -> {     /* Открытие окна поиска пользователей */
                         startActivity(Intent(this, FindUsersWindow::class.java))
                         overridePendingTransition(
                             android.R.anim.slide_in_left,
@@ -133,12 +133,12 @@ class ChatsWindow : AppCompatActivity() {
                         )
                         true
                     }
-                    R.id.new_group_chat_item -> {
+                    R.id.new_group_chat_item -> {   /* Открытие окна создания беседы */
                         Toast.makeText(this, getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
 //                        startActivity(Intent(this, CreateGroupChatWindow::class.java))
                         true
                     }
-                    R.id.settings_item -> {
+                    R.id.settings_item -> {     /* Открытие окна настроек */
                         val intent = Intent(this, SettingsWindow::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                         startActivity(intent)

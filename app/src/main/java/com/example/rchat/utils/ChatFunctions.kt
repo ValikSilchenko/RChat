@@ -51,6 +51,15 @@ class ChatFunctions {
         }.apply()
     }
 
+    /* Функция сохранения айди пользователя
+        Вызывается в RegistrationWindow.kt при нажатии кнопки регистрации и в AuthorizationWindow.kt при нажатии кнопки авторизации
+     */
+    fun saveUserID(context: Context, userID: Int) {
+        val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putInt("USER_ID_KEY", userID).apply()
+    }
+
     /* Функция возврата сохраненного логина
         Вызывается в BackgroundService.kt в методе openCloseConnection(), в AuthorizationWindow.kt в методе onCreate(),
         в ChatsWindow.kt в методе onCreate() и в SplashScreenWindow.kt в методе onCreate()
@@ -60,17 +69,30 @@ class ChatFunctions {
         return prefs.getString("LOGIN_KEY", "NaN").toString()
     }
 
+    /* Функция возврата сохраненного айдишника
+        Вызывается в PreviewChatRVAdapter.kt в методе init
+    */
+    fun getSavedUserID(context: Context): Int {
+        val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
+        return prefs.getInt("USER_ID_KEY", -1)
+    }
+
     /* Функция удаления всех сохраненных данных
         Вызывается в SettingsWindow.kt в методе exitAccount()
      */
     fun deleteData(context: Context) {
-        val prefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
-        val editor = prefs.edit()
-        editor.apply {
+        val authPrefs = context.getSharedPreferences("Authorization", Context.MODE_PRIVATE)
+        val authEditor = authPrefs.edit()
+        authEditor.apply {
             remove("LOGIN_KEY")
             remove("IS_AUTHORIZED_KEY")
-            remove("NightMode")
-            remove("Notifications")
+            remove("USER_ID_KEY")
+        }.apply()
+        val settingsPrefs = context.getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
+        val settingsEditor = settingsPrefs.edit()
+        settingsEditor.apply {
+            remove("NIGHTLIFE")
+            remove("NOTIFICATIONS_KEY")
         }.apply()
     }
 

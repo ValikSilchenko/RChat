@@ -71,7 +71,7 @@ class MessageItemLVAdapter(
             val popupMenu = PopupMenu(context, it)
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.delete_message_item -> {
+                    R.id.delete_message_item -> {   /* Удаление сообщения */
                         // Удаление сообщения
                         Toast.makeText(
                             context,
@@ -80,11 +80,11 @@ class MessageItemLVAdapter(
                         ).show()
                         true
                     }
-                    R.id.edit_message_item -> {
+                    R.id.edit_message_item -> {     /* Редактирование сообщения */
                         // Редактирование сообщения
                         true
                     }
-                    R.id.reply_message_item -> {
+                    R.id.reply_message_item -> {    /* Ответ на сообщение */
                         // Ответ на сообщение
                         Toast.makeText(
                             context,

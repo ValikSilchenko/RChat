@@ -13,13 +13,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.R
 import com.example.rchat.dataclasses.PreviewChatDataClass
+import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
+import com.example.rchat.utils.Requests
 import com.example.rchat.windows.ChatItselfWindow
 
 /* Класс-адаптер для единичного элемента - превью чата
 */
 class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass>) :
     RecyclerView.Adapter<PreviewChatRVAdapter.ViewHolder>() {
+    var userID = 0
+    var aAdapterPosition = 0
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val mLogin: TextView = itemView.findViewById(R.id.PC_LoginTV)
@@ -29,6 +33,8 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
         var chatId = 0
 
         init {
+            userID = ChatFunctions().getSavedUserID(itemView.context)
+
             /* Переход в чат по нажатию на чат
             */
             itemView.setOnClickListener {
@@ -48,14 +54,18 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
             itemView.setOnLongClickListener {
                 val popupMenu = PopupMenu(itemView.context, it)
                 popupMenu.setOnMenuItemClickListener { item ->
-//                    item.title = "N"
                     when (item.itemId) {
-                        R.id.delete_chat_item -> {
-                            showAlertMessage(itemView.context, chatId.toString())
+                        R.id.delete_chat_item -> {  /* Удаление чата */
+                            for (el in ChatSingleton.chatsArrayList.indices) {
+                                if (ChatSingleton.chatsArrayList[el].chatId == chatId) {
+                                    aAdapterPosition = el
+                                    break
+                                }
+                            }
+                            showAlertMessage(itemView.context, chatId)
                             true
                         }
-                        R.id.mute_chat_item -> {
-                            TODO("Добавить действие для уведомлений чата")
+                        R.id.mute_chat_item -> { /* Отключение уведомлений от чата */
                             Toast.makeText(itemView.context, itemView.context.getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
                             true
                         }
@@ -124,7 +134,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
 
     /* Функция показа предупреждающего сообщения при удалении чата
     */
-    private fun showAlertMessage(context: Context, chatName: String) {
+    private fun showAlertMessage(context: Context, chatID: Int) {
         val message: AlertDialog.Builder = AlertDialog.Builder(context)
         message
             .setTitle(context.getString(R.string.attention_title))
@@ -133,11 +143,13 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
             .setPositiveButton(
                 context.getString(R.string.yes_title)
             ) { _, _ ->
-                Toast.makeText(
-                    context,
-                    "Delete chat $chatName",
-                    Toast.LENGTH_SHORT
-                ).show()
+                try {
+                    Requests().delete(mapOf("id1" to userID.toString(), "id2" to chatID.toString()), "${ChatSingleton.serverUrl}/personal")
+                    ChatSingleton.removeChatFromChatList(aAdapterPosition)
+                }
+                catch(exception: Exception) {
+                    Toast.makeText(context, "ЕБАНЫЙ РОТ ЭТОГО КАЗИНО БЛЯТЬ ТЫ КТО ТАКОЙ СУКА ЧТОБЫ ЭТО ДЕЛАТЬ", Toast.LENGTH_LONG).show()
+                }
             }
             .setNegativeButton(context.getString(R.string.no_title)) { dialog, _ ->
                 dialog.cancel()

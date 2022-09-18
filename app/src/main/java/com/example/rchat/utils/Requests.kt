@@ -61,4 +61,27 @@ class Requests {
             return response.body!!.string()
         }
     }
+
+    /* Функция отправки запроса на удаление
+    */
+    fun delete(data: Map<String, String>, url: String): String {
+        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
+
+        val httpBuilder = url.toHttpUrlOrNull() ?: throw IOException("Bad url")
+        val dataToSend = FormBody.Builder()
+        data.forEach { (key, value) ->
+            dataToSend.add(key, value)
+        }
+
+        client.newCall(
+            request
+                .delete(dataToSend.build())
+                .url(httpBuilder.toUrl())
+                .build()
+        ).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("${response.code}")
+
+            return response.body!!.string()
+        }
+    }
 }
