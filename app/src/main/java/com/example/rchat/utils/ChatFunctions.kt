@@ -2,6 +2,7 @@ package com.example.rchat.utils
 
 import android.app.ActivityManager
 import android.content.Context
+import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -155,5 +156,22 @@ class ChatFunctions {
             }
         }
         return false
+    }
+
+    /* Функция установления темы приложения
+        Вызывается во всех окнах, кроме SettingsWindow.kt - там расширенная версия этой функции
+     */
+    fun setAppTheme(context: Context) {
+        val prefs = context.getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
+        when (prefs.getString("NIGHTLIFE_KEY", "Day")) {
+            "Day" -> context.setTheme(R.style.Theme_Light)
+            "Night" -> context.setTheme(R.style.Theme_Dark)
+            "System" -> {
+                when (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                    Configuration.UI_MODE_NIGHT_YES -> context.setTheme(R.style.Theme_Dark)
+                    Configuration.UI_MODE_NIGHT_NO -> context.setTheme(R.style.Theme_Light)
+                }
+            }
+        }
     }
 }

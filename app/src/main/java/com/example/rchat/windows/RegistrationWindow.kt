@@ -1,8 +1,6 @@
 package com.example.rchat.windows
 
-import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -20,17 +18,7 @@ class RegistrationWindow : AppCompatActivity() {
 
         /* Установка темы приложения
         */
-        val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
-        when (prefs.getString("NightMode", "Day")) {
-            "Day" -> setTheme(R.style.Theme_Light)
-            "Night" -> setTheme(R.style.Theme_Dark)
-            "System" -> {
-                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                    Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
-                    Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
-                }
-            }
-        }
+        ChatFunctions().setAppTheme(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_window)

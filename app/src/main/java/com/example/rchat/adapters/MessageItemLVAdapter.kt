@@ -72,7 +72,6 @@ class MessageItemLVAdapter(
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.delete_message_item -> {   /* Удаление сообщения */
-                        // Удаление сообщения
                         Toast.makeText(
                             context,
                             "Delete message",
@@ -81,11 +80,14 @@ class MessageItemLVAdapter(
                         true
                     }
                     R.id.edit_message_item -> {     /* Редактирование сообщения */
-                        // Редактирование сообщения
+//                        if (outgoingLogin.text.toString() != "") {
+//                            ChatSingleton.messageEditText.apply {
+//                                setText(outgoingMessage.text.toString())
+//                            }
+//                        }
                         true
                     }
                     R.id.reply_message_item -> {    /* Ответ на сообщение */
-                        // Ответ на сообщение
                         Toast.makeText(
                             context,
                             "Reply message",

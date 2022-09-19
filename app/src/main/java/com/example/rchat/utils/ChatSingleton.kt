@@ -32,13 +32,13 @@ object ChatSingleton {
     const val serverUrl = "http://194.87.248.192:8080"
     const val ImgRequestCode = 100
     lateinit var chatName: String
+    lateinit var messageEditText: EditText
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationChannel: NotificationChannel
     private lateinit var chatItselfActivity: Activity
     private lateinit var chatsWindowActivity: Activity
     private lateinit var chatsArrayAdapter: PreviewChatRVAdapter
     private lateinit var messagesArrayAdapter: MessageItemLVAdapter
-    private lateinit var messageEditText: EditText
     private lateinit var noChatsText: TextView
     private const val channel_ID = "new_messages"
     private const val description = "Messages Notifications"
