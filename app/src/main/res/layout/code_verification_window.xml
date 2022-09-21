@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".windows.ResetPasswordWindow">
+    tools:context=".windows.CodeVerificationWindow">
 
-    <!-- Кнопка выхода назад -->
     <ImageButton
-        android:id="@+id/RPW_BackBtn"
+        android:id="@+id/CVW_BackBtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
@@ -21,35 +20,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Текст о восстановлении пароля -->
     <TextView
-        android:id="@+id/RPW_ResetPasswordTxt"
+        android:id="@+id/CVW_TopText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Восстановление пароля"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:text="Введите в поле код подтверждения, полученный на почту"
+        android:textAlignment="center"
         android:textColor="?attr/chat_txt_color"
         android:textSize="25sp"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RPW_BackBtn" />
+        app:layout_constraintTop_toBottomOf="@id/CVW_BackBtn" />
 
-    <!-- Поле ввода электронной почты -->
     <EditText
-        android:id="@+id/RPW_EmailED"
+        android:id="@+id/CVW_CodeED"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
-        android:hint="@string/enter_email_for_sending_title"
+        android:backgroundTint="?attr/edit_txt_color"
+        android:hint="@string/send_acceptance_code_title"
+        android:inputType="text"
+        android:textColor="?attr/chat_txt_color"
+        android:textColorHint="?attr/edit_txt_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RPW_ResetPasswordTxt" />
+        app:layout_constraintTop_toBottomOf="@id/CVW_TopText" />
 
-    <!-- Кнопка отправки электронной почты -->
     <Button
-        android:id="@+id/RPW_SendEmailBtn"
+        android:id="@+id/CVW_SendCodeBtn"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="80dp"
@@ -60,5 +63,5 @@
         android:text="@string/send_email_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/RPW_EmailED" />
+        app:layout_constraintTop_toBottomOf="@id/CVW_CodeED" />
 </androidx.constraintlayout.widget.ConstraintLayout>
