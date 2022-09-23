@@ -8,17 +8,14 @@ import com.rchat.server.services.PgUserDetailsService
 import com.rchat.server.views.View
 
 import org.springframework.validation.BindingResult
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import javax.validation.Valid
 import com.fasterxml.jackson.annotation.JsonView
 import com.rchat.server.repos.ChannelMessageRepository
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.messaging.handler.annotation.DestinationVariable
+import org.springframework.web.bind.annotation.*
 import javax.transaction.Transactional
 
 @RestController
@@ -58,6 +55,13 @@ class ClientController(
     @DeleteMapping("/personal")
     fun deleteChat(@RequestParam id1: String, @RequestParam id2: String): ResponseEntity<String> {
         personalMessageRepo.deleteChat(userService.getById(id1.toInt()), userService.getById(id2.toInt()))
+        return ResponseEntity<String>(HttpStatus.OK)
+    }
+
+    @Transactional
+    @DeleteMapping("/message/{msgId}/")
+    fun deleteMessage(@PathVariable msgId: String): ResponseEntity<String> {
+        personalMessageRepo.deletePersonalMessageById(msgId.toInt())
         return ResponseEntity<String>(HttpStatus.OK)
     }
 
