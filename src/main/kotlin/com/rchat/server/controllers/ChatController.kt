@@ -82,12 +82,12 @@ class ChatController(
     }
 
     @Transactional
-    @MessageMapping("/delete/{user1}/{user2}/{msgId}/")
+    @MessageMapping("/delete/{user1}/{user2}/")
     @SendTo("chatTopic/{user1}/", "chatTopic/{user2}/")
     fun deleteMessage(
         @DestinationVariable user1: String,
         @DestinationVariable user2: String,
-        @DestinationVariable msgId: String
+        msgId: String
     ): Map<String, String> {
         personalMessageRepo.deletePersonalMessageById(msgId.toInt())
         return mapOf("deleted" to msgId)
