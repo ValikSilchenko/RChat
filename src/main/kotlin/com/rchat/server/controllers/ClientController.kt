@@ -58,13 +58,6 @@ class ClientController(
         return ResponseEntity<String>(HttpStatus.OK)
     }
 
-    @Transactional
-    @DeleteMapping("/message/{msgId}/")
-    fun deleteMessage(@PathVariable msgId: String): ResponseEntity<String> {
-        personalMessageRepo.deletePersonalMessageById(msgId.toInt())
-        return ResponseEntity<String>(HttpStatus.OK)
-    }
-
     @PostMapping("/login")
     fun login(@RequestParam username: String, @RequestParam password: String): ResponseEntity<String> {
         return userService.login(username, password)

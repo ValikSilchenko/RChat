@@ -11,6 +11,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.stereotype.Controller
 import com.fasterxml.jackson.annotation.JsonView
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.PathVariable
 import java.time.LocalDate
 import java.time.LocalTime
 import javax.transaction.Transactional
@@ -76,6 +80,19 @@ class ChatController(
         personalMessageRepo.save(message)
         return message
     }
+
+    @Transactional
+    @MessageMapping("/delete/{user1}/{user2}/{msgId}/")
+    @SendTo("chatTopic/{user1}/", "chatTopic/{user2}/")
+    fun deleteMessage(
+        @DestinationVariable user1: String,
+        @DestinationVariable user2: String,
+        @DestinationVariable msgId: String
+    ): Map<String, String> {
+        personalMessageRepo.deletePersonalMessageById(msgId.toInt())
+        return mapOf("deleted" to msgId)
+    }
+
 
 //    @MessageMapping("/channel")
 //    @SendTo("/channelTopic")
