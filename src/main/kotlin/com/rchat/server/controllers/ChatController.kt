@@ -82,13 +82,14 @@ class ChatController(
     }
 
     @Transactional
-    @MessageMapping("/delete/{user1}/{user2}/")
-    @SendTo("chatTopic/{user1}/", "chatTopic/{user2}/")
+    @MessageMapping("/delete/{recipient}/{sender}/")
+    @SendTo("/chatTopic/{recipient}/", "/chatTopic/{sender}/")
     fun deleteMessage(
-        @DestinationVariable user1: String,
-        @DestinationVariable user2: String,
+        @DestinationVariable recipient: String,
+        @DestinationVariable sender: String,
         msgId: String
     ): Map<String, String> {
+//        val message = personalMessageRepo.getById(msgId.toInt())
         personalMessageRepo.deletePersonalMessageById(msgId.toInt())
         return mapOf("deleted" to msgId)
     }
