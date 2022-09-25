@@ -70,6 +70,8 @@
     <string name="enter_new_password_title">Введите новый пароль</string>
     <string name="repeat_new_password_title">Повторите новый пароль</string>
     <string name="save_password_title">Сохранить пароль</string>
+    <string name="delete_for_myself_title">Удалить у себя</string>
+    <string name="delete_for_all_title">Удалить у всех</string>
     <string-array name="lang_array">
         <item>Русский</item>
         <item>Английский</item>

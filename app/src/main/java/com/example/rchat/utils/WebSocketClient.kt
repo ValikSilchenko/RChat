@@ -53,7 +53,7 @@ class WebSocketClient {
     /* Функция отправки сообщения
         Вызывается в ChatSingleton.kt в методе sendMessage()
      */
-    fun send(username: String, msg: String, sender: String) {
+    fun sendMessage(username: String, msg: String, sender: String) {
         session?.send("/app/user/$username/$sender/", msg)
     }
 
@@ -62,6 +62,10 @@ class WebSocketClient {
      */
     fun send(recLogin: String, senderLogin: String, id: Int) {
         session?.send("/app/message/$recLogin/$senderLogin/", id)
+    }
+
+    fun deleteMessage(messageID: Int, user1: String, user2: String) {
+        session?.send("/app/delete/$user1/$user2/", messageID)
     }
 
     /* Функция закрытия соединения с сокетом

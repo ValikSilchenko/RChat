@@ -18,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Light">
         <activity
+            android:name=".windows.NewPasswordWindow"
+            android:exported="false" />
+        <activity
+            android:name=".windows.CodeVerificationWindow"
+            android:exported="false" />
+        <activity
             android:name=".windows.ResetPasswordWindow"
             android:exported="false" />
         <activity

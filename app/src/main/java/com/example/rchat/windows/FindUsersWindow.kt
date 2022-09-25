@@ -45,8 +45,6 @@ class FindUsersWindow : AppCompatActivity() {
         */
         backToChatsWindow.setOnClickListener {
             onBackPressed()
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            finish()
         }
 
         /* Нажатие кнопки поиска пользователей по логину
@@ -58,7 +56,6 @@ class FindUsersWindow : AppCompatActivity() {
                         foundUserArrayList.clear()
                         arrayAdapter.notifyDataSetChanged()
                     }
-
                     foundUsers = JasonSTATHAM().parseUsers(
                         Requests().get(
                             mapOf(
@@ -69,11 +66,10 @@ class FindUsersWindow : AppCompatActivity() {
                     for (element in foundUsers) {
                         foundUserArrayList.add(
                             PreviewChatDataClass(
-                                element, "", "", "", 0, 0)  //!
+                                element, "", "", "", 0, 0)
                         )
                     }
-//                    arrayAdapter.notifyDataSetChanged()
-                    arrayAdapter.notifyItemInserted(foundUserArrayList.size)    //!
+                    arrayAdapter.notifyItemInserted(foundUserArrayList.size)
                     loginInput.text = null
                     if (foundUserArrayList.isEmpty())
                         Toast.makeText(this, getString(R.string.users_not_found_title), Toast.LENGTH_SHORT).show()

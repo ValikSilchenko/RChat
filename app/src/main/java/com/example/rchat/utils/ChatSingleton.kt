@@ -42,12 +42,12 @@ object ChatSingleton {
     private lateinit var noChatsText: TextView
     private const val channel_ID = "new_messages"
     private const val description = "Messages Notifications"
-    private val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
     private var webSocketClient = WebSocketClient()
     private var chatsWindowRV: RecyclerView? = null
     private var chatItselfRV: ListView? = null
     private var usersArrayList: ArrayList<CGCDataClass> = ArrayList()
     val chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
+    val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
     var isInChat = false
     var isNotificationOn = true
     var Billy = "Herrington" // Логин собеседника
@@ -111,7 +111,7 @@ object ChatSingleton {
      */
     fun sendMessage(recipientLogin: String, message: String, messageField: EditText) {
         try {
-            webSocketClient.send(recipientLogin, message, Van)
+            webSocketClient.sendMessage(recipientLogin, message, Van)
             messageField.text = null
         } catch (exception: Exception) {
             ChatFunctions().showMessage(
@@ -128,6 +128,18 @@ object ChatSingleton {
     fun processMessage(message: Map<*, *>) {
         chatsWindowActivity.runOnUiThread {
             val parsedMessage = JSONObject(message)
+
+            if (parsedMessage.has("deleted")) {
+                println("Can be deleted")
+                for (el in messagesArrayList.indices) {
+                    if (messagesArrayList[el].msgId == parsedMessage["deleted"] as Int) {
+                        messagesArrayList.removeAt(el)
+                        messagesArrayAdapter.notifyDataSetChanged()
+                        return@runOnUiThread
+                    }
+                }
+            }
+
             val sender = (parsedMessage["sender"] as JSONObject)["username"].toString()
             val messageText = parsedMessage["messageText"].toString()
             val userId = (parsedMessage["sender"] as JSONObject)["id"] as Int
@@ -258,39 +270,11 @@ object ChatSingleton {
         Вызывается в этом объекте в функции processMessage() и в ChatItselfWindow.kt в методе onCreate()
      */
     fun updateMessageList(senderLogin: String, message: String, time: String, msgId: Int) {
-        val incomingLogin: String
-        val incomingMessage: String
-        val incomingTime: String
-        val outgoingLogin: String
-        val outgoingMessage: String
-        val outgoingTime: String
-
         if (senderLogin == Van) {
-            incomingLogin = ""
-            incomingMessage = ""
-            incomingTime = ""
-            outgoingLogin = senderLogin
-            outgoingMessage = message
-            outgoingTime = time
+            messagesArrayList.add(MessageItemDataClass("", "", "", senderLogin, message, time, msgId))
         } else {
-            incomingLogin = senderLogin
-            incomingMessage = message
-            incomingTime = time
-            outgoingLogin = ""
-            outgoingMessage = ""
-            outgoingTime = ""
+            messagesArrayList.add(MessageItemDataClass(senderLogin, message, time, "", "", "", msgId))
         }
-        messagesArrayList.add(
-            MessageItemDataClass(
-                incomingLogin,
-                incomingMessage,
-                incomingTime,
-                outgoingLogin,
-                outgoingMessage,
-                outgoingTime,
-                msgId
-            )
-        )
         messagesArrayAdapter.notifyDataSetChanged()
     }
 
@@ -351,5 +335,12 @@ object ChatSingleton {
     fun removeChatFromChatList(chatPosition: Int) {
         chatsArrayList.removeAt(chatPosition)
         chatsArrayAdapter.notifyItemRemoved(chatPosition)
+        if (chatsArrayList.isEmpty()) {
+            noChatsText.visibility = View.VISIBLE
+        }
+    }
+
+    fun deleteMessageFromMessageList(messageID: Int) {
+        webSocketClient.deleteMessage(messageID, Van, Billy)
     }
 }

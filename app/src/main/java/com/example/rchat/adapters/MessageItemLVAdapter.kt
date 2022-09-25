@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import com.example.rchat.R
 import com.example.rchat.dataclasses.MessageItemDataClass
 
@@ -72,19 +73,10 @@ class MessageItemLVAdapter(
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.delete_message_item -> {   /* Удаление сообщения */
-                        Toast.makeText(
-                            context,
-                            "Delete message",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showAlertMenu(msgId)
                         true
                     }
                     R.id.edit_message_item -> {     /* Редактирование сообщения */
-//                        if (outgoingLogin.text.toString() != "") {
-//                            ChatSingleton.messageEditText.apply {
-//                                setText(outgoingMessage.text.toString())
-//                            }
-//                        }
                         true
                     }
                     R.id.reply_message_item -> {    /* Ответ на сообщение */
@@ -114,5 +106,36 @@ class MessageItemLVAdapter(
             true
         }
         return view
+    }
+
+    private fun showAlertMenu(messageID: Int) {
+        val message: AlertDialog.Builder = AlertDialog.Builder(context)
+        message
+            .setTitle(context.getString(R.string.attention_title))
+            .setMessage(context.getString(R.string.really_wanna_delete_chat_title))
+            .setCancelable(true)
+            .setPositiveButton(
+                context.getString(R.string.yes_title)
+            ) { _, _ ->
+                deleteMessage(messageID)
+            }
+            .setNegativeButton(context.getString(R.string.no_title)) { dialog, _ ->
+                dialog.cancel()
+            }
+        val messageWindow = message.create()
+        messageWindow.show()
+    }
+
+    private fun deleteMessage(messageID: Int) {
+        try {
+//            ChatSingleton.deleteMessageFromMessageList(messageID)
+            Toast.makeText(context, context.getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
+        } catch (exception: Exception) {
+            Toast.makeText(
+                context,
+                "Something went wrong, we don't give a fuck",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

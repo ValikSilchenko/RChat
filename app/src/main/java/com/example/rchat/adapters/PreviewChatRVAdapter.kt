@@ -133,6 +133,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
     }
 
     /* Функция показа предупреждающего сообщения при удалении чата
+        На негативную кнопук повесил удаление чатов у всех, а на нейтральную отмену действия красоты ради - их местами не поменять
     */
     private fun showAlertMessage(context: Context, chatID: Int) {
         val message: AlertDialog.Builder = AlertDialog.Builder(context)
@@ -141,8 +142,11 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
             .setMessage(context.getString(R.string.really_wanna_delete_chat_title))
             .setCancelable(true)
             .setPositiveButton(
-                context.getString(R.string.yes_title)
+                context.getString(R.string.delete_for_myself_title)
             ) { _, _ ->
+                Toast.makeText(context, context.getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton(context.getString(R.string.delete_for_all_title)) { _, _ ->
                 try {
                     Requests().delete(mapOf("id1" to userID.toString(), "id2" to chatID.toString()), "${ChatSingleton.serverUrl}/personal")
                     ChatSingleton.removeChatFromChatList(aAdapterPosition)
@@ -150,8 +154,9 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
                 catch(exception: Exception) {
                     Toast.makeText(context, "ЕБАНЫЙ РОТ ЭТОГО КАЗИНО БЛЯТЬ ТЫ КТО ТАКОЙ СУКА ЧТОБЫ ЭТО ДЕЛАТЬ", Toast.LENGTH_LONG).show()
                 }
+
             }
-            .setNegativeButton(context.getString(R.string.no_title)) { dialog, _ ->
+            .setNeutralButton(context.getString(R.string.no_title)) { dialog, _->
                 dialog.cancel()
             }
         val messageWindow = message.create()

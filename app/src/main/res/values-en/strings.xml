@@ -71,6 +71,8 @@
     <string name="enter_new_password_title">Enter new password</string>
     <string name="repeat_new_password_title">Repeat new password</string>
     <string name="save_password_title">Save new password</string>
+    <string name="delete_for_myself_title">Delete for me</string>
+    <string name="delete_for_all_title">Delete for all</string>
     <string-array name="lang_array">
         <item>Russian</item>
         <item>English</item>
