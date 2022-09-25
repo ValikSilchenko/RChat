@@ -31,7 +31,6 @@ import org.json.JSONObject
 object ChatSingleton {
     const val serverUrl = "http://194.87.248.192:8080"
     const val ImgRequestCode = 100
-    lateinit var chatName: String
     lateinit var messageEditText: EditText
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationChannel: NotificationChannel
@@ -53,6 +52,8 @@ object ChatSingleton {
     var Billy = "Herrington" // Логин собеседника
     var Van = "Darkholme" // Логин авторизованного пользователя
     var cPackageName = ""
+    var chatName = ""
+    var chatID = -1
 
     /* Сеттер окна чатов
         Вызывается в ChatsWindow.kt в методе onCreate()
@@ -128,18 +129,45 @@ object ChatSingleton {
     fun processMessage(message: Map<*, *>) {
         chatsWindowActivity.runOnUiThread {
             val parsedMessage = JSONObject(message)
-
+            // РЕФАКТОРИНГ ТУТ ЗАПРЕЩЕН БЛЯТЬ
+            // ИДЕ ВЫРУБАЙ НАХУЙ
             if (parsedMessage.has("deleted")) {
-                println("Can be deleted")
                 for (el in messagesArrayList.indices) {
-                    if (messagesArrayList[el].msgId == parsedMessage["deleted"] as Int) {
+                    if (messagesArrayList[el].msgId == (parsedMessage["deleted"] as String).toInt()) {
                         messagesArrayList.removeAt(el)
                         messagesArrayAdapter.notifyDataSetChanged()
+                        if (isMessagesArrayEmpty()) {
+                            for (ell in chatsArrayList.indices) {
+                                if (chatsArrayList[ell].chatId == chatID) {
+                                    deleteChatFromChatList(ell)
+                                    break
+                                }
+                            }
+                        } else if (el == messagesArrayList.size) {
+                            if (messagesArrayList[el - 1].incomingLogin == Billy) {
+                                updateChatList(
+                                    Billy,
+                                    messagesArrayList[el - 1].incomingTime.substring(11),
+                                    messagesArrayList[el - 1].incomingMessage,
+                                    "",
+                                    chatID,
+                                    0
+                                )
+                            } else {
+                                updateChatList(
+                                    Billy,
+                                    messagesArrayList[el - 1].outgoingTime.substring(11),
+                                    messagesArrayList[el - 1].outgoingMessage,
+                                    chatsWindowActivity.getString(R.string.you_title),
+                                    chatID,
+                                    0
+                                )
+                            }
+                        }
                         return@runOnUiThread
                     }
                 }
             }
-
             val sender = (parsedMessage["sender"] as JSONObject)["username"].toString()
             val messageText = parsedMessage["messageText"].toString()
             val userId = (parsedMessage["sender"] as JSONObject)["id"] as Int
@@ -147,7 +175,6 @@ object ChatSingleton {
             val date = parsedMessage["date"].toString()
             val msgId = parsedMessage["id"] as Int
             val unreadMsgCount: Int
-
             if (parsedMessage["read"] as Boolean)
                 return@runOnUiThread
             if (sender == Van) {
@@ -179,11 +206,10 @@ object ChatSingleton {
                         sendNotification(userId, sender, messageText)
                     }
                     updateMessageList(sender, messageText, "$date $time", msgId)
-                    focusOnLastItem(unreadMsgCount)  //!
+                    focusOnLastItem(unreadMsgCount)
                 } else
                     sendNotification(userId, sender, messageText)
             }
-            noChatsText.visibility = View.GONE
         }
     }
 
@@ -248,7 +274,7 @@ object ChatSingleton {
     ) {
         for (el in chatsArrayList.indices) {
             if (chatsArrayList[el].login == lastMessageRecipient) {
-                removeChatFromChatList(el)
+                deleteChatFromChatList(el)
                 break
             }
         }
@@ -264,6 +290,7 @@ object ChatSingleton {
             )
         )
         chatsArrayAdapter.notifyItemInserted(0)
+        noChatsText.visibility = View.GONE
     }
 
     /* Функция добавления нового сообщения в список сообщений
@@ -271,9 +298,29 @@ object ChatSingleton {
      */
     fun updateMessageList(senderLogin: String, message: String, time: String, msgId: Int) {
         if (senderLogin == Van) {
-            messagesArrayList.add(MessageItemDataClass("", "", "", senderLogin, message, time, msgId))
+            messagesArrayList.add(
+                MessageItemDataClass(
+                    "",
+                    "",
+                    "",
+                    senderLogin,
+                    message,
+                    time,
+                    msgId
+                )
+            )
         } else {
-            messagesArrayList.add(MessageItemDataClass(senderLogin, message, time, "", "", "", msgId))
+            messagesArrayList.add(
+                MessageItemDataClass(
+                    senderLogin,
+                    message,
+                    time,
+                    "",
+                    "",
+                    "",
+                    msgId
+                )
+            )
         }
         messagesArrayAdapter.notifyDataSetChanged()
     }
@@ -330,9 +377,9 @@ object ChatSingleton {
     }
 
     /* Функция удаления чата по его позиции в списке чатов
-
+        Вызывается в PreviewChatRVAdapter.kt при удалении чата
      */
-    fun removeChatFromChatList(chatPosition: Int) {
+    fun deleteChatFromChatList(chatPosition: Int) {
         chatsArrayList.removeAt(chatPosition)
         chatsArrayAdapter.notifyItemRemoved(chatPosition)
         if (chatsArrayList.isEmpty()) {
@@ -340,7 +387,28 @@ object ChatSingleton {
         }
     }
 
+    /* Функция удаления сообщения
+        Вызывается в MessageItemLVAdapter.kt при удалении сообщения
+     */
     fun deleteMessageFromMessageList(messageID: Int) {
         webSocketClient.deleteMessage(messageID, Van, Billy)
+    }
+
+    /* Функция проверки, пустой ли массив сообщений
+        Вызывается в MessageItemLVAdapter.kt при удалении сообщения
+     */
+    fun isMessagesArrayEmpty(): Boolean {
+        return messagesArrayList.isEmpty()
+    }
+
+    /* Функция закрытия окна чатов
+        Вызывается в ChatItselfWindow.kt в методе closeChatItselfWindow() и в MessageItemLVAdapter при удалении сообщения
+     */
+    fun closeChatWindow() {
+        isInChat = false
+        Billy = "Herrington"
+        chatName = ""
+        chatID = -1
+        clearMessagesList()
     }
 }

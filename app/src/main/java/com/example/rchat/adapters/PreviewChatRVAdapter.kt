@@ -42,6 +42,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 ChatSingleton.apply {
                     isInChat = true
+                    chatID = chatId
                     chatName = mLogin.text.toString()
                 }
                 if (mInfoTxt.text != itemView.context.getString(R.string.you_title))
@@ -149,7 +150,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
             .setNegativeButton(context.getString(R.string.delete_for_all_title)) { _, _ ->
                 try {
                     Requests().delete(mapOf("id1" to userID.toString(), "id2" to chatID.toString()), "${ChatSingleton.serverUrl}/personal")
-                    ChatSingleton.removeChatFromChatList(aAdapterPosition)
+                    ChatSingleton.deleteChatFromChatList(aAdapterPosition)
                 }
                 catch(exception: Exception) {
                     Toast.makeText(context, "ЕБАНЫЙ РОТ ЭТОГО КАЗИНО БЛЯТЬ ТЫ КТО ТАКОЙ СУКА ЧТОБЫ ЭТО ДЕЛАТЬ", Toast.LENGTH_LONG).show()

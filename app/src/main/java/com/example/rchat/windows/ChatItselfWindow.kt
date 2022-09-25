@@ -122,11 +122,7 @@ class ChatItselfWindow : AppCompatActivity() {
     /* Выход из чата - очистка списка сообщений, установка флага, что пользователь не в чате и очистка имени собеседника
     */
     private fun closeChatItselfWindow() {
-        ChatSingleton.apply {
-            isInChat = false
-            Billy = "Herrington"
-            clearMessagesList()
-        }
+        ChatSingleton.closeChatWindow()
         super.onBackPressed()
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         finish()

@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.example.rchat.R
 import com.example.rchat.dataclasses.MessageItemDataClass
+import com.example.rchat.utils.ChatSingleton
 
 /* Класс-адаптер для единичного элемента - сообщения
 */
@@ -128,8 +129,7 @@ class MessageItemLVAdapter(
 
     private fun deleteMessage(messageID: Int) {
         try {
-//            ChatSingleton.deleteMessageFromMessageList(messageID)
-            Toast.makeText(context, context.getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
+            ChatSingleton.deleteMessageFromMessageList(messageID)
         } catch (exception: Exception) {
             Toast.makeText(
                 context,
