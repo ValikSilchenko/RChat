@@ -30,8 +30,7 @@ import org.json.JSONObject
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
     const val serverUrl = "http://194.87.248.192:8080"
-    const val ImgRequestCode = 100
-    lateinit var messageEditText: EditText
+    private lateinit var messageEditText: EditText
     private lateinit var notificationManager: NotificationManager
     private lateinit var notificationChannel: NotificationChannel
     private lateinit var chatItselfActivity: Activity
@@ -44,14 +43,14 @@ object ChatSingleton {
     private var webSocketClient = WebSocketClient()
     private var chatsWindowRV: RecyclerView? = null
     private var chatItselfRV: ListView? = null
-    private var usersArrayList: ArrayList<CGCDataClass> = ArrayList()
+    private val usersArrayList: ArrayList<CGCDataClass> = ArrayList()
+    private val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
     val chatsArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
-    val messagesArrayList: ArrayList<MessageItemDataClass> = ArrayList()
     var isInChat = false
     var isNotificationOn = true
     var Billy = "Herrington" // Логин собеседника
     var Van = "Darkholme" // Логин авторизованного пользователя
-    var cPackageName = ""
+    private var cPackageName = ""
     var chatName = ""
     var chatID = -1
 
@@ -63,7 +62,7 @@ object ChatSingleton {
         username: String,
         incomingContext: Activity,
         pName: String,
-        nochatsTxt: TextView
+        noChatsTxt: TextView
     ) {
         Van = username
         chatsWindowRV = recView
@@ -72,7 +71,7 @@ object ChatSingleton {
         chatsWindowRV!!.layoutManager = LinearLayoutManager(chatsWindowActivity)
         chatsWindowRV!!.adapter = chatsArrayAdapter
         cPackageName = pName
-        noChatsText = nochatsTxt
+        noChatsText = noChatsTxt
         createNotificationChannel()
     }
 
@@ -126,14 +125,14 @@ object ChatSingleton {
     /* Функция получения и последующей обработки сообщения
         Вызывается в WebSocketClient.kt в методе connect()
      */
+    // РЕФАКТОРИНГ ТУТ ЗАПРЕЩЕН БЛЯТЬ
+    // ИДЕ ВЫРУБАЙ НАХУЙ
     fun processMessage(message: Map<*, *>) {
         chatsWindowActivity.runOnUiThread {
             val parsedMessage = JSONObject(message)
-            // РЕФАКТОРИНГ ТУТ ЗАПРЕЩЕН БЛЯТЬ
-            // ИДЕ ВЫРУБАЙ НАХУЙ
             if (parsedMessage.has("deleted")) {
                 for (el in messagesArrayList.indices) {
-                    if (messagesArrayList[el].msgId == (parsedMessage["deleted"] as String).toInt()) {
+                    if (messagesArrayList[el].messageID == (parsedMessage["deleted"] as String).toInt()) {
                         messagesArrayList.removeAt(el)
                         messagesArrayAdapter.notifyDataSetChanged()
                         if (isMessagesArrayEmpty()) {
@@ -173,7 +172,7 @@ object ChatSingleton {
             val userId = (parsedMessage["sender"] as JSONObject)["id"] as Int
             val time = parsedMessage["time"].toString()
             val date = parsedMessage["date"].toString()
-            val msgId = parsedMessage["id"] as Int
+            val messageID = parsedMessage["id"] as Int
             val unreadMsgCount: Int
             if (parsedMessage["read"] as Boolean)
                 return@runOnUiThread
@@ -186,7 +185,7 @@ object ChatSingleton {
                     userId,
                     0
                 )
-                updateMessageList(sender, messageText, "$date $time", msgId)
+                updateMessageList(sender, messageText, "$date $time", messageID)
                 focusOnLastItem(0)
             } else {
                 unreadMsgCount = Requests().get(
@@ -205,7 +204,7 @@ object ChatSingleton {
                     if (!isInChat) {
                         sendNotification(userId, sender, messageText)
                     }
-                    updateMessageList(sender, messageText, "$date $time", msgId)
+                    updateMessageList(sender, messageText, "$date $time", messageID)
                     focusOnLastItem(unreadMsgCount)
                 } else
                     sendNotification(userId, sender, messageText)
@@ -234,6 +233,7 @@ object ChatSingleton {
     /* Функция показа уведомлений от чатов
         Вызывается в этом объекте в функции processMessage()
      */
+    @SuppressLint("UnspecifiedImmutableFlag")
     private fun sendNotification(notificationId: Int, loginTitle: String, messageText: String) {
         if (isNotificationOn) {
             val intent = Intent(chatsWindowActivity, ChatItselfWindow::class.java)
@@ -296,7 +296,7 @@ object ChatSingleton {
     /* Функция добавления нового сообщения в список сообщений
         Вызывается в этом объекте в функции processMessage() и в ChatItselfWindow.kt в методе onCreate()
      */
-    fun updateMessageList(senderLogin: String, message: String, time: String, msgId: Int) {
+    fun updateMessageList(senderLogin: String, message: String, time: String, messageID: Int) {
         if (senderLogin == Van) {
             messagesArrayList.add(
                 MessageItemDataClass(
@@ -306,7 +306,7 @@ object ChatSingleton {
                     senderLogin,
                     message,
                     time,
-                    msgId
+                    messageID
                 )
             )
         } else {
@@ -318,7 +318,7 @@ object ChatSingleton {
                     "",
                     "",
                     "",
-                    msgId
+                    messageID
                 )
             )
         }
@@ -353,8 +353,8 @@ object ChatSingleton {
     /* Функция отправки запроса на пометку сообщения прочитанным
         Вызывается в ChatItselfWindow.kt в методе onCreate() после получения всех сообщений из запроса
      */
-    fun sendRequestForReading(sender: String, msgId: Int) {
-        webSocketClient.send(Van, sender, msgId)
+    fun sendRequestForReading(sender: String, messageID: Int) {
+        webSocketClient.send(Van, sender, messageID)
     }
 
     /* Функция добавления пользователя в список для беседы
@@ -397,7 +397,7 @@ object ChatSingleton {
     /* Функция проверки, пустой ли массив сообщений
         Вызывается в MessageItemLVAdapter.kt при удалении сообщения
      */
-    fun isMessagesArrayEmpty(): Boolean {
+    private fun isMessagesArrayEmpty(): Boolean {
         return messagesArrayList.isEmpty()
     }
 

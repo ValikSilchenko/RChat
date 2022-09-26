@@ -134,7 +134,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
     }
 
     /* Функция показа предупреждающего сообщения при удалении чата
-        На негативную кнопук повесил удаление чатов у всех, а на нейтральную отмену действия красоты ради - их местами не поменять
+        На негативную кнопку повесил удаление чатов у всех, а на нейтральную отмену действия красоты ради - их местами не поменять
     */
     private fun showAlertMessage(context: Context, chatID: Int) {
         val message: AlertDialog.Builder = AlertDialog.Builder(context)

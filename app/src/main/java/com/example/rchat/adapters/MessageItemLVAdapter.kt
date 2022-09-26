@@ -47,7 +47,7 @@ class MessageItemLVAdapter(
         outgoingLogin.text = arrayList[position].outgoingLogin
         outgoingMessage.text = arrayList[position].outgoingMessage
         outgoingTime.text = arrayList[position].outgoingTime
-        val msgId = arrayList[position].msgId
+        val msgId = arrayList[position].messageID
 
         /* Скрытие ненужных блоков в сообщении
         */

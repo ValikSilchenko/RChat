@@ -9,5 +9,5 @@ data class MessageItemDataClass(
     var outgoingLogin: String,
     var outgoingMessage: String,
     var outgoingTime: String,
-    var msgId: Int
+    var messageID: Int
 )
