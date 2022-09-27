@@ -306,7 +306,8 @@ object ChatSingleton {
                     senderLogin,
                     message,
                     time,
-                    messageID
+                    messageID,
+                    senderLogin
                 )
             )
         } else {
@@ -318,7 +319,8 @@ object ChatSingleton {
                     "",
                     "",
                     "",
-                    messageID
+                    messageID,
+                    senderLogin
                 )
             )
         }

@@ -67,7 +67,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
                             true
                         }
                         R.id.mute_chat_item -> { /* Отключение уведомлений от чата */
-                            Toast.makeText(itemView.context, itemView.context.getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(itemView.context, "ЕБАНЫЙ РОТ ЭТОГО КАЗИНО БЛЯТЬ ТЫ КТО ТАКОЙ СУКА ЧТОБЫ ЭТО ДЕЛАТЬ", Toast.LENGTH_LONG).show()
                             true
                         }
                         else -> false

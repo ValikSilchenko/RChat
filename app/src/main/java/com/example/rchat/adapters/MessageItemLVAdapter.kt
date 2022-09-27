@@ -27,6 +27,8 @@ class MessageItemLVAdapter(
     private lateinit var outgoingContainer: LinearLayout
     private lateinit var outgoingTime: TextView
     private lateinit var message: String
+    private lateinit var messageSender: String
+    private var messageId: Int = -1
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -47,7 +49,8 @@ class MessageItemLVAdapter(
         outgoingLogin.text = arrayList[position].outgoingLogin
         outgoingMessage.text = arrayList[position].outgoingMessage
         outgoingTime.text = arrayList[position].outgoingTime
-        val msgId = arrayList[position].messageID
+        messageId = arrayList[position].messageID
+        messageSender = arrayList[position].messageSender
 
         /* Скрытие ненужных блоков в сообщении
         */
@@ -74,7 +77,8 @@ class MessageItemLVAdapter(
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.delete_message_item -> {   /* Удаление сообщения */
-                        showAlertMenu(msgId)
+                        Toast.makeText(context, messageSender, Toast.LENGTH_SHORT).show()
+//                        showAlertMenu(messageId)
                         true
                     }
                     R.id.edit_message_item -> {     /* Редактирование сообщения */
