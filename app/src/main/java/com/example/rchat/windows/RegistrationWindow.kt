@@ -1,8 +1,6 @@
 package com.example.rchat.windows
 
-import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -12,22 +10,15 @@ import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.Requests
 
-
+/* Оконный класс окна регистрации
+*/
 class RegistrationWindow : AppCompatActivity() {
     private lateinit var login: String
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
-        when (prefs.getString("NightMode", "Day")) {
-            "Day" -> setTheme(R.style.Theme_Light)
-            "Night" -> setTheme(R.style.Theme_Dark)
-            "System" -> {
-                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                    Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
-                    Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
-                }
-            }
-        }
+        /* Установка темы приложения
+        */
+        ChatFunctions().setAppTheme(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_window)
@@ -40,10 +31,14 @@ class RegistrationWindow : AppCompatActivity() {
         val registrationBtn: Button = findViewById(R.id.RW_RegistrationBtn)
         val authorizeBtn: Button = findViewById(R.id.RW_AuthorizeBtn)
 
+        /* Нажатие кнопки авторизации
+        */
         authorizeBtn.setOnClickListener {
             onBackPressed()
         }
 
+        /* Нажатие кнопки регистрации
+        */
         registrationBtn.setOnClickListener {
             if (emailText.text.isNotEmpty() && loginText.text.isNotEmpty()
                 && phoneNumberText.text.isNotEmpty() && passwordText.text.isNotEmpty()
@@ -52,7 +47,7 @@ class RegistrationWindow : AppCompatActivity() {
             ) {
                 login = loginText.text.toString()
                 try {
-                    Requests().post(
+                    val userID = Requests().post(
                         mapOf(
                             "username" to login,
                             "email" to emailText.text.toString(),
@@ -60,9 +55,12 @@ class RegistrationWindow : AppCompatActivity() {
                             "password" to passwordText.text.toString()
                         ),
                         "${ChatSingleton.serverUrl}/user"
-                    )
+                    ).toInt()
                     try {
-                        ChatFunctions().saveLogin(this, login, true)
+                        ChatFunctions().apply {
+                            saveLogin(applicationContext, login, true)
+                            saveUserID(applicationContext, userID)
+                        }
                         val mIntent = Intent(this, SplashScreenWindow::class.java)
                         mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                         startActivity(mIntent)
@@ -71,7 +69,6 @@ class RegistrationWindow : AppCompatActivity() {
                             android.R.anim.slide_out_right
                         )
                         finish()
-
                     } catch (exception: Exception) {
                         if (ChatFunctions().isInternetAvailable(applicationContext)) {
                             ChatFunctions().showMessage(

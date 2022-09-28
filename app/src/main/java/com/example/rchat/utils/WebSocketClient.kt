@@ -14,9 +14,14 @@ import org.springframework.web.socket.sockjs.client.Transport
 import org.springframework.web.socket.sockjs.client.WebSocketTransport
 import java.lang.reflect.Type
 
+/* Утилитный класс веб-сокета
+*/
 class WebSocketClient {
     private var session: StompSession? = null
 
+    /* Функция соединения с сокетом
+        Вызывается в ChatSingleton.kt в методе openConnection()
+     */
     fun connect(username: String) {
         val simpleWebSocketClient: WebSocketClient = StandardWebSocketClient()
 
@@ -45,14 +50,27 @@ class WebSocketClient {
             }).get()
     }
 
-    fun send(username: String, msg: String, sender: String) {
+    /* Функция отправки сообщения
+        Вызывается в ChatSingleton.kt в методе sendMessage()
+     */
+    fun sendMessage(username: String, msg: String, sender: String) {
         session?.send("/app/user/$username/$sender/", msg)
     }
 
+    /* Функция отправки запроса на прочтение сообщения
+        Вызывается в ChatSingleton.kt в методе sendRequestForReading()
+     */
     fun send(recLogin: String, senderLogin: String, id: Int) {
         session?.send("/app/message/$recLogin/$senderLogin/", id)
     }
 
+    fun deleteMessage(messageID: Int, user1: String, user2: String) {
+        session?.send("/app/delete/$user1/$user2/", messageID)
+    }
+
+    /* Функция закрытия соединения с сокетом
+        Вызывается в ChatSingleton.kt в методе closeConnection()
+     */
     fun disconnect() {
         session?.disconnect()
     }

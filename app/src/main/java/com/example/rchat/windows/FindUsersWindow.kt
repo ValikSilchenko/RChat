@@ -1,7 +1,5 @@
 package com.example.rchat.windows
 
-import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
@@ -17,6 +15,8 @@ import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
 import com.example.rchat.utils.Requests
 
+/* Оконный класс поиска пользователей для создания нового чата
+*/
 class FindUsersWindow : AppCompatActivity() {
 
     private var foundUserArrayList: ArrayList<PreviewChatDataClass> = ArrayList()
@@ -24,17 +24,9 @@ class FindUsersWindow : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
-        when (prefs.getString("NightMode", "Day")) {
-            "Day" -> setTheme(R.style.Theme_Light)
-            "Night" -> setTheme(R.style.Theme_Dark)
-            "System" -> {
-                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                    Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
-                    Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
-                }
-            }
-        }
+        /* Установка темы приложения
+        */
+        ChatFunctions().setAppTheme(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.find_users_window)
@@ -49,12 +41,14 @@ class FindUsersWindow : AppCompatActivity() {
         foundUsersRV.layoutManager = LinearLayoutManager(this)
         foundUsersRV.adapter = arrayAdapter
 
+        /* Нажатие кнопки возврата
+        */
         backToChatsWindow.setOnClickListener {
             onBackPressed()
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            finish()
         }
 
+        /* Нажатие кнопки поиска пользователей по логину
+        */
         findBtn.setOnClickListener {
             if (loginInput.text.isNotEmpty()) {
                 try {
@@ -62,7 +56,6 @@ class FindUsersWindow : AppCompatActivity() {
                         foundUserArrayList.clear()
                         arrayAdapter.notifyDataSetChanged()
                     }
-
                     foundUsers = JasonSTATHAM().parseUsers(
                         Requests().get(
                             mapOf(
@@ -73,11 +66,10 @@ class FindUsersWindow : AppCompatActivity() {
                     for (element in foundUsers) {
                         foundUserArrayList.add(
                             PreviewChatDataClass(
-                                element, "", "", "", 0, 0)  //!
+                                element, "", "", "", 0, 0)
                         )
                     }
-//                    arrayAdapter.notifyDataSetChanged()
-                    arrayAdapter.notifyItemInserted(foundUserArrayList.size)    //!
+                    arrayAdapter.notifyItemInserted(foundUserArrayList.size)
                     loginInput.text = null
                     if (foundUserArrayList.isEmpty())
                         Toast.makeText(this, getString(R.string.users_not_found_title), Toast.LENGTH_SHORT).show()

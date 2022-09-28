@@ -1,10 +1,9 @@
 package com.example.rchat.windows
 
-import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -21,34 +20,29 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
+/* Оконный класс списка чатов
+*/
 class ChatsWindow : AppCompatActivity() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
-        when (prefs.getString("NightMode", "Day")) {
-            "Day" -> setTheme(R.style.Theme_Light)
-            "Night" -> setTheme(R.style.Theme_Dark)
-            "System" -> {
-                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                    Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
-                    Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
-                }
-            }
-        }
+        /* Установка темы приложения
+        */
+        ChatFunctions().setAppTheme(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chats_window)
 
 //        val networkConnection = NetworkConnectionLiveData(applicationContext)   //!
+        val noChatsTxt: TextView = findViewById(R.id.CW_NoChatsTxt)
         val userLogin: TextView = findViewById(R.id.CW_AppNameTV)
         val chatArray: RecyclerView = findViewById(R.id.CW_ChatsRV)
         val moreBtn: ImageButton = findViewById(R.id.CW_MoreBtn)
         val user = ChatFunctions().getSavedLogin(this)
         userLogin.text = user
 
-        ChatSingleton.setChatsWindow(chatArray, user, this, packageName)
+        /* Сеттер данного окна в синглтоне
+        */
+        ChatSingleton.setChatsWindow(chatArray, user, this, packageName, noChatsTxt)
 
 //        networkConnection.observe(this) { isConnected ->
 //            if (isConnected)
@@ -57,6 +51,8 @@ class ChatsWindow : AppCompatActivity() {
 //                Toast.makeText(applicationContext, "Internet disconnected", Toast.LENGTH_SHORT).show()
 //        }
 
+        /* Получение списка чатов
+        */
         try {
             val response: List<JSONObject> = JasonSTATHAM().stringToListOfJSONObj(
                 Requests().get(
@@ -106,11 +102,18 @@ class ChatsWindow : AppCompatActivity() {
             )
         }
 
+        /* Скрытие текста, если чаты есть
+        */
+        if (ChatSingleton.chatsArrayList.size > 0)
+            noChatsTxt.visibility = View.GONE
+
+        /* Нажатие кнопки опций
+        */
         moreBtn.setOnClickListener {
             val popupMenu = PopupMenu(this, it)
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.new_chat_item -> {
+                    R.id.new_chat_item -> {     /* Открытие окна поиска пользователей */
                         startActivity(Intent(this, FindUsersWindow::class.java))
                         overridePendingTransition(
                             android.R.anim.slide_in_left,
@@ -118,12 +121,12 @@ class ChatsWindow : AppCompatActivity() {
                         )
                         true
                     }
-                    R.id.new_group_chat_item -> {
+                    R.id.new_group_chat_item -> {   /* Открытие окна создания беседы */
                         Toast.makeText(this, getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
 //                        startActivity(Intent(this, CreateGroupChatWindow::class.java))
                         true
                     }
-                    R.id.settings_item -> {
+                    R.id.settings_item -> {     /* Открытие окна настроек */
                         val intent = Intent(this, SettingsWindow::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                         startActivity(intent)

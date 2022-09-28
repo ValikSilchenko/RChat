@@ -1,5 +1,7 @@
 package com.example.rchat.dataclasses
 
+/* Класс-БД для хранения информации о сообщениях
+*/
 data class MessageItemDataClass(
     var incomingLogin: String,
     var incomingMessage: String,
@@ -7,5 +9,6 @@ data class MessageItemDataClass(
     var outgoingLogin: String,
     var outgoingMessage: String,
     var outgoingTime: String,
-    var msgId: Int
+    var messageID: Int,
+    var messageSender: String
 )

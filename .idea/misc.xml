@@ -28,12 +28,13 @@
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/authorize_window.xml" value="0.33" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/available_contacts.xml" value="0.3845108695652174" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/chat_itself.xml" value="0.358695652173913" />
-        <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/chat_itself_window.xml" value="0.22" />
+        <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/chat_itself_window.xml" value="0.33" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/chat_list.xml" value="0.33" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/chat_list_item.xml" value="0.33" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/chats.xml" value="0.33" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/chats_actions_menu.xml" value="0.3692708333333333" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/chats_window.xml" value="0.22" />
+        <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/code_verification_window.xml" value="0.33" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/create_gc_window.xml" value="0.22" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/divider_listview.xml" value="0.37817028985507245" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/find_users.xml" value="0.33" />
@@ -47,12 +48,14 @@
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/media_chat_window.xml" value="0.15443840579710144" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/message_item.xml" value="0.22" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/messagelist_item.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/new_password_window.xml" value="0.33" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/notification_item.xml" value="0.22" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/outcoming_message_item.xml" value="0.3845108695652174" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/outcomingmessage_item.xml" value="0.3845108695652174" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/preview_chat.xml" value="0.22" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/preview_chat_item.xml" value="0.33" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/registration_window.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/reset_password_window.xml" value="0.33" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/roundcorner.xml" value="0.3692708333333333" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/roundcorners.xml" value="0.3692708333333333" />
         <entry key="..\:/Users/Yuriy/AndroidStudioProjects/RChat/app/src/main/res/layout/settings.xml" value="0.3845108695652174" />

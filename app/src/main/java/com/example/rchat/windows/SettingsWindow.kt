@@ -15,9 +15,14 @@ import com.example.rchat.utils.BackgroundService
 import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 
+/* Оконный класс окна настроек
+*/
 class SettingsWindow : AppCompatActivity() {
 
     private val avatarImg: ImageView? = null
+    private lateinit var dayModeCBox: CheckBox
+    private lateinit var nightModeCBox: CheckBox
+    private lateinit var systemModeCBox: CheckBox
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -25,7 +30,9 @@ class SettingsWindow : AppCompatActivity() {
         val editor = prefs.edit()
         var uiMode = 0
 
-        when (prefs.getString("NightMode", "Day")) {
+        /* Установка темы приложения
+        */
+        when (prefs.getString("NIGHTLIFE_KEY", "Day")) {
             "Day" -> {
                 setTheme(R.style.Theme_Light)
                 uiMode = 0
@@ -49,37 +56,35 @@ class SettingsWindow : AppCompatActivity() {
         val backBtn: ImageButton = findViewById(R.id.SW_ToChatsBtn)
         val avatarBtn: Button = findViewById(R.id.SW_AvatarBtn)
         val exitAccountBtn: Button = findViewById(R.id.SW_ExitAccountBtn)
-        val dayModeCBox: CheckBox = findViewById(R.id.SW_DayModeCB)
-        val nightModeCBox: CheckBox = findViewById(R.id.SW_NightModeCB)
-        val systemModeCBox: CheckBox = findViewById(R.id.SW_SystemModeCB)
         val langSpinner: Spinner = findViewById(R.id.SW_LangSpinner)
         val notificationsOnTV: TextView = findViewById(R.id.SW_NotifOnTextView)
         val notificationsOffTV: TextView = findViewById(R.id.SW_NotifOffTextView)
         val notificationsSwitch: SwitchCompat = findViewById(R.id.SW_NotificationsSC)
+        dayModeCBox = findViewById(R.id.SW_DayModeCB)
+        nightModeCBox = findViewById(R.id.SW_NightModeCB)
+        systemModeCBox = findViewById(R.id.SW_SystemModeCB)
 
         val languages = arrayOf("En", "Ru")
         val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, languages)
         langSpinner.adapter = arrayAdapter
 
+        /* Настройка "темовых" CheckBox в зависимости от темы приложения при открытии окна
+        */
         when (uiMode) {
             0 -> {
-                dayModeCBox.isChecked = true
-                nightModeCBox.isChecked = false
-                systemModeCBox.isChecked = false
+                setThemeCheckBoxes(dayCB = true, nightCB = false, systemCB = false)
             }
             1 -> {
-                dayModeCBox.isChecked = false
-                nightModeCBox.isChecked = true
-                systemModeCBox.isChecked = false
+                setThemeCheckBoxes(dayCB = false, nightCB = true, systemCB = false)
             }
             2 -> {
-                dayModeCBox.isChecked = false
-                nightModeCBox.isChecked = false
-                systemModeCBox.isChecked = true
+                setThemeCheckBoxes(dayCB = false, nightCB = false, systemCB = true)
             }
         }
 
-        when (prefs.getBoolean("Notifications", true)) {
+        /* Настройка ползунка уведомлений при открытии окна
+        */
+        when (prefs.getBoolean("NOTIFICATIONS_KEY", true)) {
             true -> {
                 notificationsOffTV.visibility = View.INVISIBLE
                 notificationsOnTV.visibility = View.VISIBLE
@@ -87,63 +92,72 @@ class SettingsWindow : AppCompatActivity() {
                 ChatSingleton.isNotificationOn = true
             }
             false -> {
-                notificationsOnTV.visibility = View.INVISIBLE
                 notificationsOffTV.visibility = View.VISIBLE
+                notificationsOnTV.visibility = View.INVISIBLE
                 notificationsSwitch.isChecked = false
                 ChatSingleton.isNotificationOn = false
             }
         }
 
+        /* Установка светлой темы
+        */
         dayModeCBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                nightModeCBox.isChecked = false
-                systemModeCBox.isChecked = false
+                setThemeCheckBoxes(dayCB = true, nightCB = false, systemCB = false)
                 editor.apply {
-                    putString("NightMode", "Day")
+                    putString("NIGHTLIFE_KEY", "Day")
                 }.apply()
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             } else
                 editor.apply {
-                    putString("NightMode", "Day")
+                    putString("NIGHTLIFE_KEY", "Day")
                 }.apply()
         }
 
+        /* Установка темной темы
+        */
         nightModeCBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                dayModeCBox.isChecked = false
-                systemModeCBox.isChecked = false
+                setThemeCheckBoxes(dayCB = false, nightCB = true, systemCB = false)
                 editor.apply {
-                    putString("NightMode", "Night")
+                    putString("NIGHTLIFE_KEY", "Night")
                 }.apply()
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else
                 editor.apply {
-                    putString("NightMode", "Day")
+                    putString("NIGHTLIFE_KEY", "Day")
                 }.apply()
         }
 
+        /* Установка системной темы
+        */
         systemModeCBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                dayModeCBox.isChecked = false
-                nightModeCBox.isChecked = false
+                setThemeCheckBoxes(dayCB = false, nightCB = false, systemCB = true)
                 editor.apply {
-                    putString("NightMode", "System")
+                    putString("NIGHTLIFE_KEY", "System")
                 }.apply()
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             } else
                 editor.apply {
-                    putString("NightMode", "Day")
+                    putString("NIGHTLIFE_KEY", "Day")
                 }.apply()
         }
 
+        /* Нажатие кнопки возврата
+        */
         backBtn.setOnClickListener {
             startIntent()
         }
 
+        /* Нажатие кнопки смены аватара
+        */
         avatarBtn.setOnClickListener {
             Toast.makeText(this, getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
         }
 
+        /* Нажатие кнопки выхода из аккаунта
+        */
         exitAccountBtn.setOnClickListener {
             val message: AlertDialog.Builder = AlertDialog.Builder(this)
             message
@@ -168,12 +182,14 @@ class SettingsWindow : AppCompatActivity() {
             messageWindow.show()
         }
 
+        /* Переключение ползунка уведомлений
+        */
         notificationsSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 notificationsOffTV.visibility = View.INVISIBLE
                 notificationsOnTV.visibility = View.VISIBLE
                 editor.apply {
-                    putBoolean("Notifications", true)
+                    putBoolean("NOTIFICATIONS_KEY", true)
                 }.apply()
                 ChatSingleton.isNotificationOn = true
             }
@@ -181,7 +197,7 @@ class SettingsWindow : AppCompatActivity() {
                 notificationsOnTV.visibility = View.INVISIBLE
                 notificationsOffTV.visibility = View.VISIBLE
                 editor.apply {
-                    putBoolean("Notifications", false)
+                    putBoolean("NOTIFICATIONS_KEY", false)
                 }.apply()
                 ChatSingleton.isNotificationOn = false
             }
@@ -216,26 +232,34 @@ class SettingsWindow : AppCompatActivity() {
         startIntent()
     }
 
+    /* Функция возврата на предыдущее окно
+    */
     private fun startIntent() {
         super.onBackPressed()
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 
+    /* Функция выхода из аккаунта и очистки всех данных аккаунта в приложении
+    */
     private fun exitAccount() {
-        if (ChatFunctions().isServiceRunning(
-                BackgroundService::class.java,
-                applicationContext
-            )
-        )
+        if (ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
             stopService(Intent(applicationContext, BackgroundService::class.java))
         ChatFunctions().deleteData(this)
-        ChatSingleton.deleteNotification()
+        ChatSingleton.apply {
+            deleteNotification()
+            clearChatsList()
+            clearMessagesList()
+        }
         val intent = Intent(this, AuthorizationWindow::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
-        overridePendingTransition(
-            android.R.anim.slide_in_left,
-            android.R.anim.slide_out_right
-        )
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+    }
+
+    private fun setThemeCheckBoxes(dayCB: Boolean, nightCB: Boolean, systemCB: Boolean)
+    {
+        dayModeCBox.isChecked = dayCB
+        nightModeCBox.isChecked = nightCB
+        systemModeCBox.isChecked = systemCB
     }
 }

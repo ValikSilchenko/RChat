@@ -63,6 +63,16 @@
     <string name="notifications_title">Notifications</string>
     <string name="on_title">On</string>
     <string name="off_title">Off</string>
+    <string name="theres_nothing_here_title">There is nothing here...</string>
+    <string name="enter_email_for_sending_title">Enter e-mail for code receiving</string>
+    <string name="send_email_title">Send e-mail</string>
+    <string name="send_acceptance_code_title">Enter verification code</string>
+    <string name="send_code_title">Send code</string>
+    <string name="enter_new_password_title">Enter new password</string>
+    <string name="repeat_new_password_title">Repeat new password</string>
+    <string name="save_password_title">Save new password</string>
+    <string name="delete_for_myself_title">Delete for me</string>
+    <string name="delete_for_all_title">Delete for all</string>
     <string-array name="lang_array">
         <item>Russian</item>
         <item>English</item>

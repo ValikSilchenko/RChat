@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".windows.CreateGroupChatWindow">
 
+    <!-- Кнопка выхода назад -->
     <ImageButton
         android:id="@+id/CGC_BackBtn"
         android:layout_width="50dp"
@@ -21,6 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Поле ввода логина -->
     <EditText
         android:id="@+id/CGC_GroupNameET"
         android:layout_width="wrap_content"
@@ -34,6 +36,7 @@
         app:layout_constraintStart_toEndOf="@id/CGC_BackBtn"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Список найденных пользователей -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/CGC_UsersRV"
         android:layout_width="match_parent"
@@ -47,6 +50,7 @@
         app:layout_constraintTop_toBottomOf="@id/CGC_BackBtn"
         tools:listitem="@layout/gc_user_item" />
 
+    <!-- Кнопка создания беседы -->
     <Button
         android:id="@+id/CGC_CreateChatBtn"
         android:layout_width="150dp"
@@ -58,5 +62,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

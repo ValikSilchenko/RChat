@@ -9,6 +9,7 @@
     android:background="?attr/background_color"
     tools:context=".windows.AuthorizationWindow">
 
+    <!-- Верхний текст -->
     <TextView
         android:id="@+id/AW_TopTextTV"
         android:layout_width="wrap_content"
@@ -24,6 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Поле ввода логина -->
     <EditText
         android:id="@+id/AW_LoginET"
         android:layout_width="match_parent"
@@ -40,6 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/AW_TopTextTV" />
 
+    <!-- Поле ввода пароля -->
     <EditText
         android:id="@+id/AW_PasswordET"
         android:layout_width="match_parent"
@@ -56,6 +59,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/AW_LoginET" />
 
+    <!-- Кнопка входа в аккаунт -->
     <Button
         android:id="@+id/AW_AuthorizeBtn"
         android:layout_width="match_parent"
@@ -72,6 +76,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/AW_PasswordET" />
 
+    <!-- Кнопка перехода в окно регистрации -->
     <Button
         android:id="@+id/AW_NoAccountBtn"
         android:layout_width="match_parent"
@@ -88,6 +93,7 @@
         android:backgroundTint="?attr/main_color"
         app:layout_constraintTop_toBottomOf="@id/AW_AuthorizeBtn" />
 
+    <!-- Кнопка восстановления пароля -->
     <Button
         android:id="@+id/AW_ForgotPasswordBtn"
         android:layout_width="match_parent"

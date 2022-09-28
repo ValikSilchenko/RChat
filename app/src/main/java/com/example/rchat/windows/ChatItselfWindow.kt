@@ -1,33 +1,27 @@
 package com.example.rchat.windows
 
-import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
+import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.JasonSTATHAM
 import com.example.rchat.utils.Requests
 import org.json.JSONObject
 
+/* Оконный класс чата
+*/
 class ChatItselfWindow : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val idArray: ArrayList<Int> = ArrayList()
-        val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
-        when (prefs.getString("NightMode", "Day")) {
-            "Day" -> setTheme(R.style.Theme_Light)
-            "Night" -> setTheme(R.style.Theme_Dark)
-            "System" -> {
-                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                    Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
-                    Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
-                }
-            }
-        }
+
+        /* Установка темы приложения
+        */
+        ChatFunctions().setAppTheme(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chat_itself_window)
@@ -42,6 +36,8 @@ class ChatItselfWindow : AppCompatActivity() {
         val chatLogin = ChatSingleton.chatName
         chatNameTV.text = chatLogin
 
+        /* Сеттер данного окна в синглтоне
+        */
         ChatSingleton.setChatItselfWindow(
             messagesLV,
             chatLogin,
@@ -49,10 +45,15 @@ class ChatItselfWindow : AppCompatActivity() {
             messageInputET
         )
 
+        /* Запрос на количество непрочитанных сообщений
+        */
         val unreadCount = Requests().get(
             mapOf("sender" to chatLogin, "recipient" to ChatSingleton.Van),
             "${ChatSingleton.serverUrl}/count"
         ).toInt()
+
+        /* Запрос и последующий показ списка сообщений
+        */
         val response: List<JSONObject> = JasonSTATHAM().stringToListOfJSONObj(
             Requests().get(
                 mapOf(
@@ -74,15 +75,20 @@ class ChatItselfWindow : AppCompatActivity() {
         }
         ChatSingleton.focusOnLastItem(unreadCount)
 
-        // Отправка запроса на прочтение сообщений
+        /* Отправка запроса на прочтение сообщений
+        */
         idArray.forEach {
             ChatSingleton.sendRequestForReading(chatLogin, it)
         }
 
+        /* Нажатие кнопки выхода в список чатов через кнопку выхода
+        */
         backToMainMenuBtn.setOnClickListener {
             closeChatItselfWindow()
         }
 
+        /* Нажатие кнопки перехода в окно медиа чатов
+        */
         chatNameTV.setOnClickListener {
             val mIntent = Intent(this, MediaChatWindow::class.java)
             mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
@@ -90,10 +96,14 @@ class ChatItselfWindow : AppCompatActivity() {
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
 
+        /* Нажатие кнопки прикрепления файлов
+        */
         attachBtn.setOnClickListener {
             Toast.makeText(applicationContext, getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
         }
 
+        /* Нажатие кнопки отправки сообщения
+        */
         sendMessageBtn.setOnClickListener {
             if (messageInputET.text.isNotEmpty())
                 ChatSingleton.sendMessage(
@@ -109,12 +119,10 @@ class ChatItselfWindow : AppCompatActivity() {
         closeChatItselfWindow()
     }
 
+    /* Выход из чата - очистка списка сообщений, установка флага, что пользователь не в чате и очистка имени собеседника
+    */
     private fun closeChatItselfWindow() {
-        ChatSingleton.apply {
-            isInChat = false
-            Billy = "Herrington"
-            clearMessagesList()
-        }
+        ChatSingleton.closeChatWindow()
         super.onBackPressed()
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         finish()

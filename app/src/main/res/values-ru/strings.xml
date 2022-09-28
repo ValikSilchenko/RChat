@@ -63,6 +63,16 @@
     <string name="notifications_title">Уведомления</string>
     <string name="on_title">Вкл</string>
     <string name="off_title">Выкл</string>
+    <string name="theres_nothing_here_title">Здесь пока ничего нет...</string>
+    <string name="enter_email_for_sending_title">Введите e-mail для кода</string>
+    <string name="send_email_title">Отправить e-mail</string>
+    <string name="send_acceptance_code_title">Введите код подтверждения</string>
+    <string name="send_code_title">Отправить код</string>
+    <string name="enter_new_password_title">Введите новый пароль</string>
+    <string name="repeat_new_password_title">Повторите новый пароль</string>
+    <string name="save_password_title">Сохранить пароль</string>
+    <string name="delete_for_myself_title">Удалить у себя</string>
+    <string name="delete_for_all_title">Удалить у всех</string>
     <string-array name="lang_array">
         <item>Русский</item>
         <item>Английский</item>

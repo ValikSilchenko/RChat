@@ -2,7 +2,12 @@ package com.example.rchat.utils
 
 import org.json.JSONObject
 
+/* Утилитный класс с функциями для парсинга JSON-объектов
+*/
 class JasonSTATHAM {
+    /* Функция парсинга строки в лист JSON-ов
+        Вызывается в ChatItselfWindow.kt в методе onCreate() и в ChatsWindow.kt в методе onCreate()
+     */
     fun stringToListOfJSONObj(data: String): List<JSONObject> {
         val indexMsg = mutableListOf<JSONObject>()
         var json = data.drop(1)
@@ -22,6 +27,9 @@ class JasonSTATHAM {
         return indexMsg
     }
 
+    /* Функция парсинга полученных пользователей
+        Вызывается в FindUsersWindow.kt в методе onCreate()
+     */
     fun parseUsers(data: String): List<String> {
         var json = data.drop(1)
         json = json.dropLast(1)

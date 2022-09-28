@@ -11,6 +11,8 @@ import android.net.*
 import android.os.Build
 import androidx.lifecycle.LiveData
 
+/* Утилитный класс для отслеживания интернет-соединения в реальном времени (broadcast receiver)
+*/
 class NetworkConnectionLiveData(private val context: Context) : LiveData<Boolean>() {
 
     private lateinit var networkCallback: ConnectivityManager.NetworkCallback
@@ -18,6 +20,8 @@ class NetworkConnectionLiveData(private val context: Context) : LiveData<Boolean
     private var connectivityManager: ConnectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+    /* Срабатывает в момент работы приложения
+    */
     override fun onActive() {
         super.onActive()
         updateConnection()
@@ -37,6 +41,8 @@ class NetworkConnectionLiveData(private val context: Context) : LiveData<Boolean
         }
     }
 
+    /* Срабатывает при прекращении работы приложения
+    */
     override fun onInactive() {
         super.onInactive()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -47,6 +53,8 @@ class NetworkConnectionLiveData(private val context: Context) : LiveData<Boolean
         }
     }
 
+    /* Отслеживание интернет-соединения при API >= 5.0
+    */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private fun lollipopNetworkRequest() {
         val requestBuilder = NetworkRequest.Builder()
@@ -59,6 +67,8 @@ class NetworkConnectionLiveData(private val context: Context) : LiveData<Boolean
         )
     }
 
+    /* Обновление статуса интернет-соединения
+    */
     private fun connectivityManagerCallback(): ConnectivityManager.NetworkCallback {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             networkCallback = object : ConnectivityManager.NetworkCallback() {
@@ -85,6 +95,8 @@ class NetworkConnectionLiveData(private val context: Context) : LiveData<Boolean
         }
     }
 
+    /* Функция обновления статуса интернет-соединения
+    */
     private fun updateConnection() {
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
         postValue(activeNetwork?.isConnected == true)

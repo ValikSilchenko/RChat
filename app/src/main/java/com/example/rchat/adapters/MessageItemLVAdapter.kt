@@ -6,9 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import com.example.rchat.R
 import com.example.rchat.dataclasses.MessageItemDataClass
+import com.example.rchat.utils.ChatSingleton
 
+/* Класс-адаптер для единичного элемента - сообщения
+*/
 class MessageItemLVAdapter(
     private val context: Activity,
     private val arrayList: ArrayList<MessageItemDataClass>
@@ -23,6 +27,8 @@ class MessageItemLVAdapter(
     private lateinit var outgoingContainer: LinearLayout
     private lateinit var outgoingTime: TextView
     private lateinit var message: String
+    private lateinit var messageSender: String
+    private var messageId: Int = -1
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -43,8 +49,11 @@ class MessageItemLVAdapter(
         outgoingLogin.text = arrayList[position].outgoingLogin
         outgoingMessage.text = arrayList[position].outgoingMessage
         outgoingTime.text = arrayList[position].outgoingTime
-        val msgId = arrayList[position].msgId
+        messageId = arrayList[position].messageID
+        messageSender = arrayList[position].messageSender
 
+        /* Скрытие ненужных блоков в сообщении
+        */
         // НЕ ЛЕЗЬ БЛЯТЬ ДЕБИЛ СУКА ЕБАНЫЙ
         // НИ В КОЕМ СЛУЧАЕ НЕ УБИРАТЬ ToString() - БЕЗ НЕГО НОРМАЛЬНО СООБЩЕНИЯ НЕ ВЫДЕЛЯЮТСЯ
         if (incomingMessage.text.toString() == "") {
@@ -61,25 +70,21 @@ class MessageItemLVAdapter(
         else
             incomingMessage.text.toString()
 
+        /* Действия на долгое нажатие на сообщение
+        */
         view.setOnLongClickListener {
             val popupMenu = PopupMenu(context, it)
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.delete_message_item -> {
-                        // Удаление сообщения
-                        Toast.makeText(
-                            context,
-                            "Delete message",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    R.id.delete_message_item -> {   /* Удаление сообщения */
+                        Toast.makeText(context, messageSender, Toast.LENGTH_SHORT).show()
+//                        showAlertMenu(messageId)
                         true
                     }
-                    R.id.edit_message_item -> {
-                        // Редактирование сообщения
+                    R.id.edit_message_item -> {     /* Редактирование сообщения */
                         true
                     }
-                    R.id.reply_message_item -> {
-                        // Ответ на сообщение
+                    R.id.reply_message_item -> {    /* Ответ на сообщение */
                         Toast.makeText(
                             context,
                             "Reply message",
@@ -106,5 +111,35 @@ class MessageItemLVAdapter(
             true
         }
         return view
+    }
+
+    private fun showAlertMenu(messageID: Int) {
+        val message: AlertDialog.Builder = AlertDialog.Builder(context)
+        message
+            .setTitle(context.getString(R.string.attention_title))
+            .setMessage(context.getString(R.string.really_wanna_delete_chat_title))
+            .setCancelable(true)
+            .setPositiveButton(
+                context.getString(R.string.yes_title)
+            ) { _, _ ->
+                deleteMessage(messageID)
+            }
+            .setNegativeButton(context.getString(R.string.no_title)) { dialog, _ ->
+                dialog.cancel()
+            }
+        val messageWindow = message.create()
+        messageWindow.show()
+    }
+
+    private fun deleteMessage(messageID: Int) {
+        try {
+            ChatSingleton.deleteMessageFromMessageList(messageID)
+        } catch (exception: Exception) {
+            Toast.makeText(
+                context,
+                "Something went wrong, we don't give a fuck",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

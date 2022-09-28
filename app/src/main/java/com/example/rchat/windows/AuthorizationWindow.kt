@@ -1,8 +1,6 @@
 package com.example.rchat.windows
 
-import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -14,25 +12,21 @@ import com.example.rchat.utils.ChatFunctions
 import com.example.rchat.utils.ChatSingleton
 import com.example.rchat.utils.Requests
 
+/* Оконный класс окна авторизации
+*/
 class AuthorizationWindow : AppCompatActivity() {
     private lateinit var login: String
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val prefs = getSharedPreferences("Night Mode", Context.MODE_PRIVATE)
-        when (prefs.getString("NightMode", "Day")) {
-            "Day" -> setTheme(R.style.Theme_Light)
-            "Night" -> setTheme(R.style.Theme_Dark)
-            "System" -> {
-                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                    Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.Theme_Dark)
-                    Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.Theme_Light)
-                }
-            }
-        }
+        /* Установка темы приложения
+        */
+        ChatFunctions().setAppTheme(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.authorize_window)
 
+        /* Открытие окна чатов, если пользователь авторизован
+        */
         if (ChatFunctions().isAuthorized(this)) {
             login = ChatFunctions().getSavedLogin(this)
             if (!ChatFunctions().isServiceRunning(
@@ -48,7 +42,10 @@ class AuthorizationWindow : AppCompatActivity() {
         val authorizePasswordText: EditText = findViewById(R.id.AW_PasswordET)
         val enterAccountBtn: Button = findViewById(R.id.AW_AuthorizeBtn)
         val noBitches: Button = findViewById(R.id.AW_NoAccountBtn)
+        val forgotPasswordBtn: Button = findViewById(R.id.AW_ForgotPasswordBtn)
 
+        /* Нажатие кнопки открытия окна регистрации
+        */
         noBitches.setOnClickListener {
             val intent = Intent(this, RegistrationWindow::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
@@ -56,19 +53,30 @@ class AuthorizationWindow : AppCompatActivity() {
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         }
 
+        /* Нажатие кнопки перехода в окно восстановления пароля
+        */
+        forgotPasswordBtn.setOnClickListener {
+            startIntent(ResetPasswordWindow::class.java)
+        }
+
+        /* Нажатие кнопки входа в аккаунт
+        */
         enterAccountBtn.setOnClickListener {
             if (authorizeLoginText.text.isNotEmpty() && authorizePasswordText.text.isNotEmpty()) {
                 login = authorizeLoginText.text.toString()
                 try {
-                    Requests().post(
+                    val userID = Requests().post(
                         mapOf(
                             "username" to login,
                             "password" to authorizePasswordText.text.toString()
                         ),
                         "${ChatSingleton.serverUrl}/login"
-                    )
+                    ).toInt()
                     try {
-                        ChatFunctions().saveLogin(this, login, true)
+                        ChatFunctions().apply {
+                            saveLogin(applicationContext, login, true)
+                            saveUserID(applicationContext, userID)
+                        }
                         val mIntent = Intent(this, SplashScreenWindow::class.java)
                         mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                         startActivity(mIntent)
@@ -122,6 +130,8 @@ class AuthorizationWindow : AppCompatActivity() {
         messageWindow.show()
     }
 
+    /* Функция открытия другого окна
+    */
     private fun startIntent(Window: Class<*>?) {
         startActivity(Intent(this, Window))
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
