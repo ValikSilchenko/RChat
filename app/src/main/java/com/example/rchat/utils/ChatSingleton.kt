@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rchat.R
 import com.example.rchat.adapters.MessageItemLVAdapter
+import com.example.rchat.adapters.MessageItemRVAdapter
 import com.example.rchat.adapters.PreviewChatRVAdapter
 import com.example.rchat.dataclasses.CGCDataClass
 import com.example.rchat.dataclasses.MessageItemDataClass
@@ -54,26 +55,8 @@ object ChatSingleton {
     var chatName = ""
     var chatID = -1
 
-    /* Сеттер окна чатов
-        Вызывается в ChatsWindow.kt в методе onCreate()
-     */
-    fun setChatsWindow(
-        recView: RecyclerView,
-        username: String,
-        incomingContext: Activity,
-        pName: String,
-        noChatsTxt: TextView
-    ) {
-        Van = username
-        chatsWindowRV = recView
-        chatsWindowActivity = incomingContext
-        chatsArrayAdapter = PreviewChatRVAdapter(chatsArrayList)
-        chatsWindowRV!!.layoutManager = LinearLayoutManager(chatsWindowActivity)
-        chatsWindowRV!!.adapter = chatsArrayAdapter
-        cPackageName = pName
-        noChatsText = noChatsTxt
-        createNotificationChannel()
-    }
+    private var messagesRecView: RecyclerView? = null
+    private lateinit var messagesRecycledArrayAdapter: MessageItemRVAdapter
 
     /* Сеттер окна самого чата
         Вызывается в ChatItselfWindow.kt в методе onCreate()
@@ -90,6 +73,46 @@ object ChatSingleton {
         messagesArrayAdapter = MessageItemLVAdapter(chatItselfActivity, messagesArrayList)
         chatItselfRV!!.adapter = messagesArrayAdapter
         messageEditText = editText
+    }
+
+    /* Сеттер окна чатов
+        Вызывается в ChatsWindow.kt в методе onCreate()
+     */
+    fun setChatsWindow(
+        recView: RecyclerView,
+        username: String,
+        incomingContext: Activity,
+        pName: String,
+        noChatsTxt: TextView
+    ) {
+        Van = username
+        chatsWindowRV = recView
+        chatsWindowActivity = incomingContext
+        chatsArrayAdapter = PreviewChatRVAdapter(chatsArrayList)
+        chatsWindowRV!!.apply {
+            layoutManager = LinearLayoutManager(chatsWindowActivity)
+            adapter = chatsArrayAdapter
+        }
+        cPackageName = pName
+        noChatsText = noChatsTxt
+        createNotificationChannel()
+    }
+
+    fun setChatItselfRecycledWindow(
+        recView: RecyclerView,
+        username: String,
+        incomingContext: Activity,
+        editText: EditText
+    ) {
+        Billy = username
+        messagesRecView = recView
+        chatItselfActivity = incomingContext
+        messageEditText = editText
+        messagesRecycledArrayAdapter = MessageItemRVAdapter(messagesArrayList)
+        messagesRecView!!.apply {
+            layoutManager = LinearLayoutManager(incomingContext)
+            adapter = messagesRecycledArrayAdapter
+        }
     }
 
     /* Функция открытия соединения с сокетом
@@ -134,7 +157,10 @@ object ChatSingleton {
                 for (el in messagesArrayList.indices) {
                     if (messagesArrayList[el].messageID == (parsedMessage["deleted"] as String).toInt()) {
                         messagesArrayList.removeAt(el)
-                        messagesArrayAdapter.notifyDataSetChanged()
+//                        messagesArrayAdapter.notifyDataSetChanged()
+
+                        messagesRecycledArrayAdapter.notifyItemRemoved(el)
+
                         if (isMessagesArrayEmpty()) {
                             for (ell in chatsArrayList.indices) {
                                 if (chatsArrayList[ell].chatId == chatID) {
@@ -205,7 +231,7 @@ object ChatSingleton {
                         sendNotification(userId, sender, messageText)
                     }
                     updateMessageList(sender, messageText, "$date $time", messageID)
-                    focusOnLastItem(unreadMsgCount)
+                    focusOnLastItem(0)
                 } else
                     sendNotification(userId, sender, messageText)
             }
@@ -325,6 +351,10 @@ object ChatSingleton {
             )
         }
         messagesArrayAdapter.notifyDataSetChanged()
+//
+//        messagesRecycledArrayAdapter.notifyItemInserted(messagesArrayList.size - 1)
+//        messagesRecycledArrayAdapter.addMessage(senderLogin, message, time, messageID)
+
     }
 
     /* Функция очистки списка сообщений
@@ -350,6 +380,8 @@ object ChatSingleton {
      */
     fun focusOnLastItem(unreadCount: Int) {
         chatItselfRV?.setSelection(messagesArrayList.size - 1 - unreadCount)
+//        messagesRecView?.smoothScrollToPosition(messagesArrayList.size - 1 - unreadCount)
+//        messagesRecView?.scrollToPosition(messagesArrayList.size - 1 - unreadCount)
     }
 
     /* Функция отправки запроса на пометку сообщения прочитанным
@@ -412,5 +444,39 @@ object ChatSingleton {
         chatName = ""
         chatID = -1
         clearMessagesList()
+    }
+
+    fun addMessageToMessagesArray(senderLogin: String, message: String, time: String, messageID: Int) {
+        if (senderLogin == Van) {
+            messagesArrayList.add(
+                MessageItemDataClass(
+                    "",
+                    "",
+                    "",
+                    senderLogin,
+                    message,
+                    time,
+                    messageID,
+                    senderLogin
+                )
+            )
+        } else {
+            messagesArrayList.add(
+                MessageItemDataClass(
+                    senderLogin,
+                    message,
+                    time,
+                    "",
+                    "",
+                    "",
+                    messageID,
+                    senderLogin
+                )
+            )
+        }
+    }
+
+    fun getMessagesArraySize(): Int {
+        return messagesArrayList.size
     }
 }

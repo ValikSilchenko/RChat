@@ -30,7 +30,7 @@ class ChatItselfWindow : AppCompatActivity() {
         val sendMessageBtn: ImageButton = findViewById(R.id.CIW_SendMessageBtn)
         val attachBtn: ImageButton = findViewById(R.id.CIW_AttachBtn)
         val chatNameTV: TextView = findViewById(R.id.CIW_ChatNameTV)
-        val messagesLV: ListView = findViewById(R.id.CIW_MessagesRV)
+        val messagesRV: ListView = findViewById(R.id.CIW_MessagesRV)
         val messageInputET: EditText = findViewById(R.id.CIW_MessageInputET)
 
         val chatLogin = ChatSingleton.chatName
@@ -39,11 +39,13 @@ class ChatItselfWindow : AppCompatActivity() {
         /* Сеттер данного окна в синглтоне
         */
         ChatSingleton.setChatItselfWindow(
-            messagesLV,
+            messagesRV,
             chatLogin,
             this,
             messageInputET
         )
+
+//        ChatSingleton.setChatItselfRecycledWindow(messagesRV, chatLogin, this, messageInputET)
 
         /* Запрос на количество непрочитанных сообщений
         */
@@ -64,8 +66,9 @@ class ChatItselfWindow : AppCompatActivity() {
             )
         )
         for (el in response) {
-            if (!(el["read"] as Boolean))
+            if (!(el["read"] as Boolean)) {
                 idArray.add(el["id"] as Int)
+            }
             ChatSingleton.updateMessageList(
                 (el["sender"] as JSONObject)["username"].toString(),
                 el["messageText"].toString(),
