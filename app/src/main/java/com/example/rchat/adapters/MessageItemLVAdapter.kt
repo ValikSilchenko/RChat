@@ -144,4 +144,12 @@ class MessageItemLVAdapter(
             ).show()
         }
     }
+
+    /* Функция показа сообщения на экране
+        Вызывается в объекте ChatSingleton в методе updateMessageList()
+     */
+    fun addMessage(senderLogin: String, message: String, time: String, messageID: Int) {
+        ChatSingleton.addMessageToMessagesArray(senderLogin, message, time, messageID)
+        notifyDataSetChanged()
+    }
 }

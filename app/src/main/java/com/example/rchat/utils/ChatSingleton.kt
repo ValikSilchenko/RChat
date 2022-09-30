@@ -157,9 +157,9 @@ object ChatSingleton {
                 for (el in messagesArrayList.indices) {
                     if (messagesArrayList[el].messageID == (parsedMessage["deleted"] as String).toInt()) {
                         messagesArrayList.removeAt(el)
-//                        messagesArrayAdapter.notifyDataSetChanged()
+                        messagesArrayAdapter.notifyDataSetChanged()
 
-                        messagesRecycledArrayAdapter.notifyItemRemoved(el)
+//                        messagesRecycledArrayAdapter.notifyItemRemoved(el)
 
                         if (isMessagesArrayEmpty()) {
                             for (ell in chatsArrayList.indices) {
@@ -298,24 +298,14 @@ object ChatSingleton {
         chatId: Int,
         unreadMsgCount: Int
     ) {
-        for (el in chatsArrayList.indices) {
-            if (chatsArrayList[el].login == lastMessageRecipient) {
-                deleteChatFromChatList(el)
-                break
-            }
-        }
-        chatsArrayList.add(
-            0,
-            PreviewChatDataClass(
-                lastMessageRecipient,
-                time,
-                message,
-                youTxt,
-                unreadMsgCount,
-                chatId
-            )
+        chatsArrayAdapter.addChat(
+            lastMessageRecipient,
+            time,
+            message,
+            youTxt,
+            chatId,
+            unreadMsgCount
         )
-        chatsArrayAdapter.notifyItemInserted(0)
         noChatsText.visibility = View.GONE
     }
 
@@ -323,38 +313,8 @@ object ChatSingleton {
         Вызывается в этом объекте в функции processMessage() и в ChatItselfWindow.kt в методе onCreate()
      */
     fun updateMessageList(senderLogin: String, message: String, time: String, messageID: Int) {
-        if (senderLogin == Van) {
-            messagesArrayList.add(
-                MessageItemDataClass(
-                    "",
-                    "",
-                    "",
-                    senderLogin,
-                    message,
-                    time,
-                    messageID,
-                    senderLogin
-                )
-            )
-        } else {
-            messagesArrayList.add(
-                MessageItemDataClass(
-                    senderLogin,
-                    message,
-                    time,
-                    "",
-                    "",
-                    "",
-                    messageID,
-                    senderLogin
-                )
-            )
-        }
-        messagesArrayAdapter.notifyDataSetChanged()
-//
-//        messagesRecycledArrayAdapter.notifyItemInserted(messagesArrayList.size - 1)
+        messagesArrayAdapter.addMessage(senderLogin, message, time, messageID)
 //        messagesRecycledArrayAdapter.addMessage(senderLogin, message, time, messageID)
-
     }
 
     /* Функция очистки списка сообщений
@@ -380,7 +340,6 @@ object ChatSingleton {
      */
     fun focusOnLastItem(unreadCount: Int) {
         chatItselfRV?.setSelection(messagesArrayList.size - 1 - unreadCount)
-//        messagesRecView?.smoothScrollToPosition(messagesArrayList.size - 1 - unreadCount)
 //        messagesRecView?.scrollToPosition(messagesArrayList.size - 1 - unreadCount)
     }
 
@@ -446,7 +405,15 @@ object ChatSingleton {
         clearMessagesList()
     }
 
-    fun addMessageToMessagesArray(senderLogin: String, message: String, time: String, messageID: Int) {
+    /* Функция добавления сообщения в массив сообщений
+        Вызывается в MessageItemRVAdapter.kt в методе addMessage() и в MessageItemLVAdapter.kt в методе addMessage()
+     */
+    fun addMessageToMessagesArray(
+        senderLogin: String,
+        message: String,
+        time: String,
+        messageID: Int
+    ) {
         if (senderLogin == Van) {
             messagesArrayList.add(
                 MessageItemDataClass(
@@ -476,7 +443,41 @@ object ChatSingleton {
         }
     }
 
+    /* Функция возврата количества сообщений в спсике сообщений
+        Вызывается в MessageItemRVAdapter.kt в методе addMessage()
+     */
     fun getMessagesArraySize(): Int {
         return messagesArrayList.size
+    }
+
+
+    /* Функция добавления чата в список чатов
+        Вызывается в PreviewChatRVAdapter.kt в методе addChat()
+     */
+    fun addChatToChatList(
+        lastMessageRecipient: String,
+        time: String,
+        message: String,
+        youTxt: String,
+        chatId: Int,
+        unreadMsgCount: Int
+    ) {
+        for (el in chatsArrayList.indices) {
+            if (chatsArrayList[el].login == lastMessageRecipient) {
+                deleteChatFromChatList(el)
+                break
+            }
+        }
+        chatsArrayList.add(
+            0,
+            PreviewChatDataClass(
+                lastMessageRecipient,
+                time,
+                message,
+                youTxt,
+                unreadMsgCount,
+                chatId
+            )
+        )
     }
 }
