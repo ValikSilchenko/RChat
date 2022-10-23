@@ -200,8 +200,9 @@ object ChatSingleton {
             val date = parsedMessage["date"].toString()
             val messageID = parsedMessage["id"] as Int
             val unreadMsgCount: Int
-            if (parsedMessage["read"] as Boolean)
+            if (parsedMessage["read"] as Boolean) {
                 return@runOnUiThread
+            }
             if (sender == Van) {
                 updateChatList(
                     (parsedMessage["recipient"] as JSONObject)["username"].toString(),
@@ -212,7 +213,6 @@ object ChatSingleton {
                     0
                 )
                 updateMessageList(sender, messageText, "$date $time", messageID)
-                focusOnLastItem(0)
             } else {
                 unreadMsgCount = Requests().get(
                     mapOf("sender" to sender, "recipient" to Van),
@@ -231,7 +231,6 @@ object ChatSingleton {
                         sendNotification(userId, sender, messageText)
                     }
                     updateMessageList(sender, messageText, "$date $time", messageID)
-                    focusOnLastItem(0)
                 } else
                     sendNotification(userId, sender, messageText)
             }
@@ -314,6 +313,7 @@ object ChatSingleton {
      */
     fun updateMessageList(senderLogin: String, message: String, time: String, messageID: Int) {
         messagesArrayAdapter.addMessage(senderLogin, message, time, messageID)
+        focusOnLastItem(0)
 //        messagesRecycledArrayAdapter.addMessage(senderLogin, message, time, messageID)
     }
 
