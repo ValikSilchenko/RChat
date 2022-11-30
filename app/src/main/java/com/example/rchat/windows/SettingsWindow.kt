@@ -19,7 +19,6 @@ import com.example.rchat.utils.ChatSingleton
 */
 class SettingsWindow : AppCompatActivity() {
 
-    private val avatarImg: ImageView? = null
     private lateinit var dayModeCBox: CheckBox
     private lateinit var nightModeCBox: CheckBox
     private lateinit var systemModeCBox: CheckBox
@@ -147,7 +146,7 @@ class SettingsWindow : AppCompatActivity() {
         /* Нажатие кнопки возврата
         */
         backBtn.setOnClickListener {
-            startIntent()
+            backPressed()
         }
 
         /* Нажатие кнопки смены аватара
@@ -229,12 +228,12 @@ class SettingsWindow : AppCompatActivity() {
 
     @Override
     override fun onBackPressed() {
-        startIntent()
+        backPressed()
     }
 
     /* Функция возврата на предыдущее окно
     */
-    private fun startIntent() {
+    private fun backPressed() {
         super.onBackPressed()
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }

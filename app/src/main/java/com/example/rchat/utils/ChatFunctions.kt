@@ -1,7 +1,9 @@
 package com.example.rchat.utils
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -172,6 +174,14 @@ class ChatFunctions {
                     Configuration.UI_MODE_NIGHT_NO -> context.setTheme(R.style.Theme_Light)
                 }
             }
+        }
+    }
+
+    fun openNewWindow(Activity: Activity, Window: Class<*>?, shouldBeFinished: Boolean) {
+        Activity.startActivity(Intent(Activity, Window))
+        Activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        if (shouldBeFinished) {
+            Activity.finish()
         }
     }
 }

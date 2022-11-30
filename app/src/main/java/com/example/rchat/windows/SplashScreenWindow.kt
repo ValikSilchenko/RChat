@@ -30,8 +30,7 @@ class SplashScreenWindow : AppCompatActivity() {
         if (!ChatFunctions().isAuthorized(this)) {
             welcomeTxt.text = getString(R.string.welcome_rchat_title)
             loginText.visibility = View.GONE
-        }
-        else {
+        } else {
             welcomeTxt.text = getString(R.string.hello_title)
             loginText.text = ChatFunctions().getSavedLogin(this)
         }
@@ -41,23 +40,26 @@ class SplashScreenWindow : AppCompatActivity() {
         val handler = Handler()
         handler.postDelayed({
             if (ChatFunctions().isAuthorized(this)) {
-                if (!ChatFunctions().isServiceRunning(BackgroundService::class.java, applicationContext))
+                if (!ChatFunctions().isServiceRunning(
+                        BackgroundService::class.java,
+                        applicationContext
+                    )
+                ) {
                     startService(Intent(applicationContext, BackgroundService::class.java))
-                openNewWindow(ChatsWindow::class.java)
-            }
-            else {
-                openNewWindow(AuthorizationWindow::class.java)
+                }
+
+                ChatFunctions().openNewWindow(
+                    this,
+                    ChatsWindow::class.java,
+                    shouldBeFinished = true
+                )
+            } else {
+                ChatFunctions().openNewWindow(
+                    this,
+                    AuthorizationWindow::class.java,
+                    shouldBeFinished = true
+                )
             }
         }, 3000)
-    }
-
-    /* Функция открытия нового окна
-    */
-    private fun openNewWindow(window: Class<*>) {
-        val mIntent = Intent(this, window)
-        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivity(mIntent)
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-        this.finish()
     }
 }

@@ -35,7 +35,7 @@ class AuthorizationWindow : AppCompatActivity() {
                 )
             )
                 startService(Intent(applicationContext, BackgroundService::class.java))
-            startIntent(ChatsWindow::class.java)
+            ChatFunctions().openNewWindow(this, ChatsWindow::class.java, shouldBeFinished = true)
         }
 
         val authorizeLoginText: EditText = findViewById(R.id.AW_LoginET)
@@ -47,16 +47,17 @@ class AuthorizationWindow : AppCompatActivity() {
         /* Нажатие кнопки открытия окна регистрации
         */
         noBitches.setOnClickListener {
-            val intent = Intent(this, RegistrationWindow::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+//            val intent = Intent(this, RegistrationWindow::class.java)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+//            startActivity(intent)
+//            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            ChatFunctions().openNewWindow(this, RegistrationWindow::class.java, shouldBeFinished = true)
         }
 
         /* Нажатие кнопки перехода в окно восстановления пароля
         */
         forgotPasswordBtn.setOnClickListener {
-            startIntent(ResetPasswordWindow::class.java)
+            ChatFunctions().openNewWindow(this, ResetPasswordWindow::class.java, shouldBeFinished = true)
         }
 
         /* Нажатие кнопки входа в аккаунт
@@ -77,14 +78,7 @@ class AuthorizationWindow : AppCompatActivity() {
                             saveLogin(applicationContext, login, true)
                             saveUserID(applicationContext, userID)
                         }
-                        val mIntent = Intent(this, SplashScreenWindow::class.java)
-                        mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                        startActivity(mIntent)
-                        overridePendingTransition(
-                            android.R.anim.slide_in_left,
-                            android.R.anim.slide_out_right
-                        )
-                        finish()
+                        ChatFunctions().openNewWindow(this, SplashScreenWindow::class.java, shouldBeFinished = true)
                     } catch (exception: Exception) {
                         if (ChatFunctions().isInternetAvailable(applicationContext)) {
                             ChatFunctions().showMessage(
@@ -128,13 +122,5 @@ class AuthorizationWindow : AppCompatActivity() {
             .setNegativeButton(getString(R.string.no_title)) { dialog, _ -> dialog.cancel() }
         val messageWindow = message.create()
         messageWindow.show()
-    }
-
-    /* Функция открытия другого окна
-    */
-    private fun startIntent(Window: Class<*>?) {
-        startActivity(Intent(this, Window))
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-        finish()
     }
 }

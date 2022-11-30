@@ -77,8 +77,10 @@ class MessageItemLVAdapter(
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.delete_message_item -> {   /* Удаление сообщения */
-                        Toast.makeText(context, messageSender, Toast.LENGTH_SHORT).show()
-//                        showAlertMenu(messageId)
+//                        if (messageSender == ChatSingleton.Van) {
+////                            showAlertMenu(messageId)
+//                        }
+                        Toast.makeText(context, context.getString(R.string.wip_title), Toast.LENGTH_SHORT).show()
                         true
                     }
                     R.id.edit_message_item -> {     /* Редактирование сообщения */
@@ -141,5 +143,13 @@ class MessageItemLVAdapter(
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    /* Функция показа сообщения на экране
+        Вызывается в объекте ChatSingleton в методе updateMessageList()
+     */
+    fun addMessage(senderLogin: String, message: String, time: String, messageID: Int) {
+        ChatSingleton.addMessageToMessagesArray(senderLogin, message, time, messageID)
+        notifyDataSetChanged()
     }
 }

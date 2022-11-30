@@ -1,7 +1,7 @@
 package com.example.rchat.windows
 
-import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rchat.R
 import com.example.rchat.utils.ChatFunctions
@@ -13,13 +13,11 @@ class ResetPasswordWindow : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.reset_password_window)
-    }
 
-    /* Функция открытия нового окна
-    */
-    private fun openNewWindow(Window: Class<*>?) {
-        startActivity(Intent(this, Window))
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-        finish()
+        val backBtn: ImageButton = findViewById(R.id.RPW_BackBtn)
+
+        backBtn.setOnClickListener {
+            ChatFunctions().openNewWindow(this, AuthorizationWindow::class.java, shouldBeFinished = true)
+        }
     }
 }

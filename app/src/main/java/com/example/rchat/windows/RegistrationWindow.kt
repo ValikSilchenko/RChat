@@ -1,6 +1,5 @@
 package com.example.rchat.windows
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -34,7 +33,7 @@ class RegistrationWindow : AppCompatActivity() {
         /* Нажатие кнопки авторизации
         */
         authorizeBtn.setOnClickListener {
-            onBackPressed()
+            ChatFunctions().openNewWindow(this, AuthorizationWindow::class.java, shouldBeFinished = true)
         }
 
         /* Нажатие кнопки регистрации
@@ -61,14 +60,7 @@ class RegistrationWindow : AppCompatActivity() {
                             saveLogin(applicationContext, login, true)
                             saveUserID(applicationContext, userID)
                         }
-                        val mIntent = Intent(this, SplashScreenWindow::class.java)
-                        mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                        startActivity(mIntent)
-                        overridePendingTransition(
-                            android.R.anim.slide_in_left,
-                            android.R.anim.slide_out_right
-                        )
-                        finish()
+                        ChatFunctions().openNewWindow(this, SplashScreenWindow::class.java, shouldBeFinished = true)
                     } catch (exception: Exception) {
                         if (ChatFunctions().isInternetAvailable(applicationContext)) {
                             ChatFunctions().showMessage(
@@ -96,13 +88,5 @@ class RegistrationWindow : AppCompatActivity() {
                     this
                 )
         }
-    }
-
-    @Override
-    override fun onBackPressed() {
-        val intent = Intent(this, AuthorizationWindow::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-        startActivity(intent)
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 }

@@ -72,7 +72,7 @@ class FindUsersWindow : AppCompatActivity() {
                     arrayAdapter.notifyItemInserted(foundUserArrayList.size)
                     loginInput.text = null
                     if (foundUserArrayList.isEmpty())
-                        Toast.makeText(this, getString(R.string.users_not_found_title), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Че", Toast.LENGTH_SHORT).show()
                 } catch (exception: Exception) {
                     ChatFunctions().showMessage(
                         getString(R.string.error_title),
