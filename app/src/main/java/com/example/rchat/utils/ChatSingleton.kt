@@ -26,7 +26,7 @@ import com.example.rchat.dataclasses.PreviewChatDataClass
 import com.example.rchat.windows.ChatItselfWindow
 import org.json.JSONObject
 
-/* Утилитный класс (объект) основной логики приложения
+/* Утилитный объект основной логики приложения
 */
 @SuppressLint("StaticFieldLeak")
 object ChatSingleton {
@@ -148,8 +148,6 @@ object ChatSingleton {
     /* Функция получения и последующей обработки сообщения
         Вызывается в WebSocketClient.kt в методе connect()
      */
-    // РЕФАКТОРИНГ ТУТ ЗАПРЕЩЕН БЛЯТЬ
-    // ИДЕ ВЫРУБАЙ НАХУЙ
     fun processMessage(message: Map<*, *>) {
         chatsWindowActivity.runOnUiThread {
             val parsedMessage = JSONObject(message)
@@ -369,17 +367,6 @@ object ChatSingleton {
         }
     }
 
-    /* Функция удаления чата по его позиции в списке чатов
-        Вызывается в PreviewChatRVAdapter.kt при удалении чата
-     */
-    fun deleteChatFromChatList(chatPosition: Int) {
-        chatsArrayList.removeAt(chatPosition)
-        chatsArrayAdapter.notifyItemRemoved(chatPosition)
-        if (chatsArrayList.isEmpty()) {
-            noChatsText.visibility = View.VISIBLE
-        }
-    }
-
     /* Функция удаления сообщения
         Вызывается в MessageItemLVAdapter.kt при удалении сообщения
      */
@@ -450,7 +437,6 @@ object ChatSingleton {
         return messagesArrayList.size
     }
 
-
     /* Функция добавления чата в список чатов
         Вызывается в PreviewChatRVAdapter.kt в методе addChat()
      */
@@ -479,5 +465,16 @@ object ChatSingleton {
                 chatId
             )
         )
+    }
+
+    /* Функция удаления чата по его позиции в списке чатов
+        Вызывается в PreviewChatRVAdapter.kt при удалении чата
+     */
+    fun deleteChatFromChatList(chatPosition: Int) {
+        chatsArrayList.removeAt(chatPosition)
+        chatsArrayAdapter.notifyItemRemoved(chatPosition)
+        if (chatsArrayList.isEmpty()) {
+            noChatsText.visibility = View.VISIBLE
+        }
     }
 }

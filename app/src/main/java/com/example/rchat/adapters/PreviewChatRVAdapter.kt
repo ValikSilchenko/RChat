@@ -70,7 +70,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
                         R.id.mute_chat_item -> { /* Отключение уведомлений от чата */
                             Toast.makeText(
                                 itemView.context,
-                                "ЕБАНЫЙ РОТ ЭТОГО КАЗИНО БЛЯТЬ ТЫ КТО ТАКОЙ СУКА ЧТОБЫ ЭТО ДЕЛАТЬ",
+                                itemView.context.getString(R.string.wip_title),
                                 Toast.LENGTH_LONG
                             ).show()
                             true
@@ -163,7 +163,7 @@ class PreviewChatRVAdapter(private var arrayList: ArrayList<PreviewChatDataClass
                 } catch (exception: Exception) {
                     Toast.makeText(
                         context,
-                        "ЕБАНЫЙ РОТ ЭТОГО КАЗИНО БЛЯТЬ ТЫ КТО ТАКОЙ СУКА ЧТОБЫ ЭТО ДЕЛАТЬ",
+                        context.getString(R.string.wip_title),
                         Toast.LENGTH_LONG
                     ).show()
                 }

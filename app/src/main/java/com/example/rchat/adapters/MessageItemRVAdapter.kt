@@ -94,8 +94,7 @@ class MessageItemRVAdapter(private var arrayList: ArrayList<MessageItemDataClass
             messageSender = arrayList[position].messageSender
 
             /* Скрытие ненужных блоков в сообщении
-        */
-            // НЕ ЛЕЗЬ БЛЯТЬ ДЕБИЛ СУКА ЕБАНЫЙ
+            */
             // НИ В КОЕМ СЛУЧАЕ НЕ УБИРАТЬ ToString() - БЕЗ НЕГО НОРМАЛЬНО СООБЩЕНИЯ НЕ ВЫДЕЛЯЮТСЯ
             if (incomingMessage.text.toString() == "") {
                 incomingContainer.visibility = View.GONE
@@ -142,7 +141,7 @@ class MessageItemRVAdapter(private var arrayList: ArrayList<MessageItemDataClass
         } catch (exception: Exception) {
             Toast.makeText(
                 context,
-                "Something went wrong, we don't give a fuck",
+                "Error of deleting message",
                 Toast.LENGTH_SHORT
             ).show()
         }

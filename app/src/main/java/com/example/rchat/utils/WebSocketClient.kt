@@ -28,7 +28,7 @@ class WebSocketClient {
         val transports: MutableList<Transport> = ArrayList(1)
         transports.add(WebSocketTransport(simpleWebSocketClient))
         val sockJsClient =
-            SockJsClient(transports)  // TODO("Didn't find (didn't read lol) class "javax.xml.stream.XMLResolver"")
+            SockJsClient(transports)  // TODO("Didn't find class "javax.xml.stream.XMLResolver"")
         val stompClient = WebSocketStompClient(sockJsClient)
 
         stompClient.messageConverter = MappingJackson2MessageConverter()

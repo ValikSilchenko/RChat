@@ -54,7 +54,6 @@ class MessageItemLVAdapter(
 
         /* Скрытие ненужных блоков в сообщении
         */
-        // НЕ ЛЕЗЬ БЛЯТЬ ДЕБИЛ СУКА ЕБАНЫЙ
         // НИ В КОЕМ СЛУЧАЕ НЕ УБИРАТЬ ToString() - БЕЗ НЕГО НОРМАЛЬНО СООБЩЕНИЯ НЕ ВЫДЕЛЯЮТСЯ
         if (incomingMessage.text.toString() == "") {
             incomingContainer.visibility = View.GONE
@@ -139,7 +138,7 @@ class MessageItemLVAdapter(
         } catch (exception: Exception) {
             Toast.makeText(
                 context,
-                "Something went wrong, we don't give a fuck",
+                "Error of deleting message",
                 Toast.LENGTH_SHORT
             ).show()
         }
