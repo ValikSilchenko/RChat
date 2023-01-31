@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/background_color"
+    tools:context=".windows.RegistrationWindow">
+
+    <!-- Верхний текст -->
+    <TextView
+        android:id="@+id/RW_TopTextTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/firsttime_in_rchat_title"
+        android:textAlignment="center"
+        android:textColor="?attr/chat_txt_color"
+        android:textSize="30sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Поле ввода логина -->
+    <EditText
+        android:id="@+id/RW_LoginET"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="?attr/edit_txt_color"
+        android:hint="@string/enter_login_title"
+        android:textColor="?attr/chat_txt_color"
+        android:textColorHint="?attr/edit_txt_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RW_TopTextTV" />
+
+    <!-- Поле ввода электронной почты -->
+    <EditText
+        android:id="@+id/RW_EmailET"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="?attr/edit_txt_color"
+        android:hint="@string/enter_email_title"
+        android:textColor="?attr/chat_txt_color"
+        android:textColorHint="?attr/edit_txt_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RW_LoginET" />
+
+    <!-- Поле ввода номера телефона -->
+    <EditText
+        android:id="@+id/RW_PhoneNumberET"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="?attr/edit_txt_color"
+        android:hint="@string/phonenumber_title"
+        android:inputType="phone"
+        android:maxLength="12"
+        android:textColor="?attr/chat_txt_color"
+        android:textColorHint="?attr/edit_txt_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RW_EmailET" />
+
+    <!-- Поле ввода пароля -->
+    <EditText
+        android:id="@+id/RW_PasswordET"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="?attr/edit_txt_color"
+        android:hint="@string/enter_password_title"
+        android:inputType="textPassword"
+        android:textColor="?attr/chat_txt_color"
+        android:textColorHint="?attr/edit_txt_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RW_PhoneNumberET" />
+
+    <!-- Поле повторного ввода паспорта -->
+    <EditText
+        android:id="@+id/RW_RepeatPasswordET"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="?attr/edit_txt_color"
+        android:hint="@string/repeat_password_title"
+        android:inputType="textPassword"
+        android:textColor="?attr/chat_txt_color"
+        android:textColorHint="?attr/edit_txt_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RW_PasswordET" />
+
+    <!-- Кнопка регистрации -->
+    <Button
+        android:id="@+id/RW_RegistrationBtn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="80dp"
+        android:backgroundTint="?attr/main_color"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/finish_registration_title"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RW_RepeatPasswordET" />
+
+    <!-- Кнопка перехода в окно авторизации -->
+    <Button
+        android:id="@+id/RW_AuthorizeBtn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="80dp"
+        android:backgroundTint="?attr/main_color"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/already_have_acc_title"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RW_RegistrationBtn" />
+</androidx.constraintlayout.widget.ConstraintLayout>

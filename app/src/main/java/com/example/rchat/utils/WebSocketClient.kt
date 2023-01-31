@@ -1,0 +1,77 @@
+package com.example.rchat.utils
+
+import org.springframework.lang.Nullable
+import org.springframework.messaging.converter.MappingJackson2MessageConverter
+import org.springframework.messaging.simp.stomp.StompFrameHandler
+import org.springframework.messaging.simp.stomp.StompHeaders
+import org.springframework.messaging.simp.stomp.StompSession
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter
+import org.springframework.web.socket.client.WebSocketClient
+import org.springframework.web.socket.client.standard.StandardWebSocketClient
+import org.springframework.web.socket.messaging.WebSocketStompClient
+import org.springframework.web.socket.sockjs.client.SockJsClient
+import org.springframework.web.socket.sockjs.client.Transport
+import org.springframework.web.socket.sockjs.client.WebSocketTransport
+import java.lang.reflect.Type
+
+/* Утилитный класс веб-сокета
+*/
+class WebSocketClient {
+    private var session: StompSession? = null
+
+    /* Функция соединения с сокетом
+        Вызывается в ChatSingleton.kt в методе openConnection()
+     */
+    fun connect(username: String) {
+        val simpleWebSocketClient: WebSocketClient = StandardWebSocketClient()
+
+        val transports: MutableList<Transport> = ArrayList(1)
+        transports.add(WebSocketTransport(simpleWebSocketClient))
+        val sockJsClient =
+            SockJsClient(transports)  // TODO("Didn't find class "javax.xml.stream.XMLResolver"")
+        val stompClient = WebSocketStompClient(sockJsClient)
+
+        stompClient.messageConverter = MappingJackson2MessageConverter()
+
+        session = stompClient.connect(
+            "${ChatSingleton.serverUrl}/ws",
+            object : StompSessionHandlerAdapter() {
+                override fun afterConnected(session: StompSession, connectedHeaders: StompHeaders) {
+                    session.subscribe("/chatTopic/$username/", object : StompFrameHandler {
+                        override fun getPayloadType(headers: StompHeaders): Type {
+                            return Map::class.java
+                        }
+
+                        override fun handleFrame(headers: StompHeaders, @Nullable payload: Any?) {
+                            ChatSingleton.processMessage(payload as Map<*, *>)
+                        }
+                    })
+                }
+            }).get()
+    }
+
+    /* Функция отправки сообщения
+        Вызывается в ChatSingleton.kt в методе sendMessage()
+     */
+    fun sendMessage(username: String, msg: String, sender: String) {
+        session?.send("/app/user/$username/$sender/", msg)
+    }
+
+    /* Функция отправки запроса на прочтение сообщения
+        Вызывается в ChatSingleton.kt в методе sendRequestForReading()
+     */
+    fun send(recLogin: String, senderLogin: String, id: Int) {
+        session?.send("/app/message/$recLogin/$senderLogin/", id)
+    }
+
+    fun deleteMessage(messageID: Int, user1: String, user2: String) {
+        session?.send("/app/delete/$user1/$user2/", messageID)
+    }
+
+    /* Функция закрытия соединения с сокетом
+        Вызывается в ChatSingleton.kt в методе closeConnection()
+     */
+    fun disconnect() {
+        session?.disconnect()
+    }
+}

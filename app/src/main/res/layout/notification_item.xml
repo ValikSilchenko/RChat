@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <!-- Аватар -->
+    <ImageView
+        android:id="@+id/N_AvatarImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_avatar"
+        app:tint="?attr/image_color"
+        android:layout_gravity="center"/>
+
+    <!-- Контейнер -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp">
+
+        <!-- Логин -->
+        <TextView
+            android:id="@+id/N_LoginTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="?attr/chat_txt_color" />
+
+        <!-- Время -->
+        <TextView
+            android:id="@+id/N_MessageTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Incoming message from somebody"
+            android:textColor="?attr/chat_txt_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+</LinearLayout>

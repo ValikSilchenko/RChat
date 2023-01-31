@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/PreviewChat_View"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:longClickable="true">
+
+    <!-- Аватар -->
+    <ImageView
+        android:id="@+id/PC_AvatarImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_avatar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?attr/image_color" />
+
+    <!-- Логин -->
+    <TextView
+        android:id="@+id/PC_LoginTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Sender Name"
+        android:textColor="?attr/chat_txt_color"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/PC_AvatarImg"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Время -->
+    <TextView
+        android:id="@+id/PC_ReceivingTimeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="10:21"
+        android:textColor="?attr/pc_msg_color"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Контейнер -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@id/PC_AvatarImg"
+        app:layout_constraintTop_toBottomOf="@id/PC_LoginTV">
+
+        <!-- Инфо о сообщении -->
+        <TextView
+            android:id="@+id/PC_ShownMessageInfoTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/round_corner"
+            android:backgroundTint="?attr/main_color"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="99+"
+            android:textColor="?attr/chat_txt_color"
+            android:textSize="15sp" />
+
+        <!-- Сообщение -->
+        <TextView
+            android:id="@+id/PC_MessageTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="This is the message that gonna be displayed in chatswindow"
+            android:textColor="?attr/pc_msg_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".windows.CreateGroupChatWindow">
+
+    <!-- Кнопка выхода назад -->
+    <ImageButton
+        android:id="@+id/CGC_BackBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/round_corner"
+        android:backgroundTint="?attr/main_color"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Поле ввода логина -->
+    <EditText
+        android:id="@+id/CGC_GroupNameET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:height="48dp"
+        android:backgroundTint="?attr/edit_txt_color"
+        android:hint="@string/enter_group_name_title"
+        android:textColor="?attr/chat_txt_color"
+        android:textColorHint="?attr/edit_txt_color"
+        app:layout_constraintStart_toEndOf="@id/CGC_BackBtn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Список найденных пользователей -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/CGC_UsersRV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:dividerHeight="5dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@id/CGC_CreateChatBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/CGC_BackBtn"
+        tools:listitem="@layout/gc_user_item" />
+
+    <!-- Кнопка создания беседы -->
+    <Button
+        android:id="@+id/CGC_CreateChatBtn"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/create_conf_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
