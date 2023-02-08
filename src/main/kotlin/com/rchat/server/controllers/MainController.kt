@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import java.lang.Thread.sleep
 import javax.validation.Valid
 
 @Controller
@@ -30,7 +31,7 @@ class MainController (@Autowired private var userService: PgUserDetailsService) 
             val err: List<String> = when (bindingResult.fieldErrors[0].field) {
                 "username" -> listOf("err", "Incorrect username length")
 //                "email" -> listOf("err", "Incorrect email")
-//                "phone" -> listOf("err", "Incorrect phone length. It must contains 10 digits without other symbols")
+//                "phone" -> listOf("err", "Incorrect phone length. It must contain 10 digits without other symbols")
                 else -> listOf("err", "Incorrect password length")
             }
             model.addAttribute(err[0], err[1])

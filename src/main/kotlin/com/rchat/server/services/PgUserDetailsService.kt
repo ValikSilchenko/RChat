@@ -31,7 +31,7 @@ class PgUserDetailsService(private var userRepo: UserRepository) : UserDetailsSe
     }
 
     fun saveUser(user: Users): Boolean {
-        val dbUser = userRepo.findByUsername(user.username)
+        val dbUser = userRepo.findByEmail(user.email)
         if (dbUser != null)
             return false
 
@@ -40,14 +40,11 @@ class PgUserDetailsService(private var userRepo: UserRepository) : UserDetailsSe
         return true
     }
 
-    fun login(username: String, password: String): ResponseEntity<String> {
-        val dbUser = userRepo.findByUsername(username) ?: return ResponseEntity<String>(
-            "Неверные данные", HttpStatus.BAD_REQUEST
-        )
-        if (dbUser.username == username &&
-            bCryptPasswordEncoder.matches(password, dbUser.password))
-            return ResponseEntity(dbUser.id.toString(), HttpStatus.OK)
-        return ResponseEntity<String>("Неверные данные", HttpStatus.BAD_REQUEST)
+    fun login(email: String, password: String): Users? {
+        val dbUser = userRepo.findByEmail(email) ?: return null
+        if (dbUser.email == email && bCryptPasswordEncoder.matches(password, dbUser.password))
+            return dbUser
+        return null
     }
 
     fun autoLogin(user: Users) {
@@ -55,7 +52,7 @@ class PgUserDetailsService(private var userRepo: UserRepository) : UserDetailsSe
         SecurityContextHolder.getContext().authentication = auth
     }
 
-    fun getMatchUsers(substr: String): List<String?> {
+    fun getMatchUsers(substr: String): List<Users?> {
         return userRepo.findMatchUsers(substr.lowercase())
     }
 

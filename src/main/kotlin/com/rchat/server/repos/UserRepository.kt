@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.Query
 
 interface UserRepository: JpaRepository<Users, Int> {
     fun findByUsername(username: String?): Users?
+    fun findByEmail(email: String?): Users?
 
-    @Query("select usr.username from Users usr where lower(usr.username) like :substr%")
-    fun findMatchUsers(substr: String): List<String?>
+    @Query("select usr from Users usr where lower(usr.username) like :substr%")
+    fun findMatchUsers(substr: String): List<Users?>
 }

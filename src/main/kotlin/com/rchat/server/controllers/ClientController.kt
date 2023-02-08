@@ -28,8 +28,8 @@ class ClientController(
 ) {
     @JsonView(View.UserWithId::class)
     @GetMapping("/chats")
-    fun getListOfChats(@RequestParam username: String): List<PersonalMessage?> {
-        return personalMessageRepo.getChats(userService.getByName(username))
+    fun getListOfChats(@RequestParam userId: String): List<PersonalMessage?> {
+        return personalMessageRepo.getChats(userService.getById(userId.toInt()))
     }
 
     @GetMapping("/count")
@@ -37,17 +37,18 @@ class ClientController(
         return personalMessageRepo.getUnreadCount(userService.getByName(sender), userService.getByName(recipient))
     }
 
+    @JsonView(View.UserWithId::class)
     @GetMapping("/find")
-    fun getListOfMatchUsers(@RequestParam username: String): List<String?> {
+    fun getListOfMatchUsers(@RequestParam username: String): List<Users?> {
         return userService.getMatchUsers(username)
     }
 
     @JsonView(View.MessageWithId::class)
     @GetMapping("/personal")
-    fun getPersonalMessages(@RequestParam sender: String, @RequestParam recipient: String): List<PersonalMessage?> {
+    fun getPersonalMessages(@RequestParam senderId: String, @RequestParam recipientId: String): List<PersonalMessage?> {
         return personalMessageRepo.getChatMessages(
-            userService.getByName(sender),
-            userService.getByName(recipient)
+            userService.getById(senderId.toInt()),
+            userService.getById(recipientId.toInt())
         )
     }
 
@@ -58,20 +59,22 @@ class ClientController(
         return ResponseEntity<String>(HttpStatus.OK)
     }
 
+    @JsonView(View.UserWithId::class)
     @PostMapping("/login")
-    fun login(@RequestParam username: String, @RequestParam password: String): ResponseEntity<String> {
-        return userService.login(username, password)
+    fun login(@RequestParam email: String, @RequestParam password: String): Users? {
+        return userService.login(email, password)
     }
 
-    @PostMapping("/user")
-    fun addUser(@Valid user: Users, bindingResult: BindingResult): ResponseEntity<String> {
+    @JsonView(View.UserWithId::class)
+    @PostMapping("/register")
+    fun addUser(@Valid user: Users, bindingResult: BindingResult): Users? {
         if (bindingResult.hasErrors())
-            return ResponseEntity("Неверные данные", HttpStatus.BAD_REQUEST)
-        if (!userService.saveUser(user)) {
-            return ResponseEntity("Пользователь с таким именем уже существует", HttpStatus.BAD_REQUEST)
+            return null
+        if (!userService.saveUser(user)) {  // save user by email
+            return null
         }
 //        userService.autoLogin(user)
-        return ResponseEntity(user.id.toString(), HttpStatus.OK)
+        return user
     }
 
     @PostMapping("/channel")
