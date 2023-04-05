@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.rchat"
-version = "0.1.5"
+version = "0.1.6"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
@@ -27,10 +27,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework:spring-messaging")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation("org.springframework:spring-context-support")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.postgresql:postgresql")
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("org.json:json:20220320")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<KotlinCompile> {

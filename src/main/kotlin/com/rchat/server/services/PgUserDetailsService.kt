@@ -63,4 +63,10 @@ class PgUserDetailsService(private var userRepo: UserRepository) : UserDetailsSe
     fun getByName(username: String): Users {
         return userRepo.findByUsername(username) ?: throw UsernameNotFoundException(username)
     }
+
+    fun userExists(userId: Int): Boolean {
+        if (userRepo.findById(userId).isEmpty)
+            return false
+        return true
+    }
 }

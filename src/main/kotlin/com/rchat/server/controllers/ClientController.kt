@@ -1,9 +1,6 @@
 package com.rchat.server.controllers
 
 import com.rchat.server.models.*
-import com.rchat.server.repos.ChannelRepository
-import com.rchat.server.repos.MemberRepository
-import com.rchat.server.repos.PersonalMessageRepository
 import com.rchat.server.services.PgUserDetailsService
 import com.rchat.server.views.View
 
@@ -12,7 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import javax.validation.Valid
 import com.fasterxml.jackson.annotation.JsonView
-import com.rchat.server.repos.ChannelMessageRepository
+import com.rchat.server.repos.*
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.web.bind.annotation.*
@@ -21,6 +18,7 @@ import javax.transaction.Transactional
 @RestController
 class ClientController(
     private var userService: PgUserDetailsService,
+    private var avatarRepo: AvatarRepository,
     private var channelRepo: ChannelRepository,
     private var channelMessageRepo: ChannelMessageRepository,
     private var memberRepo: MemberRepository,
@@ -43,7 +41,7 @@ class ClientController(
         return userService.getMatchUsers(username)
     }
 
-    @JsonView(View.MessageWithId::class)
+    @JsonView(View.AllWithId::class)
     @GetMapping("/personal")
     fun getPersonalMessages(@RequestParam senderId: String, @RequestParam recipientId: String): List<PersonalMessage?> {
         return personalMessageRepo.getChatMessages(
@@ -63,6 +61,33 @@ class ClientController(
     @PostMapping("/login")
     fun login(@RequestParam email: String, @RequestParam password: String): Users? {
         return userService.login(email, password)
+    }
+
+    @PostMapping("/avatar")
+    fun setAvatar(@RequestParam userId: String, @RequestParam img: ByteArray): ResponseEntity<String> {
+        val user = userService.getById(userId.toInt())
+        var avatar = avatarRepo.getByUserId(user)
+
+        if (avatar == null) {
+            avatar = Avatar(user, img)
+        } else {
+            avatar.img = img
+        }
+
+        avatarRepo.save(avatar)
+
+        return ResponseEntity(HttpStatus.OK)
+    }
+
+    @GetMapping("/avatar")
+    fun getAvatar(@RequestParam userId: String): ResponseEntity<Avatar?> {
+        val avatar: Avatar? = if (userService.userExists(userId.toInt()))
+            avatarRepo.getByUserId(
+                userService.getById(userId.toInt())
+            )
+        else null
+
+        return ResponseEntity<Avatar?>(avatar, HttpStatus.OK)
     }
 
     @JsonView(View.UserWithId::class)

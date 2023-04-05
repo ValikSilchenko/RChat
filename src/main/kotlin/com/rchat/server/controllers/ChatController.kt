@@ -55,15 +55,15 @@ class ChatController(
     }
 
     @JsonView(View.AllWithId::class)
-    @MessageMapping("/user/{recipient}/{sender}/{msgId}/")
-    @SendTo("/chatTopic/{recipient}/", "/chatTopic/{sender}/")
+    @MessageMapping("/user/{recipientID}/{senderID}/{msgID}/")
+    @SendTo("/chatTopic/{recipientID}/", "/chatTopic/{senderID}/")
     fun updatePersonal(
-        @DestinationVariable recipient: String,
-        @DestinationVariable sender: String,
-        @DestinationVariable msgId: String,
+        @DestinationVariable recipientID: String,
+        @DestinationVariable senderID: String,
+        @DestinationVariable msgID: String,
         newMsg: String
     ): PersonalMessage {
-        val message = personalMessageRepo.getById(msgId.toInt())
+        val message = personalMessageRepo.getById(msgID.toInt())
         message.messageText = newMsg
         personalMessageRepo.save(message)
         return message
