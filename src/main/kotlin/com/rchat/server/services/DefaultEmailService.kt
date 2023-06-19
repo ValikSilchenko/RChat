@@ -9,8 +9,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine
 import java.nio.charset.StandardCharsets
 import javax.mail.MessagingException
 
-import kotlin.random.Random
-
 
 @Service
 class DefaultEmailService {
@@ -21,22 +19,18 @@ class DefaultEmailService {
     private val templateEngine: SpringTemplateEngine? = null
 
     @Throws(MessagingException::class)
-    fun sendMail(email: String): String {
+    fun sendMail(context: EmailContext) {
         val message = emailSender!!.createMimeMessage()
         val mimeMessageHelper = MimeMessageHelper(
             message,
             MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
             StandardCharsets.UTF_8.name()
         )
-//        val context = Context()
-//        context.setVariables(email.getContext())
-//        val emailContent: String = templateEngine.process(email.getTemplateLocation(), context)
-        mimeMessageHelper.setTo(email)
-        mimeMessageHelper.setSubject("Подтверждение регистрации")
-        var code = Random.nextInt(100000, 999999).toString()
-        mimeMessageHelper.setText("<a>Ваш код подтверждения регистрации:</a> <h2>${code}</h2> <a>Введите его в приложении для подтверждения</a>", true)
-        mimeMessageHelper.setFrom("no-reply.rchat@gmail.com")
+
+        mimeMessageHelper.setFrom(context.from)
+        mimeMessageHelper.setTo(context.to)
+        mimeMessageHelper.setSubject(context.subject)
+        mimeMessageHelper.setText(context.body, true)
         emailSender.send(message)
-        return code
     }
 }

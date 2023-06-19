@@ -13,12 +13,13 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
-import javax.persistence.Tuple
+import kotlin.random.Random
 
 
 @Component
 class PgUserDetailsService(private var userRepo: UserRepository,
-                           private var mailService: DefaultEmailService) : UserDetailsService {
+                           private var mailService: DefaultEmailService
+) : UserDetailsService {
     private var bCryptPasswordEncoder: BCryptPasswordEncoder = BCryptPasswordEncoder()  // TODO
     private var verificationUsers: MutableMap<String, Pair<String, Users>> = mutableMapOf()
 
@@ -36,8 +37,14 @@ class PgUserDetailsService(private var userRepo: UserRepository,
         if (dbUser != null || verificationUsers.containsKey(user.email))
             return false
 
-        val verificationCode = mailService.sendMail(user.email!!)
-        verificationUsers[user.email!!] = Pair(verificationCode, user)
+        var code = Random.nextInt(100000, 999999).toString()
+        var mailContext = EmailContext(
+            "no-reply.rchat@gmail.com",
+            user.email!!,
+            "Подтверждение регичтрации",
+            "<a>Ваш код подтверждения регистрации:</a> <h2>${code}</h2> <a>Введите его в приложении для подтверждения</a>")
+        mailService.sendMail(mailContext)
+        verificationUsers[user.email!!] = Pair(code, user)
         return true
     }
 
