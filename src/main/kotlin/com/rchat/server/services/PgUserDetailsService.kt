@@ -22,6 +22,7 @@ class PgUserDetailsService(private var userRepo: UserRepository,
 ) : UserDetailsService {
     private var bCryptPasswordEncoder: BCryptPasswordEncoder = BCryptPasswordEncoder()  // TODO
     private var verificationUsers: MutableMap<String, Pair<String, Users>> = mutableMapOf()
+    private var verificationRecovers: MutableMap<String, Pair<String, Users>> = mutableMapOf()
 
     @Override
     override fun loadUserByUsername(username: String): UserDetails {
@@ -37,11 +38,11 @@ class PgUserDetailsService(private var userRepo: UserRepository,
         if (dbUser != null || verificationUsers.containsKey(user.email))
             return false
 
-        var code = Random.nextInt(100000, 999999).toString()
-        var mailContext = EmailContext(
+        val code = Random.nextInt(100000, 999999).toString()
+        val mailContext = EmailContext(
             "no-reply.rchat@gmail.com",
             user.email!!,
-            "Подтверждение регичтрации",
+            "Подтверждение регистрации",
             "<a>Ваш код подтверждения регистрации:</a> <h2>${code}</h2> <a>Введите его в приложении для подтверждения</a>")
         mailService.sendMail(mailContext)
         verificationUsers[user.email!!] = Pair(code, user)
@@ -65,6 +66,34 @@ class PgUserDetailsService(private var userRepo: UserRepository,
         return null
     }
 
+    fun recoverPassword(userMail: String): Boolean {
+        val dbUser = userRepo.findByEmail(userMail) ?: return false
+        val code = Random.nextInt(100000, 999999).toString()
+        val mailContext = EmailContext(
+            "no-reply.rchat@gmail.com",
+            dbUser.email!!,
+            "Восстановление пароля",
+            "<a>Ваш код для восстановления пароля:</a> <h2>${code}</h2>")
+        mailService.sendMail(mailContext)
+        verificationRecovers[dbUser.email!!] = Pair(code, dbUser)
+        return true
+    }
+
+    fun verifyRecover(userMail: String, verificationCode: String): Boolean {
+        val dbUser = userRepo.findByEmail(userMail) ?: return false
+        if (verificationRecovers[dbUser.email!!]?.first == verificationCode) {
+            verificationRecovers.remove(dbUser.email!!)
+            return true
+        }
+        return false
+    }
+
+    fun changePassword(userMail: String, newPassword: String): Boolean {
+        val dbUser = userRepo.findByEmail(userMail) ?: return false
+        dbUser.password = bCryptPasswordEncoder.encode(newPassword)
+        return true
+    }
+
     fun autoLogin(user: Users) {
         val auth: Authentication = UsernamePasswordAuthenticationToken(user, null, null)
         SecurityContextHolder.getContext().authentication = auth
@@ -83,8 +112,6 @@ class PgUserDetailsService(private var userRepo: UserRepository,
     }
 
     fun userExists(userId: Int): Boolean {
-        if (userRepo.findById(userId).isEmpty)
-            return false
-        return true
+        return !userRepo.findById(userId).isEmpty
     }
 }

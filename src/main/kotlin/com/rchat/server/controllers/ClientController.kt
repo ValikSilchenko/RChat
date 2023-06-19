@@ -109,6 +109,27 @@ class ClientController(
         return ResponseEntity(user, HttpStatus.OK)
     }
 
+    @PostMapping("/recover_password")
+    fun recoverPassword(@RequestParam userMail: String): ResponseEntity<Any> {
+        if (userService.recoverPassword(userMail))
+            return ResponseEntity(HttpStatus.OK)
+        return ResponseEntity("Email doesn't exists", HttpStatus.BAD_REQUEST)
+    }
+
+    @PostMapping("/verify_recover")
+    fun verifyRecover(@RequestParam userMail: String, @RequestParam verificationCode: String): ResponseEntity<Any> {
+        if (userService.verifyRecover(userMail, verificationCode))
+            return ResponseEntity(HttpStatus.OK)
+        return ResponseEntity(HttpStatus.BAD_REQUEST)
+    }
+
+    @PostMapping("/change_password")
+    fun changePassword(@RequestParam userMail: String, @RequestParam newPassword: String): ResponseEntity<Any> {
+        if (userService.changePassword(userMail, newPassword))
+            return ResponseEntity(HttpStatus.OK)
+        return ResponseEntity(HttpStatus.BAD_REQUEST)
+    }
+
     @PostMapping("/channel")
     fun addChannel(
         @RequestParam ownerId: String,
