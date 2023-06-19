@@ -97,15 +97,4 @@ class ChatController(
         personalMessageRepo.deletePersonalMessageById(msgId.toInt())
         return mapOf("deleted" to msgId)
     }
-
-
-//    @MessageMapping("/channel")
-//    @SendTo("/channelTopic")
-//    fun processChannel(@Valid message: ChannelMessage, bindingResult: BindingResult): ChannelMessage? {
-//        if (bindingResult.hasErrors())
-//            return null
-//        message.date = LocalDate.now()
-//        message.time = LocalTime.now()
-//        return channelMessageRepo.save(message)
-//    }
 }

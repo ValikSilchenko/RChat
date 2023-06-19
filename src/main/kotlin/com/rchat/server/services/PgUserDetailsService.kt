@@ -2,8 +2,6 @@ package com.rchat.server.services
 
 import com.rchat.server.models.Users
 import com.rchat.server.repos.UserRepository
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -15,11 +13,14 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
+import javax.persistence.Tuple
 
 
 @Component
-class PgUserDetailsService(private var userRepo: UserRepository) : UserDetailsService {
+class PgUserDetailsService(private var userRepo: UserRepository,
+                           private var mailService: DefaultEmailService) : UserDetailsService {
     private var bCryptPasswordEncoder: BCryptPasswordEncoder = BCryptPasswordEncoder()  // TODO
+    private var verificationUsers: MutableMap<String, Pair<String, Users>> = mutableMapOf()
 
     @Override
     override fun loadUserByUsername(username: String): UserDetails {
@@ -30,14 +31,24 @@ class PgUserDetailsService(private var userRepo: UserRepository) : UserDetailsSe
         return User(user.username, user.password, authorities)
     }
 
-    fun saveUser(user: Users): Boolean {
+    fun registerUser(user: Users): Boolean {
         val dbUser = userRepo.findByEmail(user.email)
-        if (dbUser != null)
+        if (dbUser != null || verificationUsers.containsKey(user.email))
             return false
 
-        user.password = bCryptPasswordEncoder.encode(user.password)
-        userRepo.save(user)
+        val verificationCode = mailService.sendMail(user.email!!)
+        verificationUsers[user.email!!] = Pair(verificationCode, user)
         return true
+    }
+
+    fun saveUser(userMail: String, verificationCode: String): Users? {
+        if (verificationCode == verificationUsers[userMail]?.first) {
+            val user = verificationUsers[userMail]?.second
+            verificationUsers.remove(userMail)
+            user?.password = bCryptPasswordEncoder.encode(user?.password)
+            return userRepo.save(user!!)
+        }
+        return null
     }
 
     fun login(email: String, password: String): Users? {

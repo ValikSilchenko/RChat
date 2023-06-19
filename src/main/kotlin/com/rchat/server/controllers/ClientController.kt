@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity
 import javax.validation.Valid
 import com.fasterxml.jackson.annotation.JsonView
 import com.rchat.server.repos.*
+import com.rchat.server.services.DefaultEmailService
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.web.bind.annotation.*
 import javax.transaction.Transactional
 
@@ -24,6 +24,8 @@ class ClientController(
     private var memberRepo: MemberRepository,
     private var personalMessageRepo: PersonalMessageRepository
 ) {
+    private var verification: MutableMap<String, String> = mutableMapOf()
+
     @JsonView(View.UserWithId::class)
     @GetMapping("/chats")
     fun getListOfChats(@RequestParam userId: String): List<PersonalMessage?> {
@@ -90,16 +92,21 @@ class ClientController(
         return ResponseEntity<Avatar?>(avatar, HttpStatus.OK)
     }
 
-    @JsonView(View.UserWithId::class)
-    @PostMapping("/register")
-    fun addUser(@Valid user: Users, bindingResult: BindingResult): Users? {
+    @PostMapping("/register", params = ["username", "email", "phone", "password"])
+    fun addUser(@Valid user: Users, bindingResult: BindingResult): ResponseEntity<Any> {
         if (bindingResult.hasErrors())
-            return null
-        if (!userService.saveUser(user)) {  // save user by email
-            return null
+            return ResponseEntity("Not valid user data", HttpStatus.BAD_REQUEST)
+        if (!userService.registerUser(user)) {  // save user by email
+            return ResponseEntity("User with this email already exists", HttpStatus.BAD_REQUEST)
         }
-//        userService.autoLogin(user)
-        return user
+        return ResponseEntity(HttpStatus.OK)
+    }
+
+    @JsonView(View.UserWithId::class)
+    @PostMapping("/verify")
+    fun verifyRegistration(@RequestParam userMail: String, @RequestParam verificationCode: String): ResponseEntity<Any> {
+        val user: Users = userService.saveUser(userMail, verificationCode) ?: return ResponseEntity(HttpStatus.BAD_REQUEST)
+        return ResponseEntity(user, HttpStatus.OK)
     }
 
     @PostMapping("/channel")
@@ -145,9 +152,6 @@ class ClientController(
 
         return ResponseEntity<String>("${channel.id}", HttpStatus.OK)
     }
-
-//    @DeleteMapping("/channel")
-//    fun delChannel(@RequestParam channelId,...): ResponseEntity<String> {}
 
     @PostMapping("/member")
     fun addMember(@RequestParam channelId: String, @RequestParam membersToAdd: String): ResponseEntity<String> {
@@ -197,10 +201,4 @@ class ClientController(
         }
         return ResponseEntity<String>(HttpStatus.OK)
     }
-
-//    @JsonView(View.AllWithId::class)
-//    @GetMapping("/channel")
-//    fun getChannelMessages(@RequestParam channelId: String): List<ChannelMessage?> {
-//        return channelMessageRepo.getMessages(channelRepo.getById(channelId.toInt()))  // TODO
-//    }
 }
