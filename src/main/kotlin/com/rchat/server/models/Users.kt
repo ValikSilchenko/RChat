@@ -2,13 +2,19 @@ package com.rchat.server.models
 
 import com.fasterxml.jackson.annotation.JsonView
 import com.rchat.server.views.View
+import lombok.AllArgsConstructor
+import lombok.NoArgsConstructor
 import org.hibernate.annotations.Proxy
+import org.hibernate.annotations.Type
 import javax.persistence.*
 import javax.validation.constraints.Size
+
 
 @Entity
 @Table(name = "users")
 @Proxy(lazy = false)
+@NoArgsConstructor
+@AllArgsConstructor
 open class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,12 +39,9 @@ open class Users {
     @Size(min = 5, max = 60)
     open var password: String? = null
 
-    constructor() {}
-
-    constructor(username: String, email: String, phone: String, password: String) {
-        this.username = username
-        this.email = email
-        this.phone = phone
-        this.password = password
-    }
+    @Lob
+    @Type(type="org.hibernate.type.BinaryType")
+    @Column(name = "avatar", nullable = true)
+    @Size(max = 5_242_880)
+    var avatar: ByteArray? = null
 }
