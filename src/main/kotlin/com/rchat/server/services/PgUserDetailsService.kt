@@ -91,6 +91,7 @@ class PgUserDetailsService(private var userRepo: UserRepository,
     fun changePassword(userMail: String, newPassword: String): Boolean {
         val dbUser = userRepo.findByEmail(userMail) ?: return false
         dbUser.password = bCryptPasswordEncoder.encode(newPassword)
+        userRepo.save(dbUser)
         return true
     }
 
