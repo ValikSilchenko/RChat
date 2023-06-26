@@ -95,9 +95,10 @@ class PgUserDetailsService(private var userRepo: UserRepository,
         return true
     }
 
-    fun autoLogin(user: Users) {
-        val auth: Authentication = UsernamePasswordAuthenticationToken(user, null, null)
-        SecurityContextHolder.getContext().authentication = auth
+    fun updateAvatar(userId: Int, image: ByteArray) {
+        val user = userRepo.getById(userId)
+        user.avatar = image
+        userRepo.save(user)
     }
 
     fun getMatchUsers(substr: String): List<Users?> {

@@ -1,6 +1,8 @@
 package com.rchat.server.models
 
 import com.fasterxml.jackson.annotation.JsonView
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.rchat.server.serializers.BytesToStringSerializer
 import com.rchat.server.views.View
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
@@ -41,7 +43,9 @@ open class Users {
 
     @Lob
     @Type(type="org.hibernate.type.BinaryType")
+    @JsonSerialize(using = BytesToStringSerializer::class)
+    @JsonView(View.Avatar::class)
     @Column(name = "avatar", nullable = true)
-    @Size(max = 5_242_880)
+    @Size(max = 3_145_728)  // max 3MB
     var avatar: ByteArray? = null
 }
