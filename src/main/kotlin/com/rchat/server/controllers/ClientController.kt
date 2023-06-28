@@ -25,7 +25,7 @@ class ClientController(
 ) {
     private var verification: MutableMap<String, String> = mutableMapOf()
 
-    @JsonView(View.UserWithId::class)
+    @JsonView(View.UserWithAvatar::class)
     @GetMapping("/chats")
     fun getListOfChats(@RequestParam userId: String): List<PersonalMessage?> {
         return personalMessageRepo.getChats(userService.getById(userId.toInt()))
@@ -58,7 +58,7 @@ class ClientController(
         return ResponseEntity<String>(HttpStatus.OK)
     }
 
-    @JsonView(View.UserWithId::class)
+    @JsonView(View.UserWithAvatar::class)
     @PostMapping("/login")
     fun login(@RequestParam email: String, @RequestParam password: String): ResponseEntity<Users> {
         val user = userService.login(email, password) ?: return ResponseEntity(HttpStatus.BAD_REQUEST)
