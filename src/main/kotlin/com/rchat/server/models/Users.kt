@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonView
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.rchat.server.serializers.BytesToStringSerializer
 import com.rchat.server.views.View
-import lombok.AllArgsConstructor
-import lombok.NoArgsConstructor
 import org.hibernate.annotations.Proxy
 import org.hibernate.annotations.Type
 import javax.persistence.*
@@ -15,8 +13,6 @@ import javax.validation.constraints.Size
 @Entity
 @Table(name = "users")
 @Proxy(lazy = false)
-@NoArgsConstructor
-@AllArgsConstructor
 open class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

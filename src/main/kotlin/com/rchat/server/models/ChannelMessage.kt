@@ -44,7 +44,7 @@ open class ChannelMessage {
 
     constructor() {}
 
-    constructor(id: Int, channel: Channel, sender: Users,
+    constructor(channel: Channel, sender: Users,
                 time: LocalTime, date: LocalDate, messageText: String) {
         this.channel = channel
         this.sender = sender
